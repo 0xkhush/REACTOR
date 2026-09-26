@@ -1,0 +1,13 @@
+.DS_Store
+.venv/
+__pycache__/
+*.pyc
+*.egg-info/
+.pytest_cache/
+.env
+.env.*
+!.env.example
+/fdb_v3_data_released/
+/artifacts/
+/vendor/
+/.superpowers/
