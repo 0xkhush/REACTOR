@@ -529,3 +529,42 @@ async def test_superseded_pending_work_returns_before_predecessor_finishes(depen
         release.set()
         await controller.close()
         await asyncio.gather(*(task for task in (first, second) if task), return_exceptions=True)
+
+
+@pytest.mark.parametrize("first,second", [(True, 1), (False, 0), ({"items": [True]}, {"items": [1]})])
+async def test_distinct_json_types_conflict_for_same_action(first, second):
+    calls = []
+
+    async def handler(value):
+        calls.append(value)
+        return {"value": value}
+
+    schema = {"type": "object", "properties": {"value": {}}, "required": ["value"]}
+    controller = Controller("s", [ToolDefinition("write", True, schema, handler)])
+    try:
+        request = await resolve(controller)
+        await controller.execute(Proposal(request, "a", "write", {"value": first}))
+        with pytest.raises(ValueError, match="identity conflict"):
+            await controller.execute(Proposal(request, "a", "write", {"value": second}))
+        assert len(calls) == 1
+    finally:
+        await controller.close()
+
+
+async def test_argument_object_key_order_does_not_create_a_conflict():
+    calls = []
+
+    async def handler(value):
+        calls.append(value)
+        return {"value": value}
+
+    schema = {"type": "object", "properties": {"value": {"type": "object"}}}
+    controller = Controller("s", [ToolDefinition("write", True, schema, handler)])
+    try:
+        request = await resolve(controller)
+        a = await controller.execute(Proposal(request, "a", "write", {"value": {"x": 1, "y": 2}}))
+        b = await controller.execute(Proposal(request, "a", "write", {"value": {"y": 2, "x": 1}}))
+        assert a.operation_id == b.operation_id
+        assert len(calls) == 1
+    finally:
+        await controller.close()

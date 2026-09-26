@@ -1,6 +1,7 @@
 """Session-owned execution; logical action IDs come from the semantic adapter."""
 
 import asyncio
+import json
 import time
 from dataclasses import asdict, replace
 
@@ -71,7 +72,7 @@ class Controller:
             existing = self._identities.get(identity)
             if existing:
                 operation = self._operations[existing]
-                if operation.proposal != proposal:
+                if self._fingerprint(operation.proposal) != self._fingerprint(proposal):
                     raise ValueError("action identity conflict")
             else:
                 for dependency in proposal.depends_on:
@@ -106,6 +107,14 @@ class Controller:
             # Speech can begin while a read runs. Resolve its relevance before delivery,
             # including cache hits, rather than leaking potentially obsolete evidence.
             await self._input_ready.wait()
+
+    @staticmethod
+    def _fingerprint(proposal: Proposal) -> str:
+        # Python dict equality conflates True and 1. JSON preserves their distinct types.
+        return json.dumps({
+            "tool": proposal.tool, "args": proposal.args,
+            "depends_on": list(proposal.depends_on),
+        }, sort_keys=True, allow_nan=False, separators=(",", ":"))
 
     def _observe_task(self, operation_id, task):
         # Retrieve exceptions even if the caller has left; execute/close still observe them.
