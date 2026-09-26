@@ -1,0 +1,14 @@
+# Verified offline-core environment: Python 3.12, macOS arm64.
+# Install with: python -m pip install -r requirements-dev.lock -e .
+attrs==26.1.0
+iniconfig==2.3.0
+jsonschema==4.26.0
+jsonschema-specifications==2025.9.1
+packaging==26.3
+pluggy==1.6.0
+Pygments==2.21.0
+pytest==8.4.2
+pytest-asyncio==0.26.0
+referencing==0.37.0
+rpds-py==2026.6.3
+typing_extensions==4.16.0
