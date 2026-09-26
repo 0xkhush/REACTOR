@@ -86,8 +86,17 @@ class Controller:
                 task.add_done_callback(self._observe_task)
             task = self._tasks[operation.operation_id]
         await asyncio.shield(task)
-        async with self._lock:
-            return self._outcome(operation)
+        while True:
+            async with self._lock:
+                if self._trace_error is not None:
+                    raise self._trace_error
+                if (operation.state_modifying or operation.status != "succeeded"
+                        or self._state.resolved or self._closed
+                        or not self._state.is_current(operation.proposal.request)):
+                    return self._outcome(operation)
+            # Speech can begin while a read runs. Resolve its relevance before delivery,
+            # including cache hits, rather than leaking potentially obsolete evidence.
+            await self._input_ready.wait()
 
     @staticmethod
     def _observe_task(task):
@@ -168,8 +177,10 @@ class Controller:
                     duration_seconds=time.monotonic() - started)
 
     def _outcome(self, operation: Operation) -> Outcome:
-        superseded = not self._state.is_current(operation.proposal.request)
-        result = None if superseded and not operation.state_modifying else copy_json(operation.result)
+        superseded = (not self._state.is_current(operation.proposal.request)
+                      or (self._closed and not operation.state_modifying))
+        hide_read = not operation.state_modifying and (superseded or not self._state.resolved)
+        result = None if hide_read else copy_json(operation.result)
         return Outcome(operation.operation_id, operation.status, superseded, result, operation.error)
 
     def snapshot(self) -> dict:

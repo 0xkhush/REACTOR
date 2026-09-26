@@ -453,3 +453,40 @@ async def test_independent_reads_overlap():
     finally:
         release.set()
         await controller.close()
+
+
+@pytest.mark.parametrize("mode", ["resume", "correction"])
+async def test_read_delivery_waits_for_input_resolution(mode):
+    entered, release = asyncio.Event(), asyncio.Event()
+
+    async def read():
+        entered.set()
+        await release.wait()
+        return {"destination": "Boston"}
+
+    controller = Controller("s", [ToolDefinition("read", False, EMPTY, read)])
+    try:
+        request = await resolve(controller)
+        proposal = Proposal(request, "a", "read", {})
+        caller = asyncio.create_task(controller.execute(proposal))
+        await asyncio.wait_for(entered.wait(), 2)
+        revision = await controller.begin_input()
+        release.set()
+
+        async def completed():
+            while controller.snapshot()["operations"][0]["status"] != "succeeded":
+                await asyncio.sleep(0)
+
+        await asyncio.wait_for(completed(), 2)
+        cached = asyncio.create_task(controller.execute(proposal))
+        await asyncio.sleep(0)
+        await asyncio.sleep(0)
+        assert not caller.done() and not cached.done()
+        assert controller.snapshot()["operations"][0]["result"] is None
+        await controller.resolve_input(revision, mode=mode)
+        a, b = await asyncio.wait_for(asyncio.gather(caller, cached), 2)
+        assert a.superseded == b.superseded == (mode == "correction")
+        assert a.result == b.result == (None if mode == "correction" else {"destination": "Boston"})
+    finally:
+        release.set()
+        await controller.close()
