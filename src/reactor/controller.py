@@ -18,6 +18,7 @@ class Controller:
         self._trace = trace
         self._lock = asyncio.Lock()
         self._write_lane = asyncio.Lock()
+        self._input_ready = asyncio.Event()
         self._closed = False
         self._trace_error: TraceError | None = None
         self._identities: dict[tuple, str] = {}
@@ -36,12 +37,14 @@ class Controller:
                 self._trace.event(name, **fields)
             except TraceError as exc:
                 self._trace_error = exc
+                self._input_ready.set()
                 raise
 
     async def begin_input(self) -> int:
         async with self._lock:
             self._check_open()
             revision = self._state.begin_input()
+            self._input_ready.clear()
             self._event("input_started", input_revision=revision)
             return revision
 
@@ -50,6 +53,7 @@ class Controller:
             self._check_open()
             token = self._state.resolve_input(input_revision, mode=mode, changes=changes)
             self._event("input_resolved", mode=mode, request=asdict(token))
+            self._input_ready.set()
             return token
 
     async def execute(self, proposal: Proposal) -> Outcome:
@@ -92,41 +96,75 @@ class Controller:
             task.exception()
 
     async def _run(self, operation: Operation):
-        for dependency in operation.proposal.depends_on:
-            await asyncio.shield(self._tasks[dependency])
-            parent = self._operations[dependency]
-            if parent.status != "succeeded" or not self._state.is_current(parent.proposal.request):
-                operation.status = "cancelled_before_dispatch"
-                self._event("cancelled_before_dispatch", operation_id=operation.operation_id,
-                            reason="dependency unavailable")
-                return
-        if operation.state_modifying:
-            async with self._write_lane:
+        try:
+            for dependency in operation.proposal.depends_on:
+                await asyncio.shield(self._tasks[dependency])
+                parent = self._operations[dependency]
+                if parent.status != "succeeded" or not self._state.is_current(parent.proposal.request):
+                    self._cancel(operation, "dependency unavailable")
+                    return
+            if operation.state_modifying:
+                async with self._write_lane:
+                    await self._invoke(operation)
+            else:
                 await self._invoke(operation)
-        else:
-            await self._invoke(operation)
+        except TraceError:
+            if operation.status == "proposed":
+                operation.status = "cancelled_before_dispatch"
+                operation.error = "execution evidence unavailable"
+            raise
+        except asyncio.CancelledError:
+            if operation.status == "proposed":
+                self._cancel(operation, "execution owner cancelled before dispatch")
+            raise
+
+    def _cancel(self, operation: Operation, reason: str):
+        operation.status = "cancelled_before_dispatch"
+        operation.error = reason
+        self._event(operation.status, operation_id=operation.operation_id, reason=reason)
+
+    async def _admit(self, operation: Operation) -> bool:
+        while True:
+            async with self._lock:
+                if self._closed or not self._state.is_current(operation.proposal.request):
+                    self._cancel(operation, "session closed or request superseded")
+                    return False
+                if self._trace_error is not None:
+                    raise self._trace_error
+                if self._state.resolved:
+                    self._event("launched", operation_id=operation.operation_id)
+                    operation.status = "running"
+                    operation.started_at = time.time()
+                    return True
+            await self._input_ready.wait()
 
     async def _invoke(self, operation: Operation):
         tool = self._tools[operation.proposal.tool]
-        async with self._lock:
-            self._check_open()
-            self._event("launched", operation_id=operation.operation_id)
-            operation.status = "running"
-            operation.started_at = time.time()
+        if not await self._admit(operation):
+            return
         started = time.monotonic()
-        operation.result = copy_json(await tool.invoke(operation.proposal.args))
-        operation.status = (
-            "failed" if isinstance(operation.result, dict) and operation.result.get("status") == "error"
-            else "succeeded"
-        )
+        try:
+            operation.result = copy_json(await tool.invoke(operation.proposal.args))
+            operation.status = (
+                "failed" if isinstance(operation.result, dict) and operation.result.get("status") == "error"
+                else "succeeded"
+            )
+            if operation.status == "failed":
+                operation.error = "tool reported an error"
+        except (Exception, asyncio.CancelledError) as exc:
+            # Do not expose arbitrary backend exception strings (which can contain credentials).
+            operation.status = "outcome_unknown" if tool.state_modifying else "failed"
+            operation.error = f"{type(exc).__name__}: tool did not provide a valid outcome"
         operation.ended_at = time.time()
         if self._trace:
             try:
                 self._trace.tool_call(operation)
             except TraceError as exc:
                 self._trace_error = exc
+                self._input_ready.set()
                 raise
         self._event(operation.status, operation_id=operation.operation_id,
+                    superseded=not self._state.is_current(operation.proposal.request),
                     duration_seconds=time.monotonic() - started)
 
     def _outcome(self, operation: Operation) -> Outcome:
@@ -150,5 +188,6 @@ class Controller:
     async def close(self) -> None:
         async with self._lock:
             self._closed = True
+            self._input_ready.set()
             tasks = list(self._tasks.values())
         await asyncio.gather(*(asyncio.shield(task) for task in tasks), return_exceptions=True)
