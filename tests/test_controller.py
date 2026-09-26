@@ -490,3 +490,42 @@ async def test_read_delivery_waits_for_input_resolution(mode):
     finally:
         release.set()
         await controller.close()
+
+
+@pytest.mark.parametrize("dependency", [False, True])
+async def test_superseded_pending_work_returns_before_predecessor_finishes(dependency):
+    entered, release = asyncio.Event(), asyncio.Event()
+    writes = []
+
+    async def predecessor():
+        entered.set()
+        await release.wait()
+        return {"status": "success"}
+
+    async def pending():
+        writes.append(1)
+        return {}
+
+    controller = Controller("s", [
+        ToolDefinition("first", not dependency, EMPTY, predecessor),
+        ToolDefinition("second", True, EMPTY, pending),
+    ])
+    first = second = None
+    try:
+        request = await resolve(controller)
+        first = asyncio.create_task(controller.execute(Proposal(request, "a", "first", {})))
+        await asyncio.wait_for(entered.wait(), 2)
+        parent_id = controller.snapshot()["operations"][0]["operation_id"]
+        second = asyncio.create_task(controller.execute(Proposal(
+            request, "b", "second", {}, (parent_id,) if dependency else (),
+        )))
+        await wait_for_operations(controller, 2)
+        await resolve(controller, "correction")
+        outcome = await asyncio.wait_for(asyncio.shield(second), 0.2)
+        assert outcome.status == "cancelled_before_dispatch"
+        assert not release.is_set() and not first.done()
+        assert writes == []
+    finally:
+        release.set()
+        await controller.close()
+        await asyncio.gather(*(task for task in (first, second) if task), return_exceptions=True)

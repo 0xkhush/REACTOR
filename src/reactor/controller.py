@@ -24,6 +24,7 @@ class Controller:
         self._identities: dict[tuple, str] = {}
         self._operations: dict[str, Operation] = {}
         self._tasks: dict[str, asyncio.Task] = {}
+        self._finished: dict[str, asyncio.Event] = {}
 
     def _check_open(self):
         if self._trace_error is not None:
@@ -54,6 +55,7 @@ class Controller:
             token = self._state.resolve_input(input_revision, mode=mode, changes=changes)
             self._event("input_resolved", mode=mode, request=asdict(token))
             self._input_ready.set()
+            self._cancel_pending()
             return token
 
     async def execute(self, proposal: Proposal) -> Outcome:
@@ -81,11 +83,18 @@ class Controller:
                             request=asdict(proposal.request), args=proposal.args)
                 self._operations[operation.operation_id] = operation
                 self._identities[identity] = operation.operation_id
+                self._finished[operation.operation_id] = asyncio.Event()
                 task = asyncio.create_task(self._run(operation), name=operation.operation_id)
                 self._tasks[operation.operation_id] = task
-                task.add_done_callback(self._observe_task)
+                task.add_done_callback(
+                    lambda done, op_id=operation.operation_id: self._observe_task(op_id, done)
+                )
             task = self._tasks[operation.operation_id]
-        await asyncio.shield(task)
+        # Cancelling this wait never cancels execution. Pending invalidation can signal
+        # completion before a predecessor or write lane becomes available.
+        await self._finished[operation.operation_id].wait()
+        if task.done() and not task.cancelled():
+            task.result()
         while True:
             async with self._lock:
                 if self._trace_error is not None:
@@ -98,11 +107,22 @@ class Controller:
             # including cache hits, rather than leaking potentially obsolete evidence.
             await self._input_ready.wait()
 
-    @staticmethod
-    def _observe_task(task):
+    def _observe_task(self, operation_id, task):
         # Retrieve exceptions even if the caller has left; execute/close still observe them.
         if not task.cancelled():
             task.exception()
+        self._finished[operation_id].set()
+
+    def _cancel_pending(self):
+        for operation in self._operations.values():
+            if operation.status == "proposed" and (
+                self._closed or not self._state.is_current(operation.proposal.request)
+            ):
+                try:
+                    self._cancel(operation, "session closed or request superseded")
+                finally:
+                    self._finished[operation.operation_id].set()
+                    self._tasks[operation.operation_id].cancel()
 
     async def _run(self, operation: Operation):
         try:
@@ -200,5 +220,6 @@ class Controller:
         async with self._lock:
             self._closed = True
             self._input_ready.set()
+            self._cancel_pending()
             tasks = list(self._tasks.values())
         await asyncio.gather(*(asyncio.shield(task) for task in tasks), return_exceptions=True)
