@@ -10,6 +10,8 @@
 
 **Spec:** `docs/superpowers/specs/2026-09-26-reactor-design.md` (approved).
 
+**Execution status:** All four tasks implemented on `feat/reactor-core`. A fresh code review found four important edge cases, now fixed with regression tests. The suite has 75 passing tests. See `docs/implementation-status.md` for evidence and the remaining voice/benchmark milestone.
+
 ## Global Constraints
 
 - Budget: ₹0; no paid model calls, paid infrastructure, or automatic provider fallback that incurs charges.
@@ -130,7 +132,7 @@ def snapshot(self) -> dict[str, Any]: ...
 
 These ellipses specify interfaces, not implementation placeholders. Implement the state transition rules below in full.
 
-- [ ] **Step 1: Configure an isolated package and test environment.**
+- [x] **Step 1: Configure an isolated package and test environment.**
 
 Use this package configuration:
 
@@ -164,7 +166,7 @@ Ignore `.DS_Store`, `.venv/`, `__pycache__/`, `*.pyc`, `*.egg-info/`, `.pytest_c
 
 Verify the workspace parent exists with `ls` before creating the environment. Run `python3.12 -m venv .venv`, then `.venv/bin/python -m pip install -e '.[dev]'`. No global package changes. After successful verification, save the resolved dependency versions for reproduction using an explicit patch, not shell redirection.
 
-- [ ] **Step 2: Write and run failing request-state tests.**
+- [x] **Step 2: Write and run failing request-state tests.**
 
 ```python
 import pytest
@@ -205,13 +207,13 @@ def test_resume_keeps_action_identity():
 
 Run `.venv/bin/python -m pytest tests/test_state.py -q`; expect import failures before implementation.
 
-- [ ] **Step 3: Implement state and validation contracts.**
+- [x] **Step 3: Implement state and validation contracts.**
 
 Initial state has revision counters zero, no resolved request, empty slots, and unresolved input. `begin_input` increments the input revision and marks unresolved. `resolve_input` rejects stale or already-resolved input revisions. `new` advances request ID and intent revision; `correction` preserves request ID but advances intent revision and requires a preceding request; `resume` preserves both and rejects nonempty slot changes. Copy JSON-compatible slot values on entry and snapshot output. `is_current` compares request ID and intent revision; unresolved input is a separate dispatch hold, not itself supersession.
 
 Validate tool schemas when registering them using `Draft202012Validator.check_schema`. Validate argument objects before reservation; reject non-finite numbers and unsupported JSON values before they enter traces or identity fingerprints. `blocking=True` requires a synchronous handler and invokes it via `asyncio.to_thread`; `blocking=False` requires an async handler and awaits it. Reject invalid handler combinations at registration.
 
-- [ ] **Step 4: Verify state and input boundaries.**
+- [x] **Step 4: Verify state and input boundaries.**
 
 Add parameterized cases for duplicate resolution, correction before a first request, mutable values supplied by callers, resume with changes, and non-finite JSON numbers. Run the state tests. Record the actual environment versions. Do not commit unless requested.
 
@@ -239,7 +241,7 @@ class Controller:
     def snapshot(self) -> dict: ...
 ```
 
-- [ ] **Step 1: Write a concurrent duplicate-write regression.**
+- [x] **Step 1: Write a concurrent duplicate-write regression.**
 
 ```python
 import asyncio
@@ -283,7 +285,7 @@ async def test_duplicate_writes_execute_once_but_new_request_executes_again():
 
 Run the test and confirm it fails before controller implementation.
 
-- [ ] **Step 2: Implement reservation and identity checks.**
+- [x] **Step 2: Implement reservation and identity checks.**
 
 Use a single controller lock for state changes/reservation and a separate write lock for serialized writes. Store owned tasks strongly until session close. No await of tool I/O occurs while holding the state lock.
 
@@ -309,7 +311,7 @@ Implement `_outcome` to calculate relevance at delivery time, not only at tool c
 
 Dependency IDs must identify already-reserved operations in this controller and the same request revision. Await dependency tasks outside the state lock, then check for success and current relevance. Unknown, failed, superseded, or uncertain dependencies prevent dispatch. Requiring earlier reservations prevents dependency cycles without a general DAG engine.
 
-- [ ] **Step 3: Implement trace serialization before adding more control paths.**
+- [x] **Step 3: Implement trace serialization before adding more control paths.**
 
 Serialize each event immediately with `json.dumps(..., allow_nan=False)` and a timestamp. Never store references to mutable caller dictionaries as historical evidence. If a stream write fails, surface a trace-specific exception and stop admitting further actions; retain the already-known execution outcome in memory. Do not convert a completed side effect into an apparent tool failure that would invite a retry.
 
@@ -329,7 +331,7 @@ record = {
 
 Use wall-clock timestamps for upstream compatibility and monotonic measurements for local durations. Emit one completed telemetry record for each actual invocation, including failed/superseded calls; emit no invocation for cancelled-before-dispatch proposals. Diagnostic records distinguish execution failure, uncertainty, and trace failure.
 
-- [ ] **Step 4: Verify ledger and trace boundaries.**
+- [x] **Step 4: Verify ledger and trace boundaries.**
 
 Add tests for a conflicting same action ID, distinct action IDs within one request, a duplicate read, dependencies with real returned IDs, unknown/failed dependencies, separate sessions using identical IDs, and schema rejection before execution. Use `io.StringIO` to parse telemetry and assert the exact shape and count. Mutate input and returned dictionaries after execution and confirm existing trace lines and ledger outcomes are unchanged. Add a failing-stream test proving an executed write is not silently retried.
 
@@ -343,7 +345,7 @@ Run `.venv/bin/python -m pytest tests/test_state.py tests/test_controller.py tes
 
 **Produces:** unchanged public signatures; complete request holds, cancellation relevance, exception outcomes, and shutdown behavior.
 
-- [ ] **Step 1: Write a deterministic correction/queued-write test.**
+- [x] **Step 1: Write a deterministic correction/queued-write test.**
 
 ```python
 async def test_correction_prevents_a_waiting_write_from_dispatching():
@@ -383,19 +385,19 @@ async def test_correction_prevents_a_waiting_write_from_dispatching():
 
 The test uses events to control execution ordering; the single `sleep(0)` only schedules reservation, not a timing guess. Additional instrumentation should make it possible to assert queued status before correction if scheduling changes.
 
-- [ ] **Step 2: Implement unresolved-input holds and final admission checks.**
+- [x] **Step 2: Implement unresolved-input holds and final admission checks.**
 
 Maintain an `asyncio.Event` indicating resolved input. `begin_input` clears it while holding the controller lock. Successful resolution sets it. All new tool dispatches conservatively wait for resolved input; this avoids unnecessary speculative benchmark calls. Existing executions continue to be observed.
 
 After dependency completion and, for writes, after acquiring the write lane, wait for resolution and acquire the state lock. Recheck the event, closed state, and proposal relevance. If input became unresolved again, release the state lock and wait again. If stale, mark cancelled-before-dispatch. Otherwise set running and `started_at` before invoking the tool boundary, with no intervening await in that admission decision. Do not equate cancellation of the model's await with cancellation of backend execution.
 
-- [ ] **Step 3: Complete exception and close semantics.**
+- [x] **Step 3: Complete exception and close semantics.**
 
 For an async tool, await its handler; for a blocking tool use `asyncio.to_thread` inside the owned task. An explicitly returned backend error maps to failed. A thrown exception after dispatch maps conservatively to outcome-unknown for writes and failed for reads, retaining a sanitized error type/message. Non-JSON output after a write is an unknown outcome, not permission to retry. Unexpected `CancelledError` in an owned task is recorded before being handled or propagated; do not leave the operation permanently running.
 
 `close()` marks the controller closed and wakes unresolved waiters so queued work is cancelled-before-dispatch. It drains already-dispatched owned tasks and preserves telemetry. It is idempotent. For this local core it does not forcibly terminate worker threads. The adapter must apply its overall session deadline and explicitly report unfinished outcomes if the process cannot drain; this is not a claim of durable exactly-once behavior after crashes.
 
-- [ ] **Step 4: Verify caller cancellation and non-blocking behavior.**
+- [x] **Step 4: Verify caller cancellation and non-blocking behavior.**
 
 Use a blocking write controlled by `threading.Event`, with a five-second safety timeout in its wait to prevent a hung test. While the worker is active, call `begin_input()` under `asyncio.wait_for(..., timeout=1)` and verify it returns. Cancel only the caller task, resolve the new input as `resume`, release the thread, and call `execute()` again with the original proposal. Assert one actual invocation and a successful recorded outcome. Release the worker in `finally` before closing the controller.
 
@@ -423,7 +425,7 @@ async def run_demo() -> dict: ...
 def main() -> None: ...
 ```
 
-- [ ] **Step 1: Write timer lifecycle tests before implementation.**
+- [x] **Step 1: Write timer lifecycle tests before implementation.**
 
 ```python
 from reactor.tools.timers import TimerService
@@ -445,7 +447,7 @@ async def test_cancel_is_verified_and_session_local():
 
 Run the test and observe the expected missing-module failure.
 
-- [ ] **Step 2: Implement timer semantics.**
+- [x] **Step 2: Implement timer semantics.**
 
 Validate a nonblank name and a finite positive duration no greater than 86,400 seconds. Assign a session-local timer ID. Store monotonic deadline, running/cancelled/completed state, and the owned expiry task. Duplicate names are allowed because cancellation uses ID; the voice adapter must disambiguate names.
 
@@ -453,17 +455,17 @@ Before listing or cancelling a timer, reconcile any deadline already reached usi
 
 Provide three tool schemas with `additionalProperties=False`: create(name, duration_seconds), list(no args), and cancel(timer_id). Create and cancel are state modifying; list is read-only. All handlers are async and run on the owning loop.
 
-- [ ] **Step 3: Verify completion/cancellation races without minute-long tests.**
+- [x] **Step 3: Verify completion/cancellation races without minute-long tests.**
 
 Inject a clock and a sleep callable into `TimerService` as keyword-only constructor arguments, defaulting to `time.monotonic` and `asyncio.sleep`. Tests use a fake clock and event-controlled sleep. Advance past the deadline and call cancel before releasing the expiry wait; assert completed. Cancel before the deadline, then release expiry; assert cancelled. Cover invalid durations (zero, negative, bool, infinity, NaN), empty names, unknown IDs, repeated close, and no leftover expiry tasks after shutdown.
 
-- [ ] **Step 4: Implement an offline controller demo.**
+- [x] **Step 4: Implement an offline controller demo.**
 
 The demo explicitly supplies interpreted slot updates; it does not pretend to recognize speech. Create a new request for a ten-minute timer, immediately apply a correction to seven minutes, and attempt the obsolete proposal. Assert it was cancelled-before-dispatch. Execute the corrected create action twice with the same logical identity and assert a single timer ID. Start a new request to cancel it and assert cancelled state.
 
 Print strict JSON containing `mode: "scripted_offline"`, the cancelled obsolete proposal outcome, the single created timer, the duplicate's operation ID, the final cancellation, and the session snapshot. Raise if assertions fail. Close controller and timers in `finally`. `main()` calls `asyncio.run(run_demo())` and prints the returned summary. Diagnostics may go to stderr; do not mix prose into machine-readable stdout.
 
-- [ ] **Step 5: Document and verify only implemented capabilities.**
+- [x] **Step 5: Document and verify only implemented capabilities.**
 
 Update README with:
 
@@ -491,4 +493,4 @@ Explain that the demo is scripted controller verification, not a voice demo or F
 - Race and shutdown concerns have explicit tests, not just happy-path examples.
 - All public interfaces are named in this document; methods with ellipses are interface declarations accompanied by implementation rules, not executable stubs to retain.
 - LiveKit, provider access, upstream tool wiring, benchmark reproduction, Colab compatibility, and submission assets are explicitly reserved for the follow-on integration plan.
-- The next step is user review of this plan and confirmation of inline execution, then `executing-plans`.
+- Inline execution was approved and completed. Next: plan the LiveKit/FDB integration against the implemented core.
