@@ -123,15 +123,20 @@ class Controller:
         self._finished[operation_id].set()
 
     def _cancel_pending(self):
+        trace_failure = None
         for operation in self._operations.values():
             if operation.status == "proposed" and (
                 self._closed or not self._state.is_current(operation.proposal.request)
             ):
                 try:
                     self._cancel(operation, "session closed or request superseded")
+                except TraceError as exc:
+                    trace_failure = exc
                 finally:
                     self._finished[operation.operation_id].set()
                     self._tasks[operation.operation_id].cancel()
+        if trace_failure is not None:
+            raise trace_failure
 
     async def _run(self, operation: Operation):
         try:
@@ -214,6 +219,7 @@ class Controller:
 
     def snapshot(self) -> dict:
         snapshot = self._state.snapshot()
+        snapshot["trace_error"] = "execution evidence unavailable" if self._trace_error else None
         snapshot["operations"] = [
             {
                 **asdict(self._outcome(operation)),
@@ -229,6 +235,12 @@ class Controller:
         async with self._lock:
             self._closed = True
             self._input_ready.set()
-            self._cancel_pending()
+            try:
+                self._cancel_pending()
+            except TraceError:
+                # Drain dispatched work before surfacing the latched evidence failure.
+                pass
             tasks = list(self._tasks.values())
         await asyncio.gather(*(asyncio.shield(task) for task in tasks), return_exceptions=True)
+        if self._trace_error is not None:
+            raise self._trace_error

@@ -180,7 +180,8 @@ async def test_trace_failure_preserves_success_and_stops_new_dispatch():
             await controller.execute(proposal)
         assert calls == [1]
     finally:
-        await controller.close()
+        with pytest.raises(TraceError):
+            await controller.close()
 
 
 async def test_inputs_results_and_snapshots_cannot_mutate_history():
@@ -568,3 +569,75 @@ async def test_argument_object_key_order_does_not_create_a_conflict():
         assert len(calls) == 1
     finally:
         await controller.close()
+
+
+async def test_shutdown_surfaces_detached_execution_telemetry_failure():
+    class BrokenStream:
+        def write(self, value):
+            raise OSError("disk full")
+
+    entered, release = asyncio.Event(), asyncio.Event()
+
+    async def write():
+        entered.set()
+        await release.wait()
+        return {"status": "success", "receipt": "written"}
+
+    controller = Controller("s", [ToolDefinition("write", True, EMPTY, write)],
+                            TraceRecorder("s", io.StringIO(), BrokenStream()))
+    request = await resolve(controller)
+    caller = asyncio.create_task(controller.execute(Proposal(request, "a", "write", {})))
+    await asyncio.wait_for(entered.wait(), 2)
+    caller.cancel()
+    with pytest.raises(asyncio.CancelledError):
+        await caller
+    release.set()
+    with pytest.raises(TraceError):
+        await controller.close()
+    snapshot = controller.snapshot()
+    assert snapshot["trace_error"] is not None
+    assert snapshot["operations"][0]["status"] == "succeeded"
+    assert snapshot["operations"][0]["result"]["receipt"] == "written"
+
+
+async def test_close_drains_running_work_even_if_pending_cancellation_logging_fails():
+    class SwitchableStream(io.StringIO):
+        broken = False
+
+        def write(self, value):
+            if self.broken:
+                raise OSError("disk full")
+            return super().write(value)
+
+    entered, release = asyncio.Event(), asyncio.Event()
+    calls = []
+
+    async def write(name):
+        calls.append(name)
+        entered.set()
+        await release.wait()
+        return {"name": name}
+
+    diagnostics = SwitchableStream()
+    controller = Controller("s", [ToolDefinition("write", True, NAMED, write)],
+                            TraceRecorder("s", diagnostics, io.StringIO()))
+    request = await resolve(controller)
+    tasks = [asyncio.create_task(controller.execute(Proposal(request, name, "write", {"name": name})))
+             for name in ("first", "second", "third")]
+    await asyncio.wait_for(entered.wait(), 2)
+    await wait_for_operations(controller, 3)
+    diagnostics.broken = True
+    closing = asyncio.create_task(controller.close())
+    try:
+        await asyncio.sleep(0)
+        assert not closing.done()
+        release.set()
+        with pytest.raises(TraceError):
+            await asyncio.wait_for(asyncio.shield(closing), 2)
+        assert calls == ["first"]
+        assert [op["status"] for op in controller.snapshot()["operations"]] == [
+            "succeeded", "cancelled_before_dispatch", "cancelled_before_dispatch",
+        ]
+    finally:
+        release.set()
+        await asyncio.gather(closing, *tasks, return_exceptions=True)

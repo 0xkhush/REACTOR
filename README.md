@@ -57,10 +57,10 @@ The controller runs on one event loop. Each instance owns a session's state and 
 - `begin_input()` holds new dispatches; `resolve_input()` explicitly classifies the input as a new request, correction, or resume. This core does not interpret speech or detect semantic corrections.
 - The same `(request_id, intent_revision, action_id)` shares an execution and result. Reusing it with different arguments raises a conflict. Different action IDs allow intentional repeats. A future semantic adapter must assign these IDs correctly; arbitrary model call IDs do not provide semantic deduplication.
 - Dependent operations wait for successful, relevant parent outcomes. Schema validation does not prove semantic argument correctness.
-- Late read results are hidden from current consumers. Successful superseded writes remain visible as historical outcomes.
+- Read delivery waits while new input is unresolved; snapshots hide those read payloads. A confirmed correction promptly cancels pending work even when its predecessor is still running. Late obsolete read results are hidden from current consumers. Successful superseded writes remain visible as historical outcomes.
 - Cancelling a caller does not cancel an already-dispatched write. The controller observes its owned task and records the result. A thrown write exception becomes `outcome_unknown`, not an automatic retry.
 - No crash-safe exactly-once guarantee or general rollback. State is in memory, and a worker thread cannot be forcibly cancelled. `close()` drains owned executions; an indefinitely blocked backend can therefore block shutdown. The future adapter must define overall scenario deadlines and backend timeouts.
-- Call `controller.close()` before closing the session's tool resources. Timers use monotonic deadlines; completed timers cannot be retroactively cancelled.
+- Call `controller.close()` before closing the session's tool resources, and use `finally` to close those resources even if the controller reports a logging failure. Timers use monotonic deadlines; completed timers cannot be retroactively cancelled.
 
 ## Traces
 
@@ -72,7 +72,7 @@ Actual-call records follow FDB-v3's room-keyed shape:
 {"room":"session-id","call":{"function":"tool_name","args":{},"timestamp_start":100.0,"timestamp_end":101.0}}
 ```
 
-Every actual invocation is recorded, including failures and superseded calls. Proposals cancelled before dispatch appear only in diagnostics. Timestamps in actual-call records use wall time; diagnostic durations use a monotonic clock. Failed logging blocks further admission without changing a completed write into a failed write. These files are append-only by convention, not a tamper-proof audit store.
+With a functioning recorder, every actual invocation is recorded, including failures and superseded calls. Proposals cancelled before dispatch appear only in diagnostics. Timestamps in actual-call records use wall time; diagnostic durations use a monotonic clock. Failed logging blocks further admission without changing a completed write into a failed write. `snapshot()` exposes the evidence failure, and `close()` drains owned work before raising `TraceError`, including when the original caller was cancelled. These files are append-only by convention, not a tamper-proof audit store.
 
 ## Benchmark data and next milestone
 
