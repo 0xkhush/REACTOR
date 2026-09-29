@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.smoke_fdb import check_dataset, matching_calls, count_completed, managed_worker, require_ffmpeg, check_livekit_credentials
+from scripts.smoke_fdb import check_dataset, matching_calls, count_completed, managed_worker, require_ffmpeg, check_livekit_credentials, redact_line
 from reactor.config import AgentConfig, ConfigurationError
 
 
@@ -74,3 +74,23 @@ def test_livekit_401_is_reported_without_exposing_credentials():
         asyncio.run(check_livekit_credentials(config, factory=lambda **kwargs: client))
     assert "contains-secret-value" not in str(error.value)
     assert client.closed
+
+
+def test_worker_diagnostics_redact_api_keys_and_secrets():
+    line = "worker error using lk-secret and google-key; retry lk-secret"
+    assert redact_line(line, ("lk-secret", "google-key")) == (
+        "worker error using [redacted] and [redacted]; retry [redacted]"
+    )
+
+
+def test_worker_shutdown_does_not_wait_for_inherited_output_pipe():
+    # A worker child can inherit the log pipe after the worker itself exits.
+    script = (
+        "import subprocess, sys, time; "
+        "subprocess.Popen([sys.executable, '-c', 'import time; time.sleep(7)']); "
+        "time.sleep(20)"
+    )
+    start = time.monotonic()
+    with managed_worker([sys.executable, "-c", script], startup_seconds=0.2):
+        pass
+    assert time.monotonic() - start < 4

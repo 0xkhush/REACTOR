@@ -39,6 +39,18 @@ DESCRIPTIONS = {
 }
 
 
+def safe_transcript(text: str, secrets) -> str:
+    for secret in secrets:
+        if secret:
+            text = text.replace(secret, "[redacted]")
+    return text[:500]
+
+
+def tool_execution_summary(ev):
+    return [{"tool": call.name, "is_error": output is None or output.is_error}
+            for call, output in ev.zipped()]
+
+
 def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
     """Conservative turn-level heuristic, not an ASR or semantic slot parser."""
     if not has_request:
@@ -63,6 +75,9 @@ def create_tool_functions(bridge: TurnBridge, definitions):
             # A provider call ID is stable across retransmission, while a new call ID is
             # a distinct action even if its arguments happen to be equal.
             call_id = ctx.function_call.call_id
+            trace = getattr(getattr(bridge, "controller", None), "_trace", None)
+            if trace:
+                trace.event("model_tool_proposal", tool=_tool, call_id=call_id)
             outcome = await bridge.execute(_tool, raw_arguments, call_id)
             return json.dumps(asdict(outcome), allow_nan=False)
 
@@ -126,11 +141,32 @@ async def entrypoint(ctx: agents.JobContext):
     @session.on("user_input_transcribed")
     def on_transcript(ev):
         if ev.is_final:
+            trace = controller._trace
+            if trace:
+                trace.event("user_transcript", text=safe_transcript(ev.transcript, (
+                    config.livekit_key, config.livekit_secret, config.google_key,
+                )))
             # Model transcription can arrive after a tool proposal on realtime APIs;
             # the bridge waits for the first resolved turn rather than using guesses.
             mode = resolve_transcript_mode(ev.transcript, has_request=bridge.has_request)
             changes = {"latest_utterance": ev.transcript} if mode != "resume" else None
             spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes, event_id=ev.created_at))
+
+    @session.on("conversation_item_added")
+    def on_conversation_item(ev):
+        item = ev.item
+        if item.type == "message" and item.role == "assistant" and item.text_content:
+            controller._trace.event("agent_transcript", text=safe_transcript(
+                item.text_content, (config.livekit_key, config.livekit_secret, config.google_key),
+            ))
+
+    @session.on("function_tools_executed")
+    def on_tool_events(ev):
+        controller._trace.event("sdk_tool_events", calls=tool_execution_summary(ev))
+
+    @session.on("error")
+    def on_sdk_error(ev):
+        controller._trace.event("sdk_error", error_type=type(ev.error).__name__)
 
     async def shutdown():
         try:

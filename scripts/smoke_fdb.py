@@ -2,12 +2,14 @@
 
 import argparse
 import asyncio
+from collections import deque
 from contextlib import contextmanager, nullcontext
 import json
 import os
 import shutil
 import subprocess
 import sys
+import threading
 import time
 import uuid
 from pathlib import Path
@@ -24,6 +26,15 @@ ROOT = Path(__file__).resolve().parents[1]
 def require_ffmpeg():
     if not shutil.which("ffmpeg"):
         raise RuntimeError("ffmpeg is required to convert the FDB WAV files; install it before a live run")
+
+
+def redact_line(line: str, secrets) -> str:
+    if "Bearer " in line or "Authorization:" in line:
+        return "[redacted authorization line]"
+    for secret in secrets:
+        if secret:
+            line = line.replace(secret, "[redacted]")
+    return line
 
 
 async def check_livekit_credentials(config, *, factory=api.LiveKitAPI):
@@ -43,14 +54,25 @@ async def check_livekit_credentials(config, *, factory=api.LiveKitAPI):
 
 
 @contextmanager
-def managed_worker(command: list[str], *, startup_seconds: float = 5, cwd: Path = ROOT, env=None):
+def managed_worker(command: list[str], *, startup_seconds: float = 5, cwd: Path = ROOT,
+                   env=None, secrets=()):
     """Start the local agent, then stop and reap it even if inference fails."""
     proc = subprocess.Popen(command, cwd=cwd, env=env,
-                            stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                            stdout=subprocess.PIPE, stderr=subprocess.STDOUT,
+                            text=True, bufsize=1)
+    proc.recent_output = deque(maxlen=120)
+
+    def drain():
+        for line in proc.stdout:
+            proc.recent_output.append(redact_line(line.rstrip(), secrets))
+
+    reader = threading.Thread(target=drain, daemon=True)
+    reader.start()
     try:
         time.sleep(startup_seconds)
         if proc.poll() is not None:
-            raise RuntimeError("Local LiveKit worker exited during startup")
+            report = "\n".join(line for line in proc.recent_output if "error" in line.lower())
+            raise RuntimeError(f"Local LiveKit worker exited during startup: {report}")
         yield proc
     finally:
         if proc.poll() is None:
@@ -60,6 +82,11 @@ def managed_worker(command: list[str], *, startup_seconds: float = 5, cwd: Path 
             except subprocess.TimeoutExpired:
                 proc.kill()
                 proc.wait()
+        reader.join(timeout=2)
+        # close() can block while the reader is in readline() if a LiveKit
+        # subprocess inherited the pipe. The daemon reader owns it until EOF.
+        if not reader.is_alive():
+            proc.stdout.close()
 
 
 def check_dataset(root: Path) -> list[Path]:
@@ -122,13 +149,17 @@ def main():
     output.parent.mkdir(exist_ok=True)
     env = {**os.environ, "LIVEKIT_URL": config.livekit_url,
            "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret}
-    worker = (managed_worker([sys.executable, "-m", "reactor.voice.agent", "dev"], env=env)
+    worker = (managed_worker([sys.executable, "-m", "reactor.voice.agent", "dev", "--no-reload"], env=env,
+                             secrets=(config.livekit_key, config.livekit_secret, config.google_key))
               if args.start_worker else nullcontext())
-    with worker:
+    with worker as proc:
         subprocess.run([sys.executable, str(source / "livekit_inference.py"),
                         "-i", str(input_path), "-o", str(output), "--room", room],
                        cwd=source, env=env, check=True, timeout=90)
-    calls = matching_calls(Path("/tmp/agent_tool_calls.log"), room)
+        calls = matching_calls(Path("/tmp/agent_tool_calls.log"), room)
+        if not calls and proc is not None:
+            print("Worker diagnostics (last redacted lines):\n" +
+                  "\n".join(proc.recent_output), file=sys.stderr)
     if not calls:
         raise RuntimeError("No actual tool calls were logged for the smoke room")
     print(json.dumps({"mode": "live_smoke", "room": room, "calls": calls,

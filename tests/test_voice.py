@@ -1,4 +1,5 @@
 import asyncio
+import io
 import json
 from types import SimpleNamespace
 
@@ -6,9 +7,10 @@ from livekit.agents import llm
 
 from reactor.controller import Controller
 from reactor.state import Proposal
+from reactor.trace import TraceRecorder
 from reactor.tools.benchmark import BenchmarkTools
 from reactor.tools.timers import TimerService
-from reactor.voice.agent import create_tool_functions, resolve_transcript_mode
+from reactor.voice.agent import create_tool_functions, resolve_transcript_mode, safe_transcript, tool_execution_summary
 from reactor.voice.turns import TurnBridge
 
 
@@ -45,8 +47,70 @@ async def test_timer_tool_calls_flow_through_bridge_with_provider_call_id():
         await timers.close()
 
 
+async def test_exchange_rate_tool_uses_livekit_raw_arguments_and_controller():
+    backend = BenchmarkTools()
+    controller = Controller("finance", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        await bridge.resolve("Convert 500 USD to EUR", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "get_exchange_rate")
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="finance-call-1"))
+        args, kwargs = llm.utils.prepare_function_arguments(
+            fnc=tool,
+            json_arguments='{"amount":500,"from_currency":"USD","to_currency":"EUR"}',
+            call_ctx=context,
+        )
+        result = json.loads(await tool(*args, **kwargs))
+        assert result["status"] == "succeeded"
+        assert result["result"]["converted_amount"] == 450
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_model_proposal_is_logged_before_first_turn_resolves():
+    timers = TimerService()
+    log = io.StringIO()
+    controller = Controller("room", timers.definitions(), TraceRecorder("room", log, io.StringIO()))
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        tool = next(tool for tool in create_tool_functions(bridge, timers.definitions())
+                    if tool.info.name == "list_timers")
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="first-proposal"))
+        caller = asyncio.create_task(tool(raw_arguments={}, ctx=context))
+        await asyncio.sleep(0)
+        assert any(json.loads(line).get("event") == "model_tool_proposal"
+                   for line in log.getvalue().splitlines())
+        assert not caller.done()
+        await bridge.resolve("list timers", mode="new")
+        assert json.loads(await caller)["status"] == "succeeded"
+    finally:
+        await bridge.close()
+        await controller.close()
+        await timers.close()
+
+
 def test_transcript_mode_is_conservative_and_has_no_benchmark_answers():
     assert resolve_transcript_mode("Actually Chicago", has_request=True) == "correction"
     assert resolve_transcript_mode("thanks", has_request=True) == "resume"
     assert resolve_transcript_mode("Track order A12", has_request=True) == "new"
     assert resolve_transcript_mode("actually Chicago", has_request=False) == "new"
+
+
+def test_diagnostic_transcript_redacts_known_credentials_and_is_bounded():
+    text = "Use lk-secret and google-secret " + "x" * 700
+    safe = safe_transcript(text, ("lk-secret", "google-secret"))
+    assert "lk-secret" not in safe and "google-secret" not in safe
+    assert "[redacted]" in safe
+    assert len(safe) <= 500
+
+
+def test_tool_event_summary_records_errors_without_tool_arguments_or_output():
+    event = SimpleNamespace(
+        zipped=lambda: [(SimpleNamespace(name="get_exchange_rate", arguments='{"secret":"no"}'),
+                         SimpleNamespace(is_error=True, output="private failure"))],
+    )
+    assert tool_execution_summary(event) == [{"tool": "get_exchange_rate", "is_error": True}]
