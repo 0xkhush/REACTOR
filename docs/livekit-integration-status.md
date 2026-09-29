@@ -10,6 +10,9 @@ Branch: `feat/reactor-livekit` (not merged or pushed).
 - The turn bridge, prompts, LiveKit entry point, Google raw function-tool registration, kitchen-timer tool routing and smoke/reproduction CLIs have offline checks.
 - LiveKit Agents and its Google plugin are pinned together at `1.3.12`; installing mismatched `1.3.12` + `1.5.2` failed import and was resolved by pinning both.
 - `pytest -q` passed 105 tests. `python scripts/smoke_fdb.py` found 100 audio recordings at the pinned revision. Both checks use no hosted model.
+- A short direct Gemini Live request with the existing Google API key returned audio. This proves access but does not report billing; the account screenshot shows published free-tier prices for the model.
+- On the first FDB audio smoke attempt, `ffmpeg` was missing; Homebrew `ffmpeg` has now been installed. The next attempt failed during LiveKit room connection with `401 invalid token`, before audio reached Gemini. A read-only room-list check independently returned 401 for the same LiveKit URL/key/secret.
+- `smoke_fdb.py` now validates `ffmpeg` and the LiveKit credential set before starting the worker. Full local suite: 109 passing tests after these additions.
 
 ## Not yet verified
 
@@ -17,11 +20,10 @@ Branch: `feat/reactor-livekit` (not merged or pushed).
 - An actual FDB inference run, official-style tool telemetry extraction from a recorded session, Parakeet on Colab, and semantic judge results.
 - `scripts/reproduce.py` has not been executed on a CUDA Linux machine; its `--help` and offline components were checked only. Exact-match reports from that script are not official scores.
 
-The local `.env.local` currently has no selected `GOOGLE_LIVE_MODEL` and no confirmed free-quota flag. The CLI deliberately refuses a live connection until those are supplied. Inspect the model's plan and quotas in Google AI Studio before setting `REACTOR_FREE_QUOTA_CONFIRMED=yes`; the presence of an API key alone does not establish free inference.
+The local `.env.local` currently has no selected `GOOGLE_LIVE_MODEL` or persistent free-quota flag. A one-off, nonsecret process-environment override was used for the bounded smoke attempt. The CLI refuses live calls unless the model and explicit free-quota flag are supplied. The LiveKit credentials currently fail authentication and must be fixed before any further smoke runs.
 
 ## Next interactive test
 
-1. User confirms the exact Live API model covered by their free quota, without sharing API keys.
-2. User adds `GOOGLE_LIVE_MODEL=<model ID>` and `REACTOR_FREE_QUOTA_CONFIRMED=yes` to ignored `.env.local`.
-3. Run `.venv/bin/python -m reactor.voice.agent dev` in one terminal and `.venv/bin/python scripts/smoke_fdb.py --run` in another.
+1. User confirms the LiveKit project URL and a key/secret pair from **that same project**; replace the values locally in ignored `.env.local` and never share secrets here.
+2. Re-run `GOOGLE_LIVE_MODEL=gemini-2.5-flash-native-audio-preview-12-2025 REACTOR_FREE_QUOTA_CONFIRMED=yes .venv/bin/python scripts/smoke_fdb.py --run --start-worker` for one bounded recording. The metadata preflight must accept the LiveKit credentials before a worker starts.
 4. Diagnose the actual output, record one benchmark result, then repeat only if the free quota allows it.

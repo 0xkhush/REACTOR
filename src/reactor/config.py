@@ -1,6 +1,7 @@
 """Validated local configuration; secrets are never included in representations."""
 
 from dataclasses import dataclass, field
+import os
 from pathlib import Path
 from typing import Mapping
 
@@ -55,4 +56,9 @@ def load_config(path: Path | str = ".env.local") -> AgentConfig:
     path = Path(path)
     if not path.is_file():
         raise ConfigurationError("Create .env.local in the repository root")
-    return AgentConfig.from_values(dotenv_values(path))
+    values = dotenv_values(path)
+    # Permit nonsecret one-off run settings without rewriting the user's API keys.
+    for name in ("GOOGLE_LIVE_MODEL", "REACTOR_FREE_QUOTA_CONFIRMED", "REACTOR_MODE"):
+        if name in os.environ:
+            values[name] = os.environ[name]
+    return AgentConfig.from_values(values)

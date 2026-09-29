@@ -50,3 +50,14 @@ def test_config_loader_does_not_mutate_process_environment(tmp_path, monkeypatch
 
 def test_kitchen_mode_is_supported():
     assert AgentConfig.from_values({**VALID, "REACTOR_MODE": "kitchen"}).mode == "kitchen"
+
+
+def test_local_nonsecret_run_settings_can_override_env_file(tmp_path, monkeypatch):
+    file = tmp_path / ".env.local"
+    file.write_text("\n".join(f"{key}={value}" for key, value in VALID.items()))
+    monkeypatch.setenv("GOOGLE_LIVE_MODEL", "gemini-2.5-flash-native-audio-preview-12-2025")
+    monkeypatch.setenv("REACTOR_FREE_QUOTA_CONFIRMED", "yes")
+    config = load_config(file)
+    config.require_live_access()
+    assert config.model == "gemini-2.5-flash-native-audio-preview-12-2025"
+    assert config.google_key == "local-test-google"
