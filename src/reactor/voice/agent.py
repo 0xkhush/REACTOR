@@ -77,8 +77,15 @@ def create_tool_functions(bridge: TurnBridge, definitions):
             call_id = ctx.function_call.call_id
             trace = getattr(getattr(bridge, "controller", None), "_trace", None)
             if trace:
-                trace.event("model_tool_proposal", tool=_tool, call_id=call_id)
-            outcome = await bridge.execute(_tool, raw_arguments, call_id)
+                trace.event("model_tool_proposal", tool=_tool, call_id=call_id,
+                            argument_types={key: type(value).__name__
+                                            for key, value in raw_arguments.items()})
+            try:
+                outcome = await bridge.execute(_tool, raw_arguments, call_id)
+            except BaseException as exc:
+                if trace:
+                    trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
+                raise
             return json.dumps(asdict(outcome), allow_nan=False)
 
         # Raw tools accept the actual argument dictionary plus a LiveKit RunContext.
