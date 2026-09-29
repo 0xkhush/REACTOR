@@ -107,7 +107,7 @@ With the worker running in one terminal, stream **one** FDB recording from anoth
 
 For a self-contained local smoke run, use `--run --start-worker`; it stops the worker after one recording. The command checks `ffmpeg` and calls LiveKit's room-list metadata endpoint to validate the project URL/key/secret **before** starting any model inference. A `401` means those three LiveKit values do not form a valid credential set for one project. Generate a fresh key/secret pair in the matching LiveKit Cloud project and update the ignored `.env.local`; do not paste credentials into issue reports or chat.
 
-The smoke command refuses to run unless free quota is confirmed and a selected model ID is present. It writes the agent's audio under ignored `artifacts/`, looks for room-matched executed calls in `/tmp/agent_tool_calls.log`, and fails if none were logged. The upstream audio client has its own recording window; validate spoken results against the actual output rather than treating a logged tool call as task completion.
+The smoke command refuses to run unless free quota is confirmed and a selected model ID is present. It writes the agent's audio under ignored `artifacts/`, looks for room-matched executed calls in `/tmp/agent_tool_calls.log`, and fails if none were logged. One such bounded smoke run connected, logged a `track_order` call, and captured agent audio; this is not a benchmark pass-rate result. The upstream audio client has its own recording window; validate spoken results against the actual output rather than treating a logged tool call as task completion.
 
 In kitchen mode, use a LiveKit microphone/console session to try a corrected timer and an interruption. The existing `reactor-demo` command tests only the scripted control path.
 
