@@ -19,6 +19,10 @@ class TurnBridge:
         self._input_revision: int | None = None
         self._closed = False
 
+    @property
+    def has_request(self) -> bool:
+        return self._request is not None
+
     async def speech_started(self) -> int:
         async with self._lock:
             if self._closed:
