@@ -1,9 +1,10 @@
 import json
+import zipfile
 from pathlib import Path
 
 import pytest
 
-from scripts.package_kaggle_dataset import package_audio_dataset
+from scripts.package_kaggle_dataset import package_audio_dataset, package_audio_archive
 
 
 def test_package_contains_only_audio_and_non_answer_manifest(tmp_path):
@@ -41,3 +42,22 @@ def test_package_refuses_destination_inside_source(tmp_path):
     (source / "example" / "input.wav").write_bytes(b"RIFF")
     with pytest.raises(ValueError, match="outside"):
         package_audio_dataset(source, source / "bundle", dataset_id="zxkhush/reactor-fdb-v3-audio")
+
+
+def test_single_archive_upload_has_only_audio_and_manifest(tmp_path):
+    source = tmp_path / "source"
+    example = source / "finance_01_65e8cf8f4c7424fa062e54a3"
+    example.mkdir(parents=True)
+    (example / "input.wav").write_bytes(b"RIFF-audio")
+    (example / "metadata.json").write_text('{"expected_tool_calls":"do not upload"}')
+    output = tmp_path / "single-archive"
+
+    manifest = package_audio_archive(source, output, dataset_id="zxkhush/reactor-fdb-v3-audio")
+
+    assert len(manifest) == 1
+    assert {file.name for file in output.iterdir()} == {
+        "recordings.zip", "manifest.json", "dataset-metadata.json",
+    }
+    with zipfile.ZipFile(output / "recordings.zip") as archive:
+        assert archive.namelist() == [example.name + "/input.wav"]
+        assert archive.read(example.name + "/input.wav") == b"RIFF-audio"

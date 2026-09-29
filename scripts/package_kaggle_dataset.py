@@ -5,6 +5,7 @@ import hashlib
 import json
 import re
 import shutil
+import zipfile
 from pathlib import Path
 
 
@@ -67,13 +68,58 @@ def package_audio_dataset(source: Path, destination: Path, *, dataset_id: str) -
     return manifest
 
 
+def package_audio_archive(source: Path, destination: Path, *, dataset_id: str) -> list[dict]:
+    """Upload-ready single archive instead of one Kaggle upload per example folder."""
+    source = source.resolve()
+    destination = destination.resolve()
+    if destination == source or source in destination.parents:
+        raise ValueError("destination must be outside the source data directory")
+    if not source.is_dir():
+        raise FileNotFoundError(f"FDB audio directory not found: {source}")
+    recordings = sorted(source.glob("*/input.wav"))
+    if not recordings:
+        raise ValueError(f"No input.wav files found under {source}")
+    if destination.exists() and any(destination.iterdir()):
+        raise FileExistsError("Kaggle archive destination must be empty")
+    for audio in recordings:
+        if not FOLDER.fullmatch(audio.parent.name):
+            raise ValueError(f"Unrecognized FDB example folder: {audio.parent.name}")
+    destination.mkdir(parents=True, exist_ok=True)
+    manifest = []
+    with zipfile.ZipFile(destination / "recordings.zip", "w", compression=zipfile.ZIP_DEFLATED,
+                         compresslevel=3, allowZip64=True) as archive:
+        for audio in recordings:
+            folder = audio.parent.name
+            example_id, speaker_id = FOLDER.fullmatch(folder).groups()
+            member = f"{folder}/input.wav"
+            archive.write(audio, arcname=member)
+            manifest.append({"example_id": example_id, "speaker_id": speaker_id,
+                             "path": member, "bytes": audio.stat().st_size,
+                             "sha256": hashlib.sha256(audio.read_bytes()).hexdigest()})
+    (destination / "manifest.json").write_text(json.dumps({
+        "source": SOURCE_URL,
+        "notice": "Input audio only. Scenario metadata and expected answers are intentionally excluded.",
+        "examples": manifest,
+    }, indent=2) + "\n")
+    (destination / "dataset-metadata.json").write_text(json.dumps({
+        "title": "REACTOR FDB-v3 Audio Inputs", "id": dataset_id,
+        "subtitle": "Private audio-only evaluation inputs for REACTOR",
+        "description": ("Private non-commercial FDB-v3 audio bundle developed by National Taiwan University. "
+                        f"Source: {SOURCE_URL}. CC BY-NC 4.0; no scenario answers or API keys."),
+        "licenses": [{"name": "CC-BY-NC-4.0"}],
+    }, indent=2) + "\n")
+    return manifest
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--source", type=Path, default=Path("fdb_v3_data_released"))
     parser.add_argument("--destination", type=Path, default=Path("artifacts/kaggle-fdb-v3-audio"))
     parser.add_argument("--dataset-id", default="zxkhush/reactor-fdb-v3-audio")
+    parser.add_argument("--archive", action="store_true", help="Create one recordings.zip for faster upload")
     args = parser.parse_args()
-    manifest = package_audio_dataset(args.source, args.destination, dataset_id=args.dataset_id)
+    packager = package_audio_archive if args.archive else package_audio_dataset
+    manifest = packager(args.source, args.destination, dataset_id=args.dataset_id)
     print(json.dumps({"output": str(args.destination), "examples": len(manifest),
                       "contains_answers": False}, indent=2))
 
