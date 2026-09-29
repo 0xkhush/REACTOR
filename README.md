@@ -120,6 +120,18 @@ The smoke command refuses to run unless free quota is confirmed and a selected m
 
 Small development runs are not consistently successful: the same finance recording sometimes generates `get_exchange_rate` and sometimes produces no executed tool call. We record proposed tools, SDK execution outcomes, and credential-redacted worker diagnostics to investigate this; do not extrapolate a score from one pass.
 
+The current **three-recording smoke sample** selected the expected tool in all three cases. FDB-v3's local exact-match check passed ecommerce and finance, and rejected travel's ISO date formatting. This is a curated debug sample, not a representative benchmark estimate. A rerunnable summary is available with:
+
+```bash
+.venv/bin/python scripts/summarize_smokes.py \
+  --room reactor-smoke-8fcc845da68c --input fdb_v3_data_released/ecommerce_01_65e8cf8f4c7424fa062e54a3/input.wav \
+  --room reactor-smoke-e37a5cecdfdf --input fdb_v3_data_released/travel_01_62a885d5b6af18b3d4579e1b/input.wav \
+  --room reactor-smoke-59048ea6a8d9 --input fdb_v3_data_released/finance_01_65e8cf8f4c7424fa062e54a3/input.wav \
+  --output artifacts/smoke-summary-exact.json
+```
+
+The report labels `official_score: false`, `judge: none`, and separates tool-selection from exact argument checks.
+
 In kitchen mode, use a LiveKit microphone/console session to try a corrected timer and an interruption. The existing `reactor-demo` command tests only the scripted control path.
 
 ### NVIDIA benchmark route

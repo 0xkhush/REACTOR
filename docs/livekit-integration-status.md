@@ -26,6 +26,8 @@ Each row is a separate LiveKit room with an actual agent audio output and one pi
 | `travel_01` | `search_flights(destination="Tokyo", date="2026-07-15")` | Fail | Reference date is `July 15`; semantic equivalence is plausible but unjudged |
 | `finance_01` | `get_exchange_rate(amount=500, from_currency="USD", to_currency="EUR")` | Pass **once** | Several repeats of the same recording produced no executed tool call; reliability is unresolved |
 
+Rerunnable, generated evidence lives at ignored `artifacts/smoke-summary-exact.json` (not checked in). It reports: 3 recordings; tool selection 3/3; exact argument comparison 2/3; strict tool result 2/3. This is a hand-selected smoke sample, not a statistically representative score, not scored by the pinned semantic judge, and not comparable to the contest's official normalized benchmark result.
+
 On a failed finance run, the trace showed a model proposal for `get_exchange_rate` followed by an SDK tool error before controller dispatch. Other failed runs showed no proposal at all. A direct offline invocation of the tool and SDK argument parser succeeded. A specific root cause for the intermittent live error has not been established; do not claim this is fixed. Tool-proposal and SDK-error diagnostics now record types without writing credentials or raw model arguments.
 
 ## Verified offline
