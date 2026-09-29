@@ -105,9 +105,20 @@ With the worker running in one terminal, stream **one** FDB recording from anoth
 .venv/bin/python scripts/smoke_fdb.py --run
 ```
 
+Score the recorded tool calls without using a paid judge, supplying the `room` from the smoke output and the `input.wav` path:
+
+```bash
+.venv/bin/python scripts/evaluate_smoke.py --room ROOM_FROM_SMOKE \
+  --input fdb_v3_data_released/EXAMPLE_FOLDER/input.wav
+```
+
+This uses FDB-v3's exact-match tool/argument evaluator only. It cannot determine spoken-response quality and can reject equivalent date formats: `2026-07-15` versus `July 15`, for example. It also reads ground truth only in the separate evaluator process, not in the agent.
+
 For a self-contained local smoke run, use `--run --start-worker`; it stops the worker after one recording. The command checks `ffmpeg` and calls LiveKit's room-list metadata endpoint to validate the project URL/key/secret **before** starting any model inference. A `401` means those three LiveKit values do not form a valid credential set for one project. Generate a fresh key/secret pair in the matching LiveKit Cloud project and update the ignored `.env.local`; do not paste credentials into issue reports or chat.
 
 The smoke command refuses to run unless free quota is confirmed and a selected model ID is present. It writes the agent's audio under ignored `artifacts/`, looks for room-matched executed calls in `/tmp/agent_tool_calls.log`, and fails if none were logged. One such bounded smoke run connected, logged a `track_order` call, and captured agent audio; this is not a benchmark pass-rate result. The upstream audio client has its own recording window; validate spoken results against the actual output rather than treating a logged tool call as task completion.
+
+Small development runs are not consistently successful: the same finance recording sometimes generates `get_exchange_rate` and sometimes produces no executed tool call. We record proposed tools, SDK execution outcomes, and credential-redacted worker diagnostics to investigate this; do not extrapolate a score from one pass.
 
 In kitchen mode, use a LiveKit microphone/console session to try a corrected timer and an interruption. The existing `reactor-demo` command tests only the scripted control path.
 

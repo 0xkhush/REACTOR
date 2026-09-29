@@ -16,6 +16,18 @@ REACTOR_FREE_QUOTA_CONFIRMED=yes \
 
 The local account's Free-tier pricing was checked by the user and a bounded direct Gemini Live API request returned audio. The test result does not independently report how Google billed the request; the user should confirm ₹0 in AI Studio Usage before a full run.
 
+### Three-domain development sample
+
+Each row is a separate LiveKit room with an actual agent audio output and one pinned FDB-v3 exact-match check; no LLM judge or full-benchmark denominator was used.
+
+| Recording | Observed tool calls | Local exact-match tool result | Interpretation |
+|---|---|---|---|
+| `ecommerce_01` | `track_order(order_id="ABC123")` | Pass | Correct tool and argument in this run |
+| `travel_01` | `search_flights(destination="Tokyo", date="2026-07-15")` | Fail | Reference date is `July 15`; semantic equivalence is plausible but unjudged |
+| `finance_01` | `get_exchange_rate(amount=500, from_currency="USD", to_currency="EUR")` | Pass **once** | Several repeats of the same recording produced no executed tool call; reliability is unresolved |
+
+On a failed finance run, the trace showed a model proposal for `get_exchange_rate` followed by an SDK tool error before controller dispatch. Other failed runs showed no proposal at all. A direct offline invocation of the tool and SDK argument parser succeeded. A specific root cause for the intermittent live error has not been established; do not claim this is fixed. Tool-proposal and SDK-error diagnostics now record types without writing credentials or raw model arguments.
+
 ## Verified offline
 
 - The local `.env.local` has LiveKit and Google credentials; the file is ignored by Git and the values were not printed or committed.
@@ -23,7 +35,7 @@ The local account's Free-tier pricing was checked by the user and a bounded dire
 - Twelve upstream mock tool contracts use per-room registries and the existing session controller; blocking mock latency runs outside the conversation event loop.
 - The turn bridge, prompts, LiveKit entry point, Google raw function-tool registration, kitchen-timer tool routing and smoke/reproduction CLIs have offline checks.
 - LiveKit Agents and its Google plugin are pinned together at `1.3.12`; installing mismatched `1.3.12` + `1.5.2` failed import and was resolved by pinning both.
-- `pytest -q` passed 109 tests after smoke preflight hardening. `python scripts/smoke_fdb.py` found 100 audio recordings at the pinned revision. These two checks use no hosted model.
+- `pytest -q` passed 120 tests after smoke preflight and diagnostics. `python scripts/smoke_fdb.py` found 100 audio recordings at the pinned revision. These two checks use no hosted model.
 - A short direct Gemini Live request with the existing Google API key returned audio. This proves access but does not report billing; the account screenshot shows published free-tier prices for the model.
 - On the first FDB audio smoke attempt, `ffmpeg` was missing; Homebrew `ffmpeg` has now been installed. The next attempt failed during LiveKit room connection with `401 invalid token`, before audio reached Gemini. A read-only room-list check independently returned 401 for the old LiveKit URL/key/secret. Updated credentials resolved that blocker.
 - `smoke_fdb.py` now validates `ffmpeg` and the LiveKit credential set before starting the worker. Full local suite: 109 passing tests after these additions.
@@ -38,7 +50,7 @@ The local `.env.local` currently has no selected `GOOGLE_LIVE_MODEL` or persiste
 
 ## Next interactive test
 
-1. Confirm AI Studio Usage remained at ₹0 after the bounded Live test; only then budget further hosted calls.
-2. Evaluate the single smoke example with the pinned local exact-match evaluator or add a more varied small sample; use no benchmark metadata in the agent runtime.
-3. Verify the full NVIDIA/Parakeet path or a labelled Mac/Colab split before reporting full benchmark numbers.
+1. Confirm AI Studio Usage remains at ₹0 after the additional bounded runs before increasing sample size.
+2. Reproduce a failed finance case with current diagnostic instrumentation, capture the exception type and argument types, and fix its root cause with a targeted test.
+3. Verify the full NVIDIA/Parakeet path or a labelled Mac/Colab split before reporting full benchmark numbers. Spoken-response quality and first-speech latency remain unmeasured by the current exact-match checker.
 4. Diagnose the actual output, record one benchmark result, then repeat only if the free quota allows it.

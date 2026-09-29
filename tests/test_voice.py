@@ -3,6 +3,7 @@ import io
 import json
 from types import SimpleNamespace
 
+import pytest
 from livekit.agents import llm
 
 from reactor.controller import Controller
@@ -82,8 +83,10 @@ async def test_model_proposal_is_logged_before_first_turn_resolves():
         context = SimpleNamespace(function_call=SimpleNamespace(call_id="first-proposal"))
         caller = asyncio.create_task(tool(raw_arguments={}, ctx=context))
         await asyncio.sleep(0)
-        assert any(json.loads(line).get("event") == "model_tool_proposal"
-                   for line in log.getvalue().splitlines())
+        proposals = [json.loads(line) for line in log.getvalue().splitlines()
+                     if json.loads(line).get("event") == "model_tool_proposal"]
+        assert len(proposals) == 1
+        assert proposals[0]["argument_types"] == {}
         assert not caller.done()
         await bridge.resolve("list timers", mode="new")
         assert json.loads(await caller)["status"] == "succeeded"
@@ -91,6 +94,26 @@ async def test_model_proposal_is_logged_before_first_turn_resolves():
         await bridge.close()
         await controller.close()
         await timers.close()
+
+
+async def test_tool_bridge_failure_records_only_exception_type():
+    log = io.StringIO()
+
+    class BrokenBridge:
+        controller = SimpleNamespace(_trace=TraceRecorder("room", log, io.StringIO()))
+
+        async def execute(self, *args):
+            raise ValueError("provider-secret-value")
+
+    tool = next(tool for tool in create_tool_functions(BrokenBridge(), TimerService().definitions())
+                if tool.info.name == "list_timers")
+    ctx = SimpleNamespace(function_call=SimpleNamespace(call_id="tool-call-1"))
+    with pytest.raises(ValueError):
+        await tool(raw_arguments={}, ctx=ctx)
+    lines = [json.loads(line) for line in log.getvalue().splitlines()]
+    assert lines[-1]["event"] == "tool_bridge_error"
+    assert lines[-1]["error_type"] == "ValueError"
+    assert "provider-secret-value" not in log.getvalue()
 
 
 def test_transcript_mode_is_conservative_and_has_no_benchmark_answers():
