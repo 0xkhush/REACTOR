@@ -18,6 +18,8 @@ class TurnBridge:
         self._request: RequestToken | None = None
         self._input_revision: int | None = None
         self._closed = False
+        self._last_transcript: str | None = None
+        self._last_event_id = None
 
     @property
     def has_request(self) -> bool:
@@ -31,18 +33,23 @@ class TurnBridge:
                 self._input_revision = await self.controller.begin_input()
             return self._input_revision
 
-    async def resolve(self, transcript: str, *, mode: str, changes=None) -> RequestToken:
+    async def resolve(self, transcript: str, *, mode: str, changes=None,
+                      event_id=None) -> RequestToken:
         async with self._lock:
             if self._closed:
                 raise RuntimeError("turn bridge closed")
             if self._input_revision is None:
                 if self._request is not None:
-                    # Some realtime providers send the final transcript twice.
-                    return self._request
+                    if (event_id is not None and event_id == self._last_event_id
+                            or event_id is None and transcript == self._last_transcript):
+                        # Retransmission of the same final event is not a new user turn.
+                        return self._request
                 self._input_revision = await self.controller.begin_input()
             revision = self._input_revision
             token = await self.controller.resolve_input(revision, mode=mode, changes=changes)
             self._request = token
+            self._last_transcript = transcript
+            self._last_event_id = event_id
             self._input_revision = None
             self._ready.set()
             return token

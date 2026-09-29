@@ -130,7 +130,7 @@ async def entrypoint(ctx: agents.JobContext):
             # the bridge waits for the first resolved turn rather than using guesses.
             mode = resolve_transcript_mode(ev.transcript, has_request=bridge.has_request)
             changes = {"latest_utterance": ev.transcript} if mode != "resume" else None
-            spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes))
+            spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes, event_id=ev.created_at))
 
     async def shutdown():
         try:

@@ -98,6 +98,21 @@ async def test_empty_first_transcript_creates_request_and_duplicate_final_event_
         await controller.close()
 
 
+async def test_new_final_transcript_without_speech_state_event_starts_a_new_request():
+    bridge, controller, calls = await make_bridge()
+    try:
+        first = await bridge.resolve("track order A", mode="new")
+        second = await bridge.resolve("track order B", mode="new")
+        assert second.request_id == first.request_id + 1
+        old = await bridge.execute("write", {"value": "A"}, "old", request=first)
+        new = await bridge.execute("write", {"value": "B"}, "new")
+        assert old.status == "cancelled_before_dispatch"
+        assert new.status == "succeeded"
+        assert calls == ["B"]
+    finally:
+        await controller.close()
+
+
 async def test_bridge_close_wakes_tool_waiting_for_unavailable_first_transcript():
     bridge, controller, _ = await make_bridge()
     try:
