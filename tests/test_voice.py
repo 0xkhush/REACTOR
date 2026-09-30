@@ -4,6 +4,7 @@ import json
 from types import SimpleNamespace
 
 import pytest
+from jsonschema import ValidationError
 from livekit.agents import llm
 
 from reactor.controller import Controller
@@ -152,6 +153,48 @@ def test_departure_date_alias_normalizes_to_fdb_flight_schema():
     assert normalize_tool_args("search_flights", {
         "destination": "Tokyo", "departure_date": "2026-07-15",
     }) == {"destination": "Tokyo", "date": "2026-07-15"}
+
+
+@pytest.mark.parametrize(("tool", "provided", "expected"), [
+    ("calculate_commute", {"departure_address": "101 Main Street", "destination_address": "downtown"},
+     {"origin_address": "101 Main Street", "destination_address": "downtown"}),
+    ("update_identity_doc", {"document_type": "passport", "document_number": "P123"},
+     {"doc_type": "passport", "doc_number": "P123"}),
+    ("modify_autopay", {"bill_type": "mortgage", "new_source_account": "savings"},
+     {"bill_type": "mortgage", "source_account": "savings"}),
+    ("get_exchange_rate", {"amount": 100, "source_currency": "USD", "target_currency": "EUR"},
+     {"amount": 100, "from_currency": "USD", "to_currency": "EUR"}),
+    ("update_search_filter", {"filter_type": "pets_allowed", "value": "true"},
+     {"filter_name": "pets_allowed", "value": "true"}),
+])
+def test_observed_provider_aliases_are_normalized_without_changing_values(tool, provided, expected):
+    assert normalize_tool_args(tool, provided) == expected
+    assert normalize_tool_args(tool, expected) == expected
+
+
+async def test_observed_aliases_reach_real_commute_backend_and_incomplete_calls_stay_rejected():
+    backend = BenchmarkTools()
+    controller = Controller("commute-alias", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Drive from 101 Main Street to downtown", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "calculate_commute")
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="commute-1"))
+        outcome = json.loads(await tool(raw_arguments={
+            "departure_address": "101 Main Street", "destination_address": "downtown",
+        }, ctx=context))
+        assert outcome["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {
+            "origin_address": "101 Main Street", "destination_address": "downtown",
+        }
+        with pytest.raises(ValidationError):
+            await tool(raw_arguments={"destination_address": "downtown"},
+                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="commute-2")))
+        assert len(controller.snapshot()["operations"]) == 1
+    finally:
+        await bridge.close()
+        await controller.close()
 
 
 async def test_model_proposal_is_logged_before_first_turn_resolves():

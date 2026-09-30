@@ -56,10 +56,23 @@ def tool_execution_summary(ev):
 
 def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str, object]:
     args = dict(raw_arguments)
-    if tool in {"search_products", "search_apartments"} and "budget" in args and "max_price" not in args:
-        args["max_price"] = args.pop("budget")
-    if tool == "search_flights" and "departure_date" in args and "date" not in args:
-        args["date"] = args.pop("departure_date")
+    aliases = {
+        "search_products": (("budget", "max_price"),),
+        "search_apartments": (("budget", "max_price"),),
+        "search_flights": (("departure_date", "date"),),
+        "calculate_commute": (("departure_address", "origin_address"),),
+        "update_identity_doc": (("document_type", "doc_type"), ("document_number", "doc_number")),
+        "modify_autopay": (("new_source_account", "source_account"),
+                           ("billing_source_account", "source_account")),
+        "get_exchange_rate": (("source_currency", "from_currency"),
+                              ("target_currency", "to_currency"),
+                              ("currency_from", "from_currency"),
+                              ("currency_to", "to_currency")),
+        "update_search_filter": (("filter_type", "filter_name"),),
+    }
+    for source, target in aliases.get(tool, ()):
+        if source in args and target not in args:
+            args[target] = args.pop(source)
     return args
 
 
