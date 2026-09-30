@@ -20,15 +20,15 @@ Full-Duplex-Bench v3: 100 recordings from 12 speakers across 79 scenarios and 12
 
 ## Slide 5: Measured evidence
 
-Local smoke evidence before the overnight run: expected tool selected for all three hand-picked recordings; exact arguments passed for two. One travel ISO date differs from the reference's natural-language date and is penalized by exact comparison; repeated finance audio was unreliable. Replace this slide with an actual full-run report only after the GPU job completes. Never report 2/3 as the benchmark score.
+Mac capture batch: 100 audio attempts; 37 with tool calls; 63 without; 0 capture failures. Pinned FDB-v3 exact tool/argument evaluation without the LLM judge: 25/100 expected tool selections and 12/100 strict exact passes. These are local diagnostics, not official normalized scores. Kaggle ASR timing/transcription output is pending.
 
 ## Slide 6: Extension demonstration
 
-Hands-free kitchen timers: the timer backend and correction-aware controller work in offline tests. Live voice attempts have not yet completed the create-and-cancel workflow, so this slide must be updated with a real recording before claiming an end-to-end extension. The unresolved behavior is documented in the repo.
+Hands-free kitchen timer extension: a live same-room smoke created one named 420-second timer after a spoken correction, then listed and cancelled it by returned ID. Actual-call logs show `create_timer`, `list_timers`, and `cancel_timer`. This smoke uses synthesized speech and a kitchen-only final-transcript router, not a spontaneous human interruption.
 
 ## Slide 7: Reproduction and limitations
 
-Python 3.12, LiveKit Agents 1.3.12, Gemini 2.5 Native Audio, original FDB-v3 mock tools, pinned upstream. `scripts/setup_fdb.py` and `scripts/reproduce.py` document setup. A full NVIDIA ASR + semantic judge path is not yet verified unless the overnight report proves it. Provider quotas and already-dispatched external writes limit cancellation guarantees.
+Python 3.12, LiveKit Agents 1.3.12, Gemini 2.5 Native Audio, original FDB-v3 mock tools, pinned upstream. Kaggle T4 ASR evaluation is pending; exact-match results have no semantic judge. Provider quotas and already-dispatched writes limit cancellation guarantees.
 
 ## Slide 8: Next steps
 

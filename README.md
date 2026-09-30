@@ -2,7 +2,7 @@
 
 Correction-aware execution for interruptible voice agents.
 
-**Current milestone: tested controller, benchmark mock-tool adapter, and a LiveKit/Gemini entry point.** The local demo supplies interpreted requests programmatically. Live speech and Full-Duplex-Bench results have not yet been verified against a hosted model.
+**Code checkpoint:** LiveKit/Gemini agent, versioned controller, 12 FDB-v3 tool adapters, kitchen extension, and Kaggle ASR/evaluation scripts are implemented. Live kitchen confirmations and the full captured-data evaluation were checked. Historical strict exact pass is **12/100**; the final reviewed candidate has not had a new full capture. See [code verification](docs/FINAL_CODE_CHECKPOINT.md) and [measured results](docs/results/README.md).
 
 ## Run locally
 
@@ -10,12 +10,14 @@ Requires Python 3.10–3.12; verified on Python 3.12 on an M1 Mac. No API keys o
 
 ```bash
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.lock -e .
+.venv/bin/python -m pip install -r requirements-dev.lock -e '.[voice]'
+mkdir -p vendor
+.venv/bin/python scripts/setup_fdb.py
 .venv/bin/python -m pytest -q
 .venv/bin/reactor-demo
 ```
 
-For an unpinned development install, use `.venv/bin/python -m pip install -e '.[dev]'`. On Windows, use the corresponding `.venv\Scripts\python.exe` commands.
+For a development install use `.venv/bin/python -m pip install -e '.[dev,voice]'`. The core demo itself needs no API credentials. Full integration tests require the fetched, pinned upstream source. On Windows, use `.venv\Scripts\python.exe`; kitchen local speech needs macOS `say` or Linux `espeak-ng`.
 
 The demo prints JSON showing:
 
@@ -55,7 +57,7 @@ The controller runs on one event loop. Each instance owns a session's state and 
 
 - Corrections preserve unaffected slots and reject obsolete proposals at dispatch.
 - `begin_input()` holds new dispatches; `resolve_input()` explicitly classifies the input as a new request, correction, or resume. This core does not interpret speech or detect semantic corrections.
-- The same `(request_id, intent_revision, action_id)` shares an execution and result. Reusing it with different arguments raises a conflict. Different action IDs allow intentional repeats. A future semantic adapter must assign these IDs correctly; arbitrary model call IDs do not provide semantic deduplication.
+- The same `(request_id, intent_revision, action_id)` shares an execution and result. Reusing it with different arguments raises a conflict. The turn bridge binds provider IDs and known speech generations to their original request, coalesces same-request retries, and accepts explicit logical IDs for intentional identical actions. Repeat recognition remains limited; arbitrary semantic repeats need clarification or explicit IDs.
 - Dependent operations wait for successful, relevant parent outcomes. Schema validation does not prove semantic argument correctness.
 - Read delivery waits while new input is unresolved; snapshots hide those read payloads. A confirmed correction promptly cancels pending work even when its predecessor is still running. Late obsolete read results are hidden from current consumers. Successful superseded writes remain visible as historical outcomes.
 - Cancelling a caller does not cancel an already-dispatched write. The controller observes its owned task and records the result. A thrown write exception becomes `outcome_unknown`, not an automatic retry.
@@ -79,7 +81,8 @@ With a functioning recorder, every actual invocation is recorded, including fail
 The downloaded 100 recordings remain at `fdb_v3_data_released/`, which is Git-ignored. The agent core and LiveKit worker do not read dataset metadata or expected answers. The FDB-v3 checkout is also ignored and fetched at the pinned revision with:
 
 ```bash
-python scripts/setup_fdb.py
+mkdir -p vendor
+.venv/bin/python scripts/setup_fdb.py
 .venv/bin/python scripts/smoke_fdb.py
 ```
 
@@ -87,7 +90,7 @@ The second command checks that the source and audio files are present. It does n
 
 ### Before a live voice call
 
-1. Check your Google AI Studio account's **specific Gemini Live model** for free-tier availability and quota. We have not confirmed which model is free for your account. An API key alone does not establish that a call costs ₹0.
+1. Tested model: `gemini-2.5-flash-native-audio-preview-12-2025`. The user confirmed Free-tier access and ₹0 usage during testing. Other evaluators must check their own quota; the code never selects a paid fallback.
 2. Copy `.env.example` to your ignored `.env.local`. Fill the LiveKit URL, key, secret, Google API key and `GOOGLE_LIVE_MODEL` with the confirmed model ID. Set `REACTOR_MODE=benchmark` or `kitchen`.
 3. Only after confirming free access and no paid overage, set `REACTOR_FREE_QUOTA_CONFIRMED=yes` locally. The entry point refuses to connect without this flag. No code here chooses a paid fallback provider.
 4. Install the pinned agent and matching Google plugin, then start the worker:
@@ -118,7 +121,7 @@ For a self-contained local smoke run, use `--run --start-worker`; it stops the w
 
 The smoke command refuses to run unless free quota is confirmed and a selected model ID is present. It writes the agent's audio under ignored `artifacts/`, looks for room-matched executed calls in `/tmp/agent_tool_calls.log`, and fails if none were logged. One such bounded smoke run connected, logged a `track_order` call, and captured agent audio; this is not a benchmark pass-rate result. The upstream audio client has its own recording window; validate spoken results against the actual output rather than treating a logged tool call as task completion.
 
-Small development runs are not consistently successful: the same finance recording sometimes generates `get_exchange_rate` and sometimes produces no executed tool call. We record proposed tools, SDK execution outcomes, and credential-redacted worker diagnostics to investigate this; do not extrapolate a score from one pass.
+The resumable Mac capture processed all 100 recordings: 37 had executed tool calls, 63 had none, and zero failed at the capture/transport stage. The pinned exact tool evaluator reports 25/100 expected tool selections and 12/100 strict passes. This is local diagnostic evidence without an LLM judge, not an official normalized score. Repeated finance runs varied.
 
 The current **three-recording smoke sample** selected the expected tool in all three cases. FDB-v3's local exact-match check passed ecommerce and finance, and rejected travel's ISO date formatting. This is a curated debug sample, not a representative benchmark estimate. A rerunnable summary is available with:
 
@@ -132,29 +135,35 @@ The current **three-recording smoke sample** selected the expected tool in all t
 
 The report labels `official_score: false`, `judge: none`, and separates tool-selection from exact argument checks.
 
-In kitchen mode, use a LiveKit microphone/console session to try a corrected timer and an interruption. The existing `reactor-demo` command tests only the scripted control path.
-
-On a Mac, `.venv/bin/python scripts/kitchen_smoke.py` generates a spoken two-turn kitchen scenario and records the agent's reply. The current live voice extension has **not** completed this scenario: the model either omitted a required timer name or refused to call timer tools. Do not use the offline timer tests as evidence of a working voice extension.
+In kitchen mode, `.venv/bin/python scripts/kitchen_smoke.py` records a real same-room voice workflow. The latest smoke created a named pasta timer at 420 seconds after a spoken ten-to-seven-minute correction, then listed and cancelled it by returned ID. Confirmations use free local speech after controller success; unverified native model audio is suppressed in kitchen mode. Negated, compound and unsupported commands are not dispatched. The smoke uses synthesized user speech, not spontaneous human interruption.
 
 ### NVIDIA benchmark route
 
-On a machine with supported CUDA, Python 3.10–3.12, ffmpeg, NeMo ASR and access to a **confirmed-free** Live model, install the upstream requirements and run:
+The private Kaggle T4 completed Parakeet transcription and upstream exact-match evaluation. Reports and per-recording evidence are archived in [docs/results](docs/results/README.md). This ASR-only job uses no provider API key. Setup and download instructions are in [Kaggle evaluation](docs/submission/KAGGLE_SETUP.md).
+
+On a single machine with supported CUDA, Python 3.10–3.12, ffmpeg, NeMo ASR and access to a **confirmed-free** Live model, the combined runner is available:
 
 ```bash
-.venv/bin/python scripts/reproduce.py
+bash scripts/reproduce.sh --check  # install/config/data preflight, no hosted calls
+bash scripts/reproduce.sh          # Linux NVIDIA CUDA: full inference + ASR + exact evaluation
+# Organizer-supplied judge key, if available:
+bash scripts/reproduce.sh --use-llm
 ```
 
-The script starts the LiveKit worker, runs all available recordings through the pinned upstream pipeline, refuses an incomplete result set, and generates **exact-match development reports** under ignored `artifacts/`. This command has **not** been validated on the Colab T4 or a clean Linux machine yet. The upstream runner uses Parakeet and CUDA; your Mac cannot run this path unchanged. A Colab notebook and a cross-platform artifact transfer still need testing.
+Supply `.env.local` and the released audio before running. Python 3.10–3.12, git and ffmpeg are prerequisites. The installer pins the matching LiveKit versions and NeMo 2.5.3, starts the worker, runs the pinned upstream pipeline, and checks coverage. The combined command has only been preflight-tested on this Mac; the actual GPU evaluation used the split Mac/Kaggle workflow. `--use-llm` is explicit and is never used in the ₹0 local default.
+
+### Docker (configuration supplied; build not verified here)
+
+```bash
+docker build -t reactor .
+docker run --rm --mount type=bind,source="$(pwd)/.env.local",target=/app/.env.local,readonly reactor
+```
+
+The image includes ffmpeg and local `espeak-ng` for voice/timer mode, not CUDA ASR. Do not put `.env.local` in the image. Benchmark data is supplied externally. An NVIDIA runtime is required separately for the ASR route.
 
 The official semantic judge uses a separate OpenAI API. We do not run it under a ₹0 budget and do not present exact-match reports as official scores. The organizers' model-key arrangement and final evaluation machine remain external dependencies.
 
-Follow-on integration work:
-
-- Verify free Gemini Live access and complete a real voice+tool smoke run. SDK turn event timing and interrupt handling require observation with audio; tests alone do not prove them.
-- Capture benchmark audio/calls on the Mac and validate Parakeet transcription on Colab's T4. The observed Colab Python 3.13 runtime has not been validated against NeMo; target a compatible Python environment. Verify upstream telemetry reader compatibility against real recordings.
-- Validate the standard NVIDIA route and any Mac/Colab split workflow on a clean environment.
-- Obtain semantic-judge access or clearly label local exact-match results as distinct from official evaluation.
-- Record a real voice demo and prepare the submission assets. No live benchmark results are claimed at this stage.
+Remaining submission work: team/college/contact fields, final video hosting link, signed official AI disclosure, and final GitHub publication/release tag. Media export is deferred until the user is satisfied with this code checkpoint. The low historical score and incomplete final-candidate validation must remain disclosed.
 
 ## Design and implementation notes
 
@@ -163,5 +172,6 @@ Follow-on integration work:
 - [Private Kaggle GPU evaluation and download steps](docs/submission/KAGGLE_SETUP.md)
 - [Eight-slide deck source](docs/submission/SLIDES.md) and [editable draft deck](docs/submission/REACTOR_Submission.pptx)
 - [Four-minute demo script](docs/submission/DEMO_SCRIPT.md)
+- [AI usage notes](docs/submission/AI_USAGE_NOTES.md) and [final code checkpoint](docs/FINAL_CODE_CHECKPOINT.md)
 
 AI assistance was used for planning, implementation, and tests of this milestone. Keep that fact in the team's final AI usage disclosure.

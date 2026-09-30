@@ -23,7 +23,23 @@ Once enabled, the agent will push a new version of the overnight script with Kag
 - `tool_accuracy_exact.json`, `strict_pass_exact.json` — local exact-match evaluation **without** the paid semantic judge.
 - Per-example WAV and result JSON files; the batch may produce large Kaggle outputs.
 
-The script continues on Kaggle after the browser/chat closes. A Kaggle `COMPLETE` status alone does not mean a valid benchmark run: read `reactor-run-manifest.json` and require `full_coverage: true` before calling it a full run. Resource quota, rate limits and service faults can still interrupt it. For example:
+The script continues on Kaggle after the browser/chat closes. A Kaggle `COMPLETE` status alone does not mean a valid benchmark run: inspect its saved manifest. Resource quota, rate limits and service faults can still interrupt it. The inference notebook still requires four Secrets; it did not run the submitted capture batch.
+
+## Actual evaluation path: Mac capture + secret-free Kaggle ASR
+
+The actual completed evaluation used `scripts/batch_infer.py` on the Mac and `remote_eval/asr_eval/run_asr_eval.py` on Kaggle's T4. Input recordings and generated results were private datasets. The ASR-only job needs **no** API Secrets and no hosted model calls. Its reports, transcripts and call records are archived in `docs/results/FDB_v3_exact_reports.zip`.
+
+The captured batch had 100 attempts: 37 with tools and 63 without, no final transport failure. The strict local exact report is **12/100**, with judge disabled. Capture spanned pre-release configurations; it is not a clean full run of the final reviewed candidate. Audio-timeline latency equivalence is unverified. See `docs/results/README.md` for these limits.
+
+Download only the published files; temporary clones/audio are removed before publishing output to reduce Kaggle output pagination:
+
+```bash
+.venv/bin/kaggle kernels output zxkhush/reactor-fdb-v3-asr-evaluation \
+  --file-pattern '(run_manifest|strict_pass_exact|tool_accuracy_exact|captured_results)\.(json|jsonl)$' \
+  --page-size 200 -p artifacts/kaggle-corrected-reports
+```
+
+For the independent, Secrets-based overnight runner, the corresponding commands are:
 
 ```bash
 .venv/bin/kaggle kernels status zxkhush/reactor-overnight-fdb-v3-evaluation

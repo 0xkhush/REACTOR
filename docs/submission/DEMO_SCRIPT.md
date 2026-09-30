@@ -12,19 +12,19 @@ Show the README architecture and the project revision used for the video. Identi
 
 Run `python scripts/smoke_fdb.py --run` against a real released recording. Show the captured audio and actual tool call with room ID. Use a correction example only after it has passed live testing; do not narrate a correction that the trace does not show.
 
-The three recorded development examples as of 29 September 2026: `ecommerce_01` passed the local exact-match tool check, `travel_01` selected the expected tool but failed strict date formatting, and `finance_01` passed on one run but was intermittent on repeats. These are **not** official benchmark results and should not be presented as a full score.
+Mac capture batch: 100 audio attempts, 37 with calls, 63 without, 0 capture failures. Local exact tool/argument evaluation: 25/100 expected tool selections and 12/100 strict passes. This is not an official score; the semantic judge was not used. Mention the date-format mismatch and variable finance tool calls.
 
 ## 1:55–3:15: Kitchen extension
 
-In a live kitchen-mode room, say "Set a timer for ten minutes—actually seven." Show a single timer with `duration_seconds=420`. Then say "Cancel the pasta timer." Show `cancel_timer` reporting `cancelled` and verify with `list_timers`. Record this live before claiming an end-to-end extension. The offline `reactor-demo` proves only controller behavior.
+The live smoke uses synthesized speech in one kitchen-mode room: "Please create a timer called pasta for 10 minutes. Actually, make it seven minutes." Show `create_timer` once with `duration_seconds=420`, then "Please cancel the timer called pasta." Show `list_timers`, `cancel_timer`, and the confirmed response. State that a kitchen-only final-transcript router dispatches clear timer commands; this is not a spontaneous human interruption test.
 
 ## 3:15–4:10: Evidence and limitations
 
-Show the exact run manifest, full-suite tests, and any Kaggle report that has actually completed. Describe the evaluator mode precisely: local exact matching without the paid semantic judge. State the number of completed recordings as the denominator, including timeouts and missing results. Call out the remaining live failure classes if they persist.
+Show the full run manifest, exact-match report, and full-suite tests. Describe the evaluator mode precisely: local exact matching without the semantic judge. State attempted, completed, no-tool and failed counts. Explain the 12/100 strict pass result candidly.
 
 ## 4:10–4:40: Reproduction
 
-Point to `README.md`, the pinned FDB-v3 commit, the private dataset setup instructions, and the one-command reproduction path. Explain that credentials are supplied by the evaluator and not included in the repository.
+Point to `README.md`, the pinned FDB-v3 commit, the private Kaggle dataset and download instructions. Explain that credentials are configured locally or through Kaggle Secrets, never committed.
 
 ## Final recording checklist
 
