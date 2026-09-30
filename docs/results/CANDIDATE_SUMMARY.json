@@ -1,0 +1,19 @@
+{
+  "mode": "local_FDB_v3_exact_tool_calls_no_asr_no_judge",
+  "official_score": false,
+  "judge": "none",
+  "capture_code_sha": "36a798b76ba485e583075c33d96b55dc960a714f",
+  "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "recordings": 100,
+  "with_calls": 59,
+  "without_calls": 41,
+  "transport_failures": 0,
+  "expected_tool_selection_passed": 42,
+  "strict_exact_tool_and_arguments_passed": 23,
+  "strict_exact_pass_rate": 0.23,
+  "local_report_path": "artifacts/batch_36a798b/call-exact.json",
+  "local_report_sha256": "89f7b336a4cdaf3ff78d2318a230774a37c0f26a4cb183a087623b7665fbc42f",
+  "local_capture_manifest_sha256": "ed40bb1664a6101ae812672b393e403436eee87cd127f23b6efa2b1ec3452d2a",
+  "limits": "Fresh single-revision Mac capture. Local exact tool/argument scoring only; no ASR, spoken-response judge, or official normalized score. Model outputs may vary across reruns."
+}

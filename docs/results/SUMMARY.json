@@ -1,0 +1,23 @@
+{
+  "mode": "local_FDB_v3_exact_no_semantic_judge",
+  "official_score": false,
+  "denominator": 100,
+  "strict_passed": 12,
+  "strict_failed": 88,
+  "strict_pass_rate": 0.12,
+  "capture_completed_with_calls": 37,
+  "capture_without_calls": 63,
+  "capture_failed": 0,
+  "full_capture_coverage": true,
+  "judge": "none",
+  "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "asr_model": "nvidia/parakeet-tdt-0.6b-v2",
+  "capture_code_provenance": "Pre-release mixed revisions; no per-recording code SHA was captured.",
+  "latest_candidate_full_run": false,
+  "latency_status": "Diagnostic timestamps only; official audio-timeline equivalence not verified.",
+  "sha256": {
+    "run_manifest.json": "4221a4a485396fd3b75308d12452a5cb9d9f9b82cf4c6309179c1decd82506de",
+    "strict_pass_exact.json": "f35acf108583c53381fbe91e197cb41b0aac6cda53290d6bf250fa5243ea0e00",
+    "tool_accuracy_exact.json": "9508f0c4f3b175107e66778437d864a75f317ec47240d439a6b942be84fead38"
+  }
+}

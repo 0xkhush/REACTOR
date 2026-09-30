@@ -1,0 +1,18 @@
+{
+  "id": "zxkhush/reactor-fdb-v3-asr-evaluation",
+  "title": "REACTOR FDB-v3 ASR Evaluation",
+  "code_file": "run_asr_eval.py",
+  "language": "python",
+  "kernel_type": "script",
+  "is_private": "true",
+  "enable_gpu": "true",
+  "enable_internet": "true",
+  "machine_shape": "NvidiaTeslaT4",
+  "dataset_sources": [
+    "zxkhush/reactor-fdb-v3-audio",
+    "zxkhush/reactor-fdb-v3-results"
+  ],
+  "competition_sources": [],
+  "kernel_sources": [],
+  "model_sources": []
+}

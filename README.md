@@ -29,7 +29,11 @@
 
 ## Overview
 
-**REACTOR** is a voice-native agent execution engine built for the **PRISM GenAI Hackathon — Theme 5: Full-Duplex Voice Agents**. It solves the hard problem of real-time speech correction: when a user says _"Book a flight to Boston… actually, Chicago"_, REACTOR's versioned-intent controller cancels the stale Boston lookup mid-flight and dispatches the corrected Chicago request — without double-booking, without dead air, and without losing context.
+**REACTOR** is a voice-native agent execution engine built for the **PRISM GenAI Hackathon — Theme 5: Full-Duplex Voice Agents**. It adds correction-aware execution: when a user says _"Book a flight to Boston… actually, Chicago"_, the controller can reject superseded pending work after the turn bridge classifies the correction. An already-dispatched write remains recorded; cancellation cannot undo it.
+
+**Latest measured benchmark:** the native-schema candidate `ceafcee` scored **30/100 strict exact tool/argument passes** and **54/100 expected tool selections**. All 100 cases stayed in the denominator: 85 had calls, 13 had none, and 2 timed out. Fourteen pre-audio LiveKit connection failures recovered on retry. The previous `36a798b` run scored 23/100. These are local call-only diagnostics without ASR or a semantic judge; the 40% strict-pass target was not met. The final report is ignored at `artifacts/batch_ceafcee/call-exact-after-transport-retry.json`.
+
+**Integrated verification:** 234 tests passed after two kitchen parser fixes. See [code verification](docs/FINAL_CODE_CHECKPOINT.md), [earlier measured evidence](docs/results/README.md), and the [benchmark workflow](docs/BENCHMARK_HANDOFF.md). Historical checkpoint documents identify the revisions they measured.
 
 The system pairs a **LiveKit Agents** voice frontend with a **Gemini Live** realtime model, routing all tool execution through a correction-aware controller that enforces idempotency, dependency ordering, and cascade cancellation across 12 FDB-v3 mock tools spanning travel, finance, housing, and e-commerce.
 
@@ -37,7 +41,7 @@ The system pairs a **LiveKit Agents** voice frontend with a **Gemini Live** real
 
 | Capability | What It Does | How |
 |:---|:---|:---|
-| **Stay Responsive** | Spoken feedback within milliseconds, no dead air | Gemini Live realtime streaming — model speaks while tools run in background |
+| **Stay Responsive** | Realtime audio streaming; sub-second latency remains unverified | Gemini Live realtime streaming with async tool execution |
 | **Work Asynchronously** | Background tool execution without blocking conversation | `asyncio` task DAG — concurrent reads, serialized writes, blocking tools offloaded to threads |
 | **Recover Cleanly** | Discard stale intent, prevent double-execution | Versioned intent frames, identity-keyed deduplication, cascade cancellation |
 
@@ -112,6 +116,17 @@ flowchart TD
 | **No answer leakage** | Agent source (`src/`) has zero references to benchmark answers; test explicitly asserts `"benchmark_data" not in repr(tools)` |
 | **No cross-session state** | Each `Controller` instance is scoped to one LiveKit room; no persistence layer |
 
+### Execution limits
+
+- Corrections preserve unaffected slots and reject obsolete proposals at dispatch.
+- `begin_input()` holds new dispatches; `resolve_input()` explicitly classifies the input as a new request, correction, or resume. This core does not interpret speech or detect semantic corrections.
+- The same `(request_id, intent_revision, action_id)` shares an execution and result. Reusing it with different arguments raises a conflict. The turn bridge binds provider IDs and known speech generations to their original request, coalesces same-request retries, and accepts explicit logical IDs for intentional identical actions. Repeat recognition remains limited; arbitrary semantic repeats need clarification or explicit IDs.
+- Dependent operations wait for successful, relevant parent outcomes. Schema validation does not prove semantic argument correctness.
+- Read delivery waits while new input is unresolved; snapshots hide those read payloads. A confirmed correction promptly cancels pending work even when its predecessor is still running. Late obsolete read results are hidden from current consumers. Successful superseded writes remain visible as historical outcomes.
+- Cancelling a caller does not cancel an already-dispatched write. The controller observes its owned task and records the result. A thrown write exception becomes `outcome_unknown`, not an automatic retry.
+- No crash-safe exactly-once guarantee or general rollback. State is in memory, and a worker thread cannot be forcibly cancelled. `close()` drains owned executions; an indefinitely blocked backend can therefore block shutdown. The future adapter must define overall scenario deadlines and backend timeouts.
+- Call `controller.close()` before closing the session's tool resources, and use `finally` to close those resources even if the controller reports a logging failure. Timers use monotonic deadlines; completed timers cannot be retroactively cancelled.
+
 ---
 
 ## Project Structure
@@ -140,7 +155,7 @@ REACTOR/
 │   ├── evaluate_smoke.py             # FDB-v3 exact-match tool scorer (no LLM judge)
 │   ├── summarize_smokes.py           # Multi-room summary report generator
 │   └── reproduce.py                  # Full benchmark reproduction (requires CUDA Linux)
-├── tests/                            # 14 test files, 120 tests
+├── tests/                            # Core, voice and evaluation tests; 234 passing
 │   ├── test_controller.py            # 643 lines — core execution engine tests
 │   ├── test_state.py                 # Versioned intent frame tests
 │   ├── test_turns.py                 # Speech → controller bridge tests
@@ -179,9 +194,11 @@ REACTOR/
 git clone https://github.com/0xkhush/REACTOR.git
 cd REACTOR
 python3.12 -m venv .venv
-.venv/bin/python -m pip install -r requirements-dev.lock -e .
+.venv/bin/python -m pip install -r requirements-dev.lock -e '.[voice]'
+mkdir -p vendor
+.venv/bin/python scripts/setup_fdb.py
 
-# Run the full test suite (112 pass, 5 skip without FDB checkout)
+# Run the full test suite; integration tests require the pinned upstream checkout
 .venv/bin/python -m pytest -q
 
 # Run the scripted offline demo
@@ -198,7 +215,8 @@ The demo prints JSON showing:
 
 ```bash
 # Fetch the pinned FDB-v3 upstream (Git-ignored vendor/ directory)
-python scripts/setup_fdb.py
+mkdir -p vendor
+.venv/bin/python scripts/setup_fdb.py
 
 # Verify dataset and upstream source (no network, no model)
 .venv/bin/python scripts/smoke_fdb.py
@@ -207,6 +225,11 @@ python scripts/setup_fdb.py
 ### 3. Live Voice Agent (Requires Credentials)
 
 > **Important:** Confirm your Google AI Studio account's free-tier availability for the specific Gemini Live model before proceeding. An API key alone does not establish that a call costs ₹0.
+
+1. Tested model: `gemini-2.5-flash-native-audio-preview-12-2025`. The user confirmed Free-tier access and ₹0 usage during testing. Other evaluators must check their own quota; the code never selects a paid fallback.
+2. Copy `.env.example` to your ignored `.env.local`. Fill the LiveKit URL, key, secret, Google API key and `GOOGLE_LIVE_MODEL` with the confirmed model ID. Set `REACTOR_MODE=benchmark` or `kitchen`.
+3. Only after confirming free access and no paid overage, set `REACTOR_FREE_QUOTA_CONFIRMED=yes` locally. The entry point refuses to connect without this flag. No code here chooses a paid fallback provider.
+4. Install the pinned agent and matching Google plugin, then start the worker:
 
 ```bash
 # 1. Configure credentials
@@ -273,7 +296,7 @@ All 12 tools are pinned at upstream FDB-v3 revision `3e799c45` and bridged throu
 | Recording | Observed Tool Call | Exact-Match | Notes |
 |:---|:---|:---|:---|
 | `ecommerce_01` | `track_order(order_id="ABC123")` | ✓ Pass | Correct tool and argument |
-| `travel_01` | `search_flights(destination="Tokyo", date="2026-07-15")` | ✗ Fail | ISO date vs "July 15" — semantically correct |
+| `travel_01` | `search_flights(destination="Tokyo", date="2026-07-15")` | ✗ Fail | ISO date vs "July 15" — semantic equivalence was not judged |
 | `finance_01` | `get_exchange_rate(amount=500, USD→EUR)` |  Flaky | Passes sometimes, intermittent no-call |
 
 > **Note:** These are curated debug samples, not representative benchmark scores. Reports are labeled `official_score: false` and `judge: none`.
@@ -284,6 +307,48 @@ All 12 tools are pinned at upstream FDB-v3 revision `3e799c45` and bridged throu
 # Requires: Linux, NVIDIA CUDA, ffmpeg, confirmed-free Gemini Live model
 .venv/bin/python scripts/reproduce.py
 ```
+
+### Historical full captures
+
+The earlier mixed-revision Mac capture processed all 100 recordings: 37 had executed tool calls, 63 had none, and zero failed at the capture/transport stage. The pinned exact tool evaluator reported 25/100 expected tool selections and 12/100 strict passes. A newer single-revision capture at `36a798b` recorded **59 calls, 41 no-tool recordings, zero transport failures**, with **42/100 expected tool selections and 23/100 strict exact passes**. Neither report used an LLM judge, and only the earlier audio has Kaggle ASR transcripts. These are local diagnostics, not official normalized scores.
+
+The current **three-recording smoke sample** selected the expected tool in all three cases. FDB-v3's local exact-match check passed ecommerce and finance, and rejected travel's ISO date formatting. This is a curated debug sample, not a representative benchmark estimate. A rerunnable summary is available with:
+
+```bash
+.venv/bin/python scripts/summarize_smokes.py \
+  --room reactor-smoke-8fcc845da68c --input fdb_v3_data_released/ecommerce_01_65e8cf8f4c7424fa062e54a3/input.wav \
+  --room reactor-smoke-e37a5cecdfdf --input fdb_v3_data_released/travel_01_62a885d5b6af18b3d4579e1b/input.wav \
+  --room reactor-smoke-59048ea6a8d9 --input fdb_v3_data_released/finance_01_65e8cf8f4c7424fa062e54a3/input.wav \
+  --output artifacts/smoke-summary-exact.json
+```
+
+The report labels `official_score: false`, `judge: none`, and separates tool-selection from exact argument checks.
+
+In kitchen mode, `.venv/bin/python scripts/kitchen_smoke.py` records a real same-room voice workflow. The latest smoke created a named pasta timer at 420 seconds after a spoken ten-to-seven-minute correction, then listed and cancelled it by returned ID. Confirmations use free local speech after controller success; unverified native model audio is suppressed in kitchen mode. Negated, compound and unsupported commands are not dispatched. The smoke uses synthesized user speech, not spontaneous human interruption.
+
+### NVIDIA benchmark route
+
+The private Kaggle T4 completed Parakeet transcription and upstream exact-match evaluation. Reports and per-recording evidence are archived in [docs/results](docs/results/README.md). This ASR-only job uses no provider API key. Setup and download instructions are in [Kaggle evaluation](docs/submission/KAGGLE_SETUP.md).
+
+On a single machine with supported CUDA, Python 3.10–3.12, ffmpeg, NeMo ASR and access to a **confirmed-free** Live model, the combined runner is available:
+
+```bash
+bash scripts/reproduce.sh --check  # install/config/data preflight, no hosted calls
+bash scripts/reproduce.sh          # Linux NVIDIA CUDA: full inference + ASR + exact evaluation
+# Organizer-supplied judge key, if available:
+bash scripts/reproduce.sh --use-llm
+```
+
+Supply `.env.local` and the released audio before running. Python 3.10–3.12, git and ffmpeg are prerequisites. The installer pins the matching LiveKit versions and NeMo 2.5.3, starts the worker, runs the pinned upstream pipeline, and checks coverage. The combined command has only been preflight-tested on this Mac; the actual GPU evaluation used the split Mac/Kaggle workflow. `--use-llm` is explicit and is never used in the ₹0 local default.
+
+### Docker (configuration supplied; build not verified here)
+
+```bash
+docker build -t reactor .
+docker run --rm --mount type=bind,source="$(pwd)/.env.local",target=/app/.env.local,readonly reactor
+```
+
+The image includes ffmpeg and local `espeak-ng` for voice/timer mode, not CUDA ASR. Do not put `.env.local` in the image. Benchmark data is supplied externally. An NVIDIA runtime is required separately for the ASR route.
 
 ---
 
@@ -298,11 +363,13 @@ REACTOR_MODE=kitchen  # in .env.local
 
 **Three tools:** `create_timer`, `list_timers`, `cancel_timer`
 
-**Correction handling:** _"Set a ten-minute timer… actually, seven minutes"_ → one seven-minute timer. The controller cancels the stale ten-minute proposal before dispatch and deduplicates the corrected request.
+**Correction handling:** _"Set a ten-minute timer… actually, seven minutes"_ → one seven-minute timer. The kitchen-only final-transcript parser routes clear commands through the controller and confirms its returned result using local speech. Unsupported fractional durations and informational questions do not create timers. Live smoke verification uses synthesized speech, not spontaneous human interruption.
 
 ---
 
 ## Verification & Testing
+
+The current integrated suite passed **234 tests**. The table below records the earlier 120-test core/voice milestone; later tests cover native schemas, turn continuity, kitchen parsing, and evaluation packaging.
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
@@ -391,4 +458,13 @@ AI assistance was used for planning, implementation, and tests. This is document
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
+## Design and submission notes
 
+- [Approved design](docs/superpowers/specs/2026-09-26-reactor-design.md)
+- [Offline-core implementation plan](docs/superpowers/plans/2026-09-26-reactor-core.md)
+- [Private Kaggle GPU evaluation and download steps](docs/submission/KAGGLE_SETUP.md)
+- [Eight-slide deck source](docs/submission/SLIDES.md) and [editable draft deck](docs/submission/REACTOR_Submission.pptx)
+- [Four-minute demo script](docs/submission/DEMO_SCRIPT.md)
+- [AI usage notes](docs/submission/AI_USAGE_NOTES.md) and [final code checkpoint](docs/FINAL_CODE_CHECKPOINT.md)
+
+Remaining submission fields: team/college/contact details, final video link, and signed official AI disclosure. No portal submission receipt has been recorded. Report the 30% local exact result as a diagnostic, not an official contest score.
