@@ -186,12 +186,29 @@ async def test_observed_aliases_reach_real_commute_backend_and_incomplete_calls_
         }, ctx=context))
         assert outcome["status"] == "succeeded"
         assert controller.snapshot()["operations"][0]["args"] == {
-            "origin_address": "101 Main Street", "destination_address": "downtown",
+            "origin_address": "101 Main Street", "destination_address": "downtown", "mode": "driving",
         }
         with pytest.raises(ValidationError):
             await tool(raw_arguments={"destination_address": "downtown"},
                        ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="commute-2")))
         assert len(controller.snapshot()["operations"]) == 1
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_absent_catalog_budget_is_recorded_as_declared_null_default():
+    backend = BenchmarkTools()
+    controller = Controller("catalog-default", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Find headphones", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "search_products")
+        result = json.loads(await tool(raw_arguments={"query": "headphones"},
+                                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="catalog-default-1"))))
+        assert result["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {"query": "headphones", "max_price": None}
     finally:
         await bridge.close()
         await controller.close()

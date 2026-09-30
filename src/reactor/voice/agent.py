@@ -96,7 +96,8 @@ def create_tool_functions(bridge: TurnBridge, definitions):
             "parameters": definition.schema,
         }
 
-        async def invoke(raw_arguments: dict[str, object], ctx: RunContext, *, _tool=definition.name) -> str:
+        async def invoke(raw_arguments: dict[str, object], ctx: RunContext, *,
+                         _tool=definition.name, _schema=definition.schema) -> str:
             # Provider IDs remain bound to the request where they first appeared.
             # The bridge coalesces retries and allows explicit logical action IDs.
             call_id = ctx.function_call.call_id
@@ -107,8 +108,12 @@ def create_tool_functions(bridge: TurnBridge, definitions):
                                             for key, value in raw_arguments.items()})
             try:
                 origin = getattr(getattr(ctx, "speech_handle", None), "id", None)
-                outcome = await bridge.execute(_tool, normalize_tool_args(_tool, raw_arguments), call_id,
-                                               origin_id=origin)
+                arguments = normalize_tool_args(_tool, raw_arguments)
+                for key, property_schema in _schema["properties"].items():
+                    if "default" in property_schema:
+                        arguments.setdefault(key, property_schema["default"])
+                outcome = await bridge.execute(_tool, arguments, call_id,
+                                                origin_id=origin)
             except BaseException as exc:
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
