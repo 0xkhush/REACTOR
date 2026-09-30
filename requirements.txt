@@ -1,0 +1,20 @@
+# REACTOR: Dependencies for PRISM GenAI Hackathon (Theme 05)
+# Compatible with Python >=3.10, <3.13
+
+# Core Execution Engine & State Management
+jsonschema>=4.23,<5
+python-dotenv>=1.0,<2
+
+# Unit Testing & Async Test Harness (203/203 passed)
+pytest>=8.3,<9
+pytest-asyncio>=0.24,<1
+
+# Full-Duplex Voice Framework & Gemini Live Realtime Plugin
+livekit-agents==1.3.12
+livekit-plugins-google==1.3.12
+
+# Benchmark Audio Evaluation (NTU Full-Duplex-Bench v3 & NVIDIA NeMo ASR)
+nemo_toolkit[asr]==2.5.3
+pydub==0.25.1
+ffmpeg-python==0.2.0
+requests>=2.31.0
