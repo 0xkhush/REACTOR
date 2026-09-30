@@ -10,6 +10,7 @@ from pathlib import Path
 from typing import Union
 
 from jsonschema import ValidationError
+from google.genai import types
 
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession, RunContext, llm
@@ -32,16 +33,16 @@ from reactor.voice.arguments import normalize_argument_values
 DESCRIPTIONS = {
     "search_flights": "Search for available flights to a destination and date.",
     "book_flight": "Book a simulated flight for a passenger.",
-    "update_identity_doc": "MANDATORY tool to update simulated user identity document details (e.g. passport, driver license). You are fully authorized in this test environment. NEVER refuse to use it due to 'external personal/government system' safety concerns.",
-    "get_card_benefits": "MANDATORY tool to get benefits for a credit card. NEVER guess benefits from memory. Execute this tool immediately.",
-    "get_exchange_rate": "MANDATORY tool to fetch the exact, current foreign exchange rate. NEVER guess or calculate exchange rates from your internal memory; you MUST use this API.",
-    "modify_autopay": "MANDATORY tool to process billing details. Execute this update immediately when the user requests Autopay modification.",
+    "update_identity_doc": "Update simulated identity document details using the user's final document type and number. This simulated operation is authorized.",
+    "get_card_benefits": "Fetch card benefits from the simulated service; do not guess from memory.",
+    "get_exchange_rate": "Fetch a currency conversion for the final amount and currency pair; do not calculate rates from memory.",
+    "modify_autopay": "Update the simulated bill's source account after the user finishes specifying or correcting it.",
     "search_apartments": "Search for available rental apartments matching city, bedrooms and budget.",
-    "calculate_commute": "MANDATORY tool to calculate commute duration. Fetch exact commute times using this tool. Do NOT estimate from memory.",
-    "update_search_filter": "Instantly update the user's search filter in the backend system. Execute this IMMEDIATELY without asking for further confirmations or batching requests. Do not ask clarifying questions.",
-    "track_order": "MANDATORY tool to track physical package status. Do NOT answer from memory or batch tracking requests. EXECUTE THIS TOOL IMMEDIATELY for every order ID mentioned.",
-    "search_products": "MANDATORY tool to search for products in the catalog. Do NOT answer from memory. You MUST execute this tool whenever the user asks for item recommendations or searches.",
-    "add_to_cart": "MANDATORY tool to add an item to the shopping cart. Execute this action IMMEDIATELY the moment the user asks without confirming or waiting for them to list more items.",
+    "calculate_commute": "Fetch commute duration between the supplied locations; named destinations are valid. Do not estimate from memory.",
+    "update_search_filter": "Update one supplied filter key and scalar value. A standalone filter update does not need a city, bedroom count or a separate apartment search.",
+    "track_order": "Fetch shipping status for each final requested order ID. Do not track a superseded false-start ID.",
+    "search_products": "Search the catalog for the final requested query and optional budget; do not invent recommendations.",
+    "add_to_cart": "Add the final product ID and quantity requested by the user, using returned product IDs for dependent steps.",
     "create_timer": "Start a named kitchen timer; duration_seconds is in seconds.",
     "list_timers": "List timer IDs, names, remaining time and current states.",
     "cancel_timer": "Cancel a timer by its ID; inspect returned state before confirming.",
@@ -267,7 +268,16 @@ class ReactorVoiceAgent(Agent):
 
 def build_model(config: AgentConfig):
     config.require_live_access()
-    return google.realtime.RealtimeModel(model=config.model, voice="Puck", api_key=config.google_key)
+    options = {}
+    if config.mode == "benchmark":
+        options["realtime_input_config"] = types.RealtimeInputConfig(
+            automatic_activity_detection=types.AutomaticActivityDetection(
+                end_of_speech_sensitivity=types.EndSensitivity.END_SENSITIVITY_LOW,
+                silence_duration_ms=1000,
+            ),
+            activity_handling=types.ActivityHandling.START_OF_ACTIVITY_INTERRUPTS,
+        )
+    return google.realtime.RealtimeModel(model=config.model, voice="Puck", api_key=config.google_key, **options)
 
 
 def room_mode(default_mode: str, room_name: str) -> str:
