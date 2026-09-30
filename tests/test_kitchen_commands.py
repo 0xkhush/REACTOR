@@ -52,6 +52,43 @@ def test_invalid_or_unsupported_timer_durations_are_not_dispatched(duration):
     assert parse_timer_command(f"Set a timer for {duration}") is None
 
 
+@pytest.mark.parametrize("text", [
+    "Set a timer for half an hour", "Set a timer for a quarter of an hour",
+    "Set a timer for 1/2 minutes",
+])
+async def test_fractional_duration_is_rejected_without_creating_wrong_timer(text):
+    timers = TimerService()
+    controller = Controller("fractional", timers.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        assert await dispatch_kitchen_command(bridge, text, event_id="fractional") is None
+        assert (await timers.list_timers())["timers"] == []
+        assert controller.snapshot()["operations"] == []
+    finally:
+        await bridge.close()
+        await controller.close()
+        await timers.close()
+
+
+@pytest.mark.parametrize("text", [
+    "How do I set a timer for five minutes?",
+    "Could you explain how to set a timer for five minutes?",
+    "What happens if I start a timer for five minutes?",
+])
+async def test_informational_timer_question_does_not_execute_a_command(text):
+    timers = TimerService()
+    controller = Controller("question", timers.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        assert await dispatch_kitchen_command(bridge, text, event_id="question") is None
+        assert (await timers.list_timers())["timers"] == []
+        assert controller.snapshot()["operations"] == []
+    finally:
+        await bridge.close()
+        await controller.close()
+        await timers.close()
+
+
 async def test_voice_router_creates_corrected_timer_and_cancels_by_name():
     timers = TimerService()
     controller = Controller("kitchen", timers.definitions())

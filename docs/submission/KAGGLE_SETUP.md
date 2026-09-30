@@ -29,7 +29,7 @@ The script continues on Kaggle after the browser/chat closes. A Kaggle `COMPLETE
 
 The actual completed evaluation used `scripts/batch_infer.py` on the Mac and `remote_eval/asr_eval/run_asr_eval.py` on Kaggle's T4. Input recordings and generated results were private datasets. The ASR-only job needs **no** API Secrets and no hosted model calls. Its reports, transcripts and call records are archived in `docs/results/FDB_v3_exact_reports.zip`.
 
-The captured batch had 100 attempts: 37 with tools and 63 without, no final transport failure. The strict local exact report is **12/100**, with judge disabled. Capture spanned pre-release configurations; it is not a clean full run of the final reviewed candidate. Audio-timeline latency equivalence is unverified. See `docs/results/README.md` for these limits.
+The historical captured batch had 100 attempts: 37 with tools and 63 without, no final transport failure. The strict local exact report is **12/100**, with judge disabled. Capture spanned pre-release configurations. A later single-revision Mac capture at `36a798b` also covered 100 inputs: 59 with calls, 41 without, 42 expected-tool selections and **23/100 strict exact passes**. Its audio has not undergone Kaggle ASR. Audio-timeline latency equivalence is unverified. See `docs/results/README.md` for these limits.
 
 Download only the published files; temporary clones/audio are removed before publishing output to reduce Kaggle output pagination:
 

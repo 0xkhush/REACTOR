@@ -46,10 +46,14 @@ On failed finance runs, traces showed intermittent behavior: sometimes no tool p
 
 The Mac retry batch finished processing the full 100 recordings: **37 had one or more executed tool calls, 63 produced no tool call, and 0 failed at audio/LiveKit capture**. The pinned exact tool/argument evaluator scored **25/100 expected tool selections and 12/100 strict passes**. This is a full-denominator, local exact-match diagnostic; it is **not** the organizers' normalized score or semantic-judge evaluation. `artifacts/batch-call-eval-exact.json` and `artifacts/batch_inference/batch-manifest.json` contain the local evidence and are Git-ignored.
 
+## Clean candidate capture (30 September 2026)
+
+With one worker and code `36a798b`, the Mac captured 100 recordings: 59 had calls, 41 did not, and zero failed at transport. The pinned local exact scorer found 42 expected tool selections and 23 strict tool/argument passes. No ASR or semantic judge evaluated this newer audio. `docs/results/CANDIDATE_SUMMARY.json` records the score and SHA-256 of the ignored full report. Housing prompts still caused unnecessary clarification and no-tool results; the 40% strict target was not met.
+
 ## Not yet verified
 
 - Broader LiveKit/Gemini voice coverage, transcription-event timing across pauses, actual speech interruption, and audio-based self-correction.
-- An actual FDB inference run, official-style tool telemetry extraction from a recorded session, Parakeet on Colab, and semantic judge results.
+- Parakeet on the clean candidate audio, and semantic judge results.
 - `scripts/reproduce.py` has not been executed on a CUDA Linux machine; its `--help` and offline components were checked only. Exact-match reports from that script are not official scores.
 
 ## Kitchen voice extension status (30 September)
@@ -62,6 +66,6 @@ The local `.env.local` is Git-ignored. One-off nonsecret environment overrides s
 
 ## Next interactive test
 
-1. Refresh the private Kaggle result dataset from final batch artifacts and rerun `remote_eval/asr_eval`; gather the final ASR/transcript and exact-match outputs.
-2. Do not present the 12/100 local strict pass rate as official or claim qualification from these results.
+1. If time and quota permit, refresh the private Kaggle result dataset from `artifacts/batch_36a798b` and rerun `remote_eval/asr_eval`; gather new ASR/transcript reports.
+2. Do not present either the 12/100 historical or 23/100 candidate strict exact pass rate as official or claim qualification from these results.
 3. Complete title slide details, record the video from the verified artifacts/live kitchen workflow, sign the AI disclosure, and publish the final release tag.

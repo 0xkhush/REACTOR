@@ -37,13 +37,13 @@ CONTRACTS = {
                           ("bedrooms", "max_price", "pets_allowed")),
     "calculate_commute": (False, {"origin_address": field("string"), "destination_address": field("string"),
                                   "mode": field("string", optional=True, default="driving")}, ("mode",)),
+    # mock_apis.update_search_filter accepts Any: preserve scalar values instead
+    # of copying lk_agent_tool's narrower string-only hint and losing JSON types.
     "update_search_filter": (True, {"filter_name": field("string"),
                                     "value": field(["string", "number", "integer", "boolean"])}, ()),
     "track_order": (False, {"order_id": field("string")}, ()),
     "search_products": (False, {"query": field("string"),
-                                "max_price": field(["number", "null"], optional=True),
-                                "category": field(["string", "null"], optional=True)},
-                        ("max_price", "category")),
+                                "max_price": field(["number", "null"], optional=True)}, ("max_price",)),
     "add_to_cart": (True, {"product_id": field("string"),
                             "quantity": field("integer", optional=True, default=1)}, ("quantity",)),
 }
@@ -71,7 +71,7 @@ class BenchmarkTools:
             schema = {
                 "type": "object", "properties": properties,
                 "required": [key for key in properties if key not in optional],
-                "additionalProperties": True,
+                "additionalProperties": False,
             }
             def invoke(*, _name=name, **kwargs):
                 if _name == "search_apartments":

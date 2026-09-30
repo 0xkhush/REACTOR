@@ -12,7 +12,7 @@ Show the README architecture and the project revision used for the video. Identi
 
 Run `python scripts/smoke_fdb.py --run` against a real released recording. Show the captured audio and actual tool call with room ID. Use a correction example only after it has passed live testing; do not narrate a correction that the trace does not show.
 
-Mac capture batch: 100 audio attempts, 37 with calls, 63 without, 0 capture failures. Local exact tool/argument evaluation: 25/100 expected tool selections and 12/100 strict passes. This is not an official score; the semantic judge was not used. Mention the date-format mismatch and variable finance tool calls.
+Clean Mac capture at `36a798b`: 100 audio attempts, 59 with calls, 41 without, 0 transport failures. Local exact tool/argument evaluation: 42/100 expected tool selections and 23/100 strict passes. The historical mixed-revision capture scored 12/100. These are not official scores; no semantic judge was used. Show `docs/results/CANDIDATE_SUMMARY.json` and the local call report; mention remaining housing failures.
 
 ## 1:55–3:15: Kitchen extension
 
@@ -20,7 +20,7 @@ The live smoke uses synthesized speech in one kitchen-mode room: "Please create 
 
 ## 3:15–4:10: Evidence and limitations
 
-Show the full run manifest, exact-match report, and full-suite tests. Describe the evaluator mode precisely: local exact matching without the semantic judge. State attempted, completed, no-tool and failed counts. Explain the 12/100 strict pass result candidly.
+Show the full run manifest, exact-match report, and full-suite tests. Describe the evaluator mode precisely: local exact matching without the semantic judge. State attempted, completed, no-tool and failed counts. Explain the new 23/100 strict pass result and the unmet 40% target candidly.
 
 ## 4:10–4:40: Reproduction
 

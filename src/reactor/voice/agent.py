@@ -1,11 +1,15 @@
 """LiveKit 1.3 voice entry point. Importing this module makes no network calls."""
 
 import asyncio
+import inspect
 import json
 import os
 import re
 from dataclasses import asdict, replace
 from pathlib import Path
+from typing import Union
+
+from jsonschema import ValidationError
 
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession, RunContext, llm
@@ -21,6 +25,7 @@ from reactor.voice.turns import TurnBridge
 from reactor.voice.kitchen import dispatch_kitchen_command
 from reactor.voice.speech import local_audio
 from reactor.voice.events import EventTasks
+from reactor.voice.native_types import JsonInteger, JsonNumber
 
 
 DESCRIPTIONS = {
@@ -56,29 +61,31 @@ def tool_execution_summary(ev):
 
 def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str, object]:
     args = dict(raw_arguments)
-    if tool in {"search_products", "search_apartments"} and "budget" in args and "max_price" not in args:
-        args["max_price"] = args.pop("budget")
-    if tool == "search_flights" and "departure_date" in args and "date" not in args:
-        args["date"] = args.pop("departure_date")
-    if tool == "calculate_commute":
-        if "origin" in args and "origin_address" not in args:
-            args["origin_address"] = args.pop("origin")
-        if "destination" in args and "destination_address" not in args:
-            args["destination_address"] = args.pop("destination")
-    if tool == "track_order":
-        if "tracking_number" in args and "order_id" not in args:
-            args["order_id"] = args.pop("tracking_number")
-        elif "tracking_id" in args and "order_id" not in args:
-            args["order_id"] = args.pop("tracking_id")
-    if tool == "update_search_filter" and "filter" in args and "filter_name" not in args:
-        args["filter_name"] = args.pop("filter")
-    if tool == "modify_autopay" and "account" in args and "source_account" not in args:
-        args["source_account"] = args.pop("account")
-    if tool == "update_identity_doc":
-        if "document_type" in args and "doc_type" not in args:
-            args["doc_type"] = args.pop("document_type")
-        if "document_number" in args and "doc_number" not in args:
-            args["doc_number"] = args.pop("document_number")
+    aliases = {
+        "search_products": (("budget", "max_price"),),
+        "search_apartments": (("budget", "max_price"),),
+        "search_flights": (("departure_date", "date"),),
+        "calculate_commute": (("origin", "origin_address"),
+                              ("departure_address", "origin_address"),
+                              ("destination", "destination_address"),
+                              ("arrival_address", "destination_address")),
+        "track_order": (("tracking_number", "order_id"), ("tracking_id", "order_id")),
+        "update_search_filter": (("filter", "filter_name"), ("filter_type", "filter_name")),
+        "modify_autopay": (("account", "source_account"),
+                           ("new_source_account", "source_account"),
+                           ("billing_source_account", "source_account")),
+        "update_identity_doc": (("document_type", "doc_type"), ("document_number", "doc_number")),
+        "get_exchange_rate": (("source_currency", "from_currency"),
+                              ("target_currency", "to_currency"),
+                              ("currency_from", "from_currency"),
+                              ("currency_to", "to_currency")),
+    }
+    for source, target in aliases.get(tool, ()):
+        if source in args and target not in args:
+            args[target] = args.pop(source)
+    if tool == "calculate_commute" and isinstance(args.get("mode"), str):
+        modes = {"drive": "driving", "walk": "walking"}
+        args["mode"] = modes.get(args["mode"].lower().strip(), args["mode"])
     if "max_price" in args and isinstance(args["max_price"], str):
         cleaned = re.sub(r"[^\d.]", "", args["max_price"])
         if cleaned:
@@ -95,6 +102,8 @@ def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str
         cleaned = re.sub(r"[^\d]", "", args["quantity"])
         if cleaned:
             args["quantity"] = int(cleaned)
+    if tool == "search_products":
+        args.pop("category", None)
     return args
 
 
@@ -106,6 +115,21 @@ def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
         return "resume"
     if re.search(r"\b(actually|instead|sorry|i meant|rather|no, wait)\b", transcript, re.I):
         return "correction"
+    # Realtime VAD can split a single sentence at a hesitation. Clear connective
+    # fragments keep the request token, so equivalent repeated proposals coalesce.
+    # A command inside the fragment still starts a new task.
+    text = re.sub(r"^\s*(?:(?:um|uh|er)[,.]?\s+)+", "", transcript, flags=re.I).strip()
+    continuation = re.match(
+        r"(?:during|because|so that|which|to make sure|"
+        r"i (?:just )?(?:want|wanted) to (?:make sure|be sure|be certain))\b", text, re.I,
+    )
+    new_action = re.search(
+        r"\b(?:track|search|find|book|reserve|update|modify|change|convert|calculate|"
+        r"compare|add|remove|cancel|set|create|list|check|show|get|tell|status|"
+        r"flight|order|conversion|benefits|autopay|apartment|filter|timer)\b", text, re.I,
+    )
+    if continuation and not new_action:
+        return "resume"
     return "new"
 
 
@@ -118,7 +142,8 @@ def create_tool_functions(bridge: TurnBridge, definitions):
             "parameters": definition.schema,
         }
 
-        async def invoke(raw_arguments: dict[str, object], ctx: RunContext, *, _tool=definition.name) -> str:
+        async def invoke(raw_arguments: dict[str, object], ctx: RunContext, *,
+                         _tool=definition.name, _schema=definition.schema) -> str:
             # Provider IDs remain bound to the request where they first appeared.
             # The bridge coalesces retries and allows explicit logical action IDs.
             call_id = ctx.function_call.call_id
@@ -129,11 +154,26 @@ def create_tool_functions(bridge: TurnBridge, definitions):
                                             for key, value in raw_arguments.items()})
             try:
                 origin = getattr(getattr(ctx, "speech_handle", None), "id", None)
-                outcome = await bridge.execute(_tool, normalize_tool_args(_tool, raw_arguments), call_id,
-                                               origin_id=origin)
+                arguments = normalize_tool_args(_tool, raw_arguments)
+                for key, property_schema in _schema["properties"].items():
+                    if "default" in property_schema:
+                        arguments.setdefault(key, property_schema["default"])
+                outcome = await bridge.execute(_tool, arguments, call_id,
+                                                origin_id=origin)
             except BaseException as exc:
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
+                if isinstance(exc, ValidationError):
+                    # A rejected proposal has not reached the backend. Explain the
+                    # contract using schema metadata only, never exception values.
+                    fields = {key: spec["type"] for key, spec in _schema["properties"].items()}
+                    raise agents.ToolError(
+                        f"{_tool} was not executed: invalid arguments. "
+                        f"Required fields: {', '.join(_schema.get('required', []))}. "
+                        f"Allowed fields and types: {json.dumps(fields)}. "
+                        "Repair the proposal using only values supplied by the user or prior tool results. "
+                        "Do not invent missing values or claim success."
+                    ) from None
                 raise
             payload = asdict(outcome)
             if isinstance(outcome.result, dict):
@@ -155,10 +195,52 @@ def create_tool_functions(bridge: TurnBridge, definitions):
     return tools
 
 
+def native_function_tool(raw_tool, definition):
+    """Expose the same dispatcher through LiveKit's native Gemini schema path.
+
+    SDK introspection uses this explicit signature and annotations to build its
+    typed parameters. The callable still sends actual arguments to the validated
+    controller boundary; no generated source, eval, or SDK monkeypatch is needed.
+    """
+    async def handler(**arguments):
+        ctx = arguments.pop("ctx")
+        # SDK argument models ignore extras. Revalidate the complete provider
+        # payload rather than silently executing only its recognized subset.
+        provider_arguments = getattr(ctx.function_call, "arguments", None)
+        if isinstance(provider_arguments, str):
+            arguments = json.loads(provider_arguments)
+        return await raw_tool(raw_arguments=arguments, ctx=ctx)
+
+    annotations = {"ctx": RunContext, "return": str}
+    parameters = [inspect.Parameter("ctx", inspect.Parameter.KEYWORD_ONLY, annotation=RunContext)]
+    schema = definition.schema
+    # LiveKit 1.3 discards non-Field Annotated metadata when preparing arguments.
+    # Core-schema number types retain strictness through that SDK conversion.
+    python_types = {"string": str, "number": JsonNumber,
+                    "integer": JsonInteger, "boolean": bool, "null": type(None)}
+    for name, spec in schema["properties"].items():
+        kind = spec["type"]
+        if isinstance(kind, list):
+            annotation = Union[tuple(python_types[item] for item in kind)]
+        else:
+            annotation = python_types[kind]
+        annotations[name] = annotation
+        default = inspect.Parameter.empty if name in schema.get("required", []) else spec.get("default")
+        parameters.append(inspect.Parameter(name, inspect.Parameter.KEYWORD_ONLY,
+                                            annotation=annotation, default=default))
+    handler.__name__ = definition.name
+    handler.__annotations__ = annotations
+    handler.__signature__ = inspect.Signature(parameters, return_annotation=str)
+    return llm.function_tool(name=definition.name, description=DESCRIPTIONS[definition.name])(handler)
+
+
 def model_tools_for_mode(mode: str, bridge: TurnBridge, definitions):
     # Native-audio Gemini repeatedly refused the timer tools in live tests. The
     # timer extension now routes clear final transcripts through the controller.
-    return [] if mode == "kitchen" else create_tool_functions(bridge, definitions)
+    if mode == "kitchen":
+        return []
+    raw_tools = create_tool_functions(bridge, definitions)
+    return [native_function_tool(tool, definition) for tool, definition in zip(raw_tools, definitions)]
 
 
 async def handle_kitchen_transcript(session, bridge: TurnBridge, transcript: str, event_id: str):

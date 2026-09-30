@@ -4,7 +4,10 @@ import json
 from types import SimpleNamespace
 
 import pytest
+from pydantic import ValidationError as PydanticValidationError
 from livekit.agents import llm
+from livekit.agents import ToolError
+from livekit.plugins.google.utils import create_tools_config
 
 from reactor.controller import Controller
 from reactor.state import Proposal
@@ -26,6 +29,171 @@ def test_twelve_benchmark_tools_register_with_google_schema():
     assert len(context.function_tools) == 12
     google_schema = context.parse_function_tools("google")
     assert google_schema
+
+
+def test_runtime_tools_send_native_google_parameters_with_required_fields():
+    tools = model_tools_for_mode("benchmark", object(), BenchmarkTools().definitions())
+    declarations = create_tools_config(llm.ToolContext(tools))[0].function_declarations
+    assert len(declarations) == 12
+    commute = next(item for item in declarations if item.name == "calculate_commute")
+    assert commute.parameters is not None
+    assert set(commute.parameters.required) == {"origin_address", "destination_address"}
+    assert set(commute.parameters.properties) == {"origin_address", "destination_address", "mode"}
+    catalog = next(item for item in declarations if item.name == "search_products")
+    assert catalog.parameters.properties["max_price"].nullable
+
+
+@pytest.mark.parametrize(("tool_name", "arguments"), [
+    ("get_exchange_rate", {"amount": True, "from_currency": "USD", "to_currency": "EUR"}),
+    ("add_to_cart", {"product_id": "P37", "quantity": True}),
+])
+def test_native_argument_preparation_does_not_convert_booleans_into_numbers(tool_name, arguments):
+    tool = next(tool for tool in model_tools_for_mode("benchmark", object(), BenchmarkTools().definitions())
+                if tool.info.name == tool_name)
+    with pytest.raises(PydanticValidationError):
+        llm.utils.prepare_function_arguments(fnc=tool, json_arguments=json.dumps(arguments),
+                                            call_ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="invalid")))
+
+
+async def test_native_runtime_tools_preserve_call_ids_defaults_and_real_results():
+    backend = BenchmarkTools()
+    controller = Controller("native-schema", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Drive from 41 Oak Road to City Hall", mode="new")
+        tool = next(tool for tool in model_tools_for_mode("benchmark", bridge, backend.definitions())
+                    if tool.info.name == "calculate_commute")
+        assert isinstance(tool, llm.FunctionTool)
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="native-1"))
+        args, kwargs = llm.utils.prepare_function_arguments(
+            fnc=tool, json_arguments='{"origin_address":"41 Oak Road","destination_address":"City Hall"}',
+            call_ctx=context,
+        )
+        first = json.loads(await tool(*args, **kwargs))
+        second = json.loads(await tool(*args, **kwargs))
+        assert first["status"] == "succeeded"
+        assert first["operation_id"] == second["operation_id"]
+        assert controller.snapshot()["operations"][0]["args"] == {
+            "origin_address": "41 Oak Road", "destination_address": "City Hall", "mode": "driving",
+        }
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_native_handler_revalidates_provider_extras_instead_of_sdk_filtered_subset():
+    backend = BenchmarkTools()
+    controller = Controller("native-extra", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Change my filter", mode="new")
+        tool = next(tool for tool in model_tools_for_mode("benchmark", bridge, backend.definitions())
+                    if tool.info.name == "update_search_filter")
+        payload = '{"filter_name":"max_price","value":2100,"undeclared":"secret-value"}'
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="native-extra", arguments=payload))
+        args, kwargs = llm.utils.prepare_function_arguments(fnc=tool, json_arguments=payload, call_ctx=context)
+        with pytest.raises(ToolError) as error:
+            await tool(*args, **kwargs)
+        assert "secret-value" not in str(error.value)
+        assert controller.snapshot()["operations"] == []
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_rejected_proposal_gets_safe_repair_feedback_without_executing():
+    backend = BenchmarkTools()
+    controller = Controller("repair", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Change the filter", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "update_search_filter")
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="repair-1"))
+        with pytest.raises(ToolError) as rejected:
+            await tool(raw_arguments={"private-key-value": "provider-secret-value"}, ctx=context)
+        feedback = str(rejected.value)
+        assert "filter_name" in feedback and "value" in feedback
+        assert "not executed" in feedback.lower()
+        assert "provider-secret-value" not in feedback and "private-key-value" not in feedback
+        assert controller.snapshot()["operations"] == []
+        repaired = json.loads(await tool(raw_arguments={"filter_name": "max_price", "value": "2100"},
+                                         ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="repair-2"))))
+        assert repaired["status"] == "succeeded"
+        assert len(controller.snapshot()["operations"]) == 1
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+@pytest.mark.parametrize("value", [2100, 9007199254740993, True, "central district"])
+async def test_filter_values_preserve_scalar_type_through_native_sdk_and_original_backend(value):
+    backend = BenchmarkTools()
+    controller = Controller("scalar-filter", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Update my filter", mode="new")
+        tool = next(tool for tool in model_tools_for_mode("benchmark", bridge, backend.definitions())
+                    if tool.info.name == "update_search_filter")
+        args, kwargs = llm.utils.prepare_function_arguments(
+            fnc=tool, json_arguments=json.dumps({"filter_name": "chosen_filter", "value": value}),
+            call_ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="filter-1")),
+        )
+        result = json.loads(await tool(*args, **kwargs))
+        returned = result["result"]["new_value"]
+        assert returned == value
+        assert type(returned) is type(value)
+        assert isinstance(returned, bool) == isinstance(value, bool)
+        assert isinstance(returned, str) == isinstance(value, str)
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+@pytest.mark.parametrize(("text", "expected"), [
+    ("During the morning rush hour.", "resume"),
+    ("Um, I just wanted to make sure it fits.", "resume"),
+    ("Because I need to arrive on time.", "resume"),
+    ("During lunch, also track order B17.", "new"),
+    ("During lunch, please tell me the current status of order B17.", "new"),
+    ("During lunch, I need another currency conversion.", "new"),
+    ("I want to make sure you cancel the timer.", "new"),
+    ("Actually, make it walking instead.", "correction"),
+])
+def test_clear_sentence_continuations_keep_request_identity_but_new_tasks_do_not(text, expected):
+    assert resolve_transcript_mode(text, has_request=True) == expected
+
+
+async def test_commute_continuation_and_equivalent_mode_do_not_execute_twice():
+    backend = BenchmarkTools()
+    calls = io.StringIO()
+    controller = Controller("continuation", backend.definitions(), TraceRecorder("continuation", io.StringIO(), calls))
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Drive from 41 Oak Road to City Hall", mode="new")
+        tool = next(tool for tool in model_tools_for_mode("benchmark", bridge, backend.definitions())
+                    if tool.info.name == "calculate_commute")
+
+        async def call(call_id, mode):
+            args, kwargs = llm.utils.prepare_function_arguments(
+                fnc=tool, json_arguments=json.dumps({"origin_address": "41 Oak Road",
+                                                   "destination_address": "City Hall", "mode": mode}),
+                call_ctx=SimpleNamespace(function_call=SimpleNamespace(call_id=call_id)),
+            )
+            return json.loads(await tool(*args, **kwargs))
+
+        first = await call("commute-first", "drive")
+        await bridge.speech_started()
+        text = "During the morning rush hour."
+        await bridge.resolve(text, mode=resolve_transcript_mode(text, has_request=True))
+        second = await call("commute-second", "driving")
+        assert first["operation_id"] == second["operation_id"]
+        logged = [json.loads(line) for line in calls.getvalue().splitlines()]
+        assert len(logged) == 1
+        assert logged[0]["call"]["args"]["mode"] == "driving"
+    finally:
+        await bridge.close()
+        await controller.close()
 
 
 async def test_timer_tool_calls_flow_through_bridge_with_provider_call_id():
@@ -172,6 +340,65 @@ def test_commute_and_order_and_autopay_aliases_normalize():
     }) == {"amount": 500.0, "from_currency": "USD", "to_currency": "EUR"}
 
 
+@pytest.mark.parametrize(("tool", "provided", "expected"), [
+    ("calculate_commute", {"departure_address": "101 Main Street", "destination_address": "downtown"},
+     {"origin_address": "101 Main Street", "destination_address": "downtown"}),
+    ("calculate_commute", {"origin_address": "101 Main Street", "arrival_address": "downtown"},
+     {"origin_address": "101 Main Street", "destination_address": "downtown"}),
+    ("update_identity_doc", {"document_type": "passport", "document_number": "P123"},
+     {"doc_type": "passport", "doc_number": "P123"}),
+    ("modify_autopay", {"bill_type": "mortgage", "new_source_account": "savings"},
+     {"bill_type": "mortgage", "source_account": "savings"}),
+    ("get_exchange_rate", {"amount": 100, "source_currency": "USD", "target_currency": "EUR"},
+     {"amount": 100, "from_currency": "USD", "to_currency": "EUR"}),
+    ("update_search_filter", {"filter_type": "pets_allowed", "value": "true"},
+     {"filter_name": "pets_allowed", "value": "true"}),
+])
+def test_observed_provider_aliases_are_normalized_without_changing_values(tool, provided, expected):
+    assert normalize_tool_args(tool, provided) == expected
+    assert normalize_tool_args(tool, expected) == expected
+
+
+async def test_observed_aliases_reach_real_commute_backend_and_incomplete_calls_stay_rejected():
+    backend = BenchmarkTools()
+    controller = Controller("commute-alias", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Drive from 101 Main Street to downtown", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "calculate_commute")
+        context = SimpleNamespace(function_call=SimpleNamespace(call_id="commute-1"))
+        outcome = json.loads(await tool(raw_arguments={
+            "departure_address": "101 Main Street", "destination_address": "downtown",
+        }, ctx=context))
+        assert outcome["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {
+            "origin_address": "101 Main Street", "destination_address": "downtown", "mode": "driving",
+        }
+        with pytest.raises(ToolError):
+            await tool(raw_arguments={"destination_address": "downtown"},
+                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="commute-2")))
+        assert len(controller.snapshot()["operations"]) == 1
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_absent_catalog_budget_is_recorded_as_declared_null_default():
+    backend = BenchmarkTools()
+    controller = Controller("catalog-default", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Find headphones", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "search_products")
+        result = json.loads(await tool(raw_arguments={"query": "headphones"},
+                                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="catalog-default-1"))))
+        assert result["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {"query": "headphones", "max_price": None}
+    finally:
+        await bridge.close()
+        await controller.close()
 
 async def test_model_proposal_is_logged_before_first_turn_resolves():
     timers = TimerService()

@@ -4,7 +4,7 @@ This checkpoint completes the current implementation and documents its remaining
 
 ## Verification evidence
 
-- Development environment: Python 3.12 on Apple M1, 201 pytest tests passing at the final checkpoint.
+- Development environment: Python 3.12 on Apple M1, 209 pytest tests passing after the benchmark fixes.
 - Fresh Python environment: installed `.[dev,voice]` into an empty virtual environment; full suite and `pip check` passed. This is a fresh environment on the same Mac, not a second physical machine or a fresh Linux test.
 - Reproduction CLI: direct script and module help checked; offline `--check` verifies all 100 inputs and configuration without hosted requests. `bash scripts/reproduce.sh --check` provides install/preflight; full CUDA combined reproduction is not independently validated on a clean Linux host.
 - Kaggle GPU: Parakeet sample transcription passed. The final ASR-only notebook completed and its reports/transcript records were downloaded and archived.
@@ -33,7 +33,7 @@ Room-prefix mode selection additionally prevents concurrent unnamed smoke/batch 
 - Already-dispatched writes cannot be undone by coroutine cancellation. There is no durable external transaction or crash-safe exactly-once guarantee.
 - Network faults/rate limits can interrupt live runs. The known local kitchen router supports one clear timer action per utterance, not arbitrary combined commands.
 - Docker configuration is supplied but has not been built in this environment. Linux kitchen mode needs `espeak-ng`; the CUDA ASR route needs an NVIDIA-capable runtime separately.
-- Final reviewed candidate has not had a new full benchmark capture. Historical measured strict exact pass is **12%**, with all provenance caveats in `docs/results/README.md`.
+- Candidate `36a798b` received a dedicated full 100-recording capture: **42 expected tool selections and 23 strict exact passes**. Historical mixed-revision capture scored 12. The 40% strict target was not met. The new capture has no Parakeet transcription or semantic judge; see `docs/results/README.md`.
 
 ## Remaining user submission fields
 

@@ -9,6 +9,7 @@ def test_reproduction_help_exposes_offline_preflight_and_semantic_judge_option()
     assert result.returncode == 0, result.stderr
     assert "--check" in result.stdout
     assert "--use-llm" in result.stdout
+    assert "--strict" in result.stdout
 
 
 def test_reproduction_module_invocation_supports_help():
