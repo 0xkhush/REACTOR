@@ -5,9 +5,33 @@ that "actually" changes a particular slot or prove interruption timing.
 """
 
 import asyncio
+import json
+import re
+from datetime import datetime
 
 from reactor.controller import Controller
-from reactor.state import Proposal, RequestToken
+from reactor.state import Proposal, RequestToken, copy_json
+
+
+def calendar_day(value):
+    """Parse supported user date formats without assigning a missing year."""
+    if not isinstance(value, str):
+        return None
+    text = re.sub(r"(?<=\d)(st|nd|rd|th)\b", "", value.strip(), flags=re.I)
+    for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%B %d %Y", "%b %d %Y", "%B %d, %Y"):
+        try:
+            date = datetime.strptime(text, fmt)
+            return date.month, date.day, date.year
+        except ValueError:
+            pass
+    for fmt in ("%m/%d", "%B %d", "%b %d"):
+        try:
+            # Leap year validates February 29 without implying a user-requested year.
+            date = datetime.strptime(text + " 2000", fmt + " %Y")
+            return date.month, date.day, None
+        except ValueError:
+            pass
+    return None
 
 
 class TurnBridge:
@@ -20,6 +44,8 @@ class TurnBridge:
         self._closed = False
         self._last_transcript: str | None = None
         self._last_event_id = None
+        self._semantic_actions: dict[tuple, str] = {}
+        self._flight_actions: list[dict] = []
 
     @property
     def has_request(self) -> bool:
@@ -65,7 +91,37 @@ class TurnBridge:
                 request = self._request
             if request is None:
                 await self._ready.wait()
-        return await self.controller.execute(Proposal(request, call_id, tool, args, depends_on))
+        args = copy_json(args)
+        fingerprint = json.dumps(args, sort_keys=True, allow_nan=False, separators=(",", ":"))
+        key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
+        async with self._lock:
+            if self._closed:
+                raise RuntimeError("turn bridge closed")
+            action_id = self._semantic_actions.setdefault(key, call_id)
+            day = calendar_day(args.get("date")) if tool == "search_flights" else None
+            if day is not None:
+                explicit_user_year = bool(re.search(r"\b(?:19|20)\d{2}\b", self._last_transcript or ""))
+                for previous in self._flight_actions:
+                    if (previous["request"] != request or previous["depends_on"] != tuple(depends_on)
+                            or previous["args"].get("destination") != args.get("destination")):
+                        continue
+                    old_day = previous["day"]
+                    same_day = old_day[:2] == day[:2]
+                    compatible_year = old_day[2] == day[2] or (
+                        not explicit_user_year and (old_day[2] is None or day[2] is None)
+                    )
+                    if same_day and compatible_year:
+                        # Return the first admitted request's actual arguments/result;
+                        # never mutate a reserved proposal or invent a new date.
+                        action_id = previous["action_id"]
+                        args = copy_json(previous["args"])
+                        if old_day[2] is None and day[2] is not None:
+                            previous["day"] = day
+                        break
+                else:
+                    self._flight_actions.append({"request": request, "depends_on": tuple(depends_on),
+                                                 "day": day, "args": copy_json(args), "action_id": action_id})
+        return await self.controller.execute(Proposal(request, action_id, tool, args, depends_on))
 
     async def close(self):
         async with self._lock:

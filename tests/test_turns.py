@@ -39,19 +39,71 @@ async def test_correction_updates_only_changed_slot_and_cancels_obsolete_proposa
         await controller.close()
 
 
-async def test_same_provider_call_id_is_a_retry_but_new_id_is_an_intentional_repeat():
+async def test_equivalent_proposals_in_one_request_coalesce_but_new_request_repeats():
     bridge, controller, calls = await make_bridge()
     try:
         await bridge.speech_started()
         await bridge.resolve("add two", mode="new")
         first, duplicate = await asyncio.gather(
             bridge.execute("write", {"value": "item"}, "call-1"),
-            bridge.execute("write", {"value": "item"}, "call-1"),
+            bridge.execute("write", {"value": "item"}, "call-retry-new-id"),
         )
         assert first.operation_id == duplicate.operation_id
+        await bridge.resolve("add another item", mode="new")
         await bridge.execute("write", {"value": "item"}, "call-2")
         assert calls == ["item", "item"]
     finally:
+        await controller.close()
+
+
+async def test_search_flight_format_variant_same_calendar_day_coalesces():
+    calls = []
+
+    async def search(destination, date):
+        calls.append((destination, date))
+        return {"destination": destination, "date": date}
+
+    schema = {"type": "object", "properties": {
+        "destination": {"type": "string"}, "date": {"type": "string"},
+    }, "required": ["destination", "date"], "additionalProperties": False}
+    controller = Controller("s", [ToolDefinition("search_flights", False, schema, search)])
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        await bridge.resolve("Tokyo July 15", mode="new")
+        first, repeat = await asyncio.gather(
+            bridge.execute("search_flights", {"destination": "Tokyo", "date": "07/15"}, "call-a"),
+            bridge.execute("search_flights", {"destination": "Tokyo", "date": "2026-07-15"}, "call-b"),
+        )
+        assert first.operation_id == repeat.operation_id
+        assert first.result["date"] == "07/15"
+        assert calls == [("Tokyo", "07/15")]
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_search_flights_with_distinct_explicit_years_remain_distinct_actions():
+    calls = []
+
+    async def search(destination, date):
+        calls.append(date)
+        return {"date": date}
+
+    schema = {"type": "object", "properties": {
+        "destination": {"type": "string"}, "date": {"type": "string"},
+    }, "required": ["destination", "date"], "additionalProperties": False}
+    controller = Controller("s", [ToolDefinition("search_flights", False, schema, search)])
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        await bridge.resolve("compare dates", mode="new")
+        first = await bridge.execute("search_flights", {"destination": "Tokyo", "date": "2026-07-15"}, "a")
+        second = await bridge.execute("search_flights", {"destination": "Tokyo", "date": "2027-07-15"}, "b")
+        assert first.operation_id != second.operation_id
+        assert calls == ["2026-07-15", "2027-07-15"]
+    finally:
+        await bridge.close()
         await controller.close()
 
 
