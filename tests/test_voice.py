@@ -158,6 +158,8 @@ def test_departure_date_alias_normalizes_to_fdb_flight_schema():
 @pytest.mark.parametrize(("tool", "provided", "expected"), [
     ("calculate_commute", {"departure_address": "101 Main Street", "destination_address": "downtown"},
      {"origin_address": "101 Main Street", "destination_address": "downtown"}),
+    ("calculate_commute", {"origin_address": "101 Main Street", "arrival_address": "downtown"},
+     {"origin_address": "101 Main Street", "destination_address": "downtown"}),
     ("update_identity_doc", {"document_type": "passport", "document_number": "P123"},
      {"doc_type": "passport", "doc_number": "P123"}),
     ("modify_autopay", {"bill_type": "mortgage", "new_source_account": "savings"},
