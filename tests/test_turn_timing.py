@@ -15,7 +15,7 @@ def test_benchmark_model_emits_pause_tolerant_vad_config_while_preserving_barge_
     options = build_model(config("benchmark"))
     assert "realtime_input_config" in options
     incoming = options["realtime_input_config"]
-    assert incoming.automatic_activity_detection.silence_duration_ms == 1000
+    assert incoming.automatic_activity_detection.silence_duration_ms == 2000
     assert incoming.automatic_activity_detection.end_of_speech_sensitivity == types.EndSensitivity.END_SENSITIVITY_LOW
     assert incoming.activity_handling == types.ActivityHandling.START_OF_ACTIVITY_INTERRUPTS
 
