@@ -34,7 +34,10 @@ CONTRACTS = {
                                   "max_price": field("number")}, ()),
     "calculate_commute": (False, {"origin_address": field("string"), "destination_address": field("string"),
                                   "mode": field("string", optional=True, default="driving")}, ("mode",)),
-    "update_search_filter": (True, {"filter_name": field("string"), "value": field("string")}, ()),
+    # mock_apis.update_search_filter accepts Any: preserve scalar values instead
+    # of copying lk_agent_tool's narrower string-only hint and losing JSON types.
+    "update_search_filter": (True, {"filter_name": field("string"),
+                                    "value": field(["string", "number", "boolean"])}, ()),
     "track_order": (False, {"order_id": field("string")}, ()),
     "search_products": (False, {"query": field("string"),
                                 "max_price": field(["number", "null"], optional=True)}, ("max_price",)),

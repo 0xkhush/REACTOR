@@ -1,11 +1,15 @@
 """LiveKit 1.3 voice entry point. Importing this module makes no network calls."""
 
 import asyncio
+import inspect
 import json
 import os
 import re
 from dataclasses import asdict, replace
 from pathlib import Path
+from typing import Union
+
+from jsonschema import ValidationError
 
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession, RunContext, llm
@@ -21,6 +25,7 @@ from reactor.voice.turns import TurnBridge
 from reactor.voice.kitchen import dispatch_kitchen_command
 from reactor.voice.speech import local_audio
 from reactor.voice.events import EventTasks
+from reactor.voice.native_types import JsonInteger, JsonNumber
 
 
 DESCRIPTIONS = {
@@ -74,6 +79,9 @@ def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str
     for source, target in aliases.get(tool, ()):
         if source in args and target not in args:
             args[target] = args.pop(source)
+    if tool == "calculate_commute" and isinstance(args.get("mode"), str):
+        modes = {"drive": "driving", "walk": "walking"}
+        args["mode"] = modes.get(args["mode"].lower().strip(), args["mode"])
     return args
 
 
@@ -85,6 +93,21 @@ def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
         return "resume"
     if re.search(r"\b(actually|instead|sorry|i meant|rather|no, wait)\b", transcript, re.I):
         return "correction"
+    # Realtime VAD can split a single sentence at a hesitation. Clear connective
+    # fragments keep the request token, so equivalent repeated proposals coalesce.
+    # A command inside the fragment still starts a new task.
+    text = re.sub(r"^\s*(?:(?:um|uh|er)[,.]?\s+)+", "", transcript, flags=re.I).strip()
+    continuation = re.match(
+        r"(?:during|because|so that|which|to make sure|"
+        r"i (?:just )?(?:want|wanted) to (?:make sure|be sure|be certain))\b", text, re.I,
+    )
+    new_action = re.search(
+        r"\b(?:track|search|find|book|reserve|update|modify|change|convert|calculate|"
+        r"compare|add|remove|cancel|set|create|list|check|show|get|tell|status|"
+        r"flight|order|conversion|benefits|autopay|apartment|filter|timer)\b", text, re.I,
+    )
+    if continuation and not new_action:
+        return "resume"
     return "new"
 
 
@@ -118,6 +141,17 @@ def create_tool_functions(bridge: TurnBridge, definitions):
             except BaseException as exc:
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
+                if isinstance(exc, ValidationError):
+                    # A rejected proposal has not reached the backend. Explain the
+                    # contract using schema metadata only, never exception values.
+                    fields = {key: spec["type"] for key, spec in _schema["properties"].items()}
+                    raise agents.ToolError(
+                        f"{_tool} was not executed: invalid arguments. "
+                        f"Required fields: {', '.join(_schema.get('required', []))}. "
+                        f"Allowed fields and types: {json.dumps(fields)}. "
+                        "Repair the proposal using only values supplied by the user or prior tool results. "
+                        "Do not invent missing values or claim success."
+                    ) from None
                 raise
             return json.dumps(asdict(outcome), allow_nan=False)
 
@@ -136,10 +170,52 @@ def create_tool_functions(bridge: TurnBridge, definitions):
     return tools
 
 
+def native_function_tool(raw_tool, definition):
+    """Expose the same dispatcher through LiveKit's native Gemini schema path.
+
+    SDK introspection uses this explicit signature and annotations to build its
+    typed parameters. The callable still sends actual arguments to the validated
+    controller boundary; no generated source, eval, or SDK monkeypatch is needed.
+    """
+    async def handler(**arguments):
+        ctx = arguments.pop("ctx")
+        # SDK argument models ignore extras. Revalidate the complete provider
+        # payload rather than silently executing only its recognized subset.
+        provider_arguments = getattr(ctx.function_call, "arguments", None)
+        if isinstance(provider_arguments, str):
+            arguments = json.loads(provider_arguments)
+        return await raw_tool(raw_arguments=arguments, ctx=ctx)
+
+    annotations = {"ctx": RunContext, "return": str}
+    parameters = [inspect.Parameter("ctx", inspect.Parameter.KEYWORD_ONLY, annotation=RunContext)]
+    schema = definition.schema
+    # LiveKit 1.3 discards non-Field Annotated metadata when preparing arguments.
+    # Core-schema number types retain strictness through that SDK conversion.
+    python_types = {"string": str, "number": JsonNumber,
+                    "integer": JsonInteger, "boolean": bool, "null": type(None)}
+    for name, spec in schema["properties"].items():
+        kind = spec["type"]
+        if isinstance(kind, list):
+            annotation = Union[tuple(python_types[item] for item in kind)]
+        else:
+            annotation = python_types[kind]
+        annotations[name] = annotation
+        default = inspect.Parameter.empty if name in schema.get("required", []) else spec.get("default")
+        parameters.append(inspect.Parameter(name, inspect.Parameter.KEYWORD_ONLY,
+                                            annotation=annotation, default=default))
+    handler.__name__ = definition.name
+    handler.__annotations__ = annotations
+    handler.__signature__ = inspect.Signature(parameters, return_annotation=str)
+    return llm.function_tool(name=definition.name, description=DESCRIPTIONS[definition.name])(handler)
+
+
 def model_tools_for_mode(mode: str, bridge: TurnBridge, definitions):
     # Native-audio Gemini repeatedly refused the timer tools in live tests. The
     # timer extension now routes clear final transcripts through the controller.
-    return [] if mode == "kitchen" else create_tool_functions(bridge, definitions)
+    if mode == "kitchen":
+        return []
+    raw_tools = create_tool_functions(bridge, definitions)
+    return [native_function_tool(tool, definition) for tool, definition in zip(raw_tools, definitions)]
 
 
 async def handle_kitchen_transcript(session, bridge: TurnBridge, transcript: str, event_id: str):
