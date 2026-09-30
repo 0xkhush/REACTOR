@@ -40,7 +40,8 @@
 ## Checklist for GitHub
 
 > **SAMSUNG PRISM Generative AI Hackathon — 3rd Edition (2026 – 2027)**  
-> **Theme ID:** Theme 05 – Full-Duplex Voice Agents  
+> **Theme ID:** Theme 05 – Interruptible Real-Time Agents
+
 > **Team Name:** REACTOR | **College:** Vellore Institute of Technology, Vellore  
 > **Team Members:** Atharva Mendhulkar (`atharvamendhulkar01@gmail.com`), Khushvendra Singh (`0xkhush@gmail.com`), Ritwij Tripathi (`vasutr2007@gmail.com`)  
 > **Repository:** [https://github.com/0xkhush/REACTOR](https://github.com/0xkhush/REACTOR)
@@ -49,7 +50,7 @@
 |:---|:---:|:---|
 | **Source Code** | **Complete** | Production-ready execution engine in [`src/reactor/`](src/reactor), complete 236/236 offline test suite in [`tests/`](tests), evaluation & automation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root) and formatted companion slide outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
-| **Video** | **Complete** | **Demo Video Link:** [Click to Watch Demo Video (YouTube / Google Drive)](https://youtu.be/placeholder-reactor-demo) *(update with final video link)*.<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
+| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](Team-REACTOR_VIDEO.mp4) (root repository demo recording).<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
 | **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
 | **README** | **Complete** | Detailed end-to-end documentation: problem statement, architecture diagrams, step-by-step setup, Kaggle GPU T4 evaluation instructions, FDB-v3 benchmark reproduction, and 236-test suite matrix. |
 | **APK / SDK (if any)** | **SDK Built** | **Python SDK Packages Ready:** Distributable wheel and source distribution in [`dist/`](dist):<br>- Wheel: [`dist/reactor_agent-0.1.0-py3-none-any.whl`](dist/reactor_agent-0.1.0-py3-none-any.whl)<br>- Source: [`dist/reactor_agent-0.1.0.tar.gz`](dist/reactor_agent-0.1.0.tar.gz)<br>*(Install via `pip install dist/reactor_agent-0.1.0-py3-none-any.whl`). Note: APK is N/A for Theme 05 (cloud/WebRTC voice service); mobile devices connect via standard LiveKit WebRTC client SDKs.* |
@@ -495,11 +496,11 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 
 - [**Submission Checklist**](#checklist-for-github)
 - [**AI Usage Disclosure Form**](AI_DISCLOSURE.md)
-- [**Official Slide Deck (PPTX)**](VITV_Team-REACTOR.pptx) &middot; [Slide Outline](docs/submission/SLIDES.md)
+- [**Official Slide Deck (PPTX)**](VITV_Team-REACTOR.pptx)
+- [**Official Demo Video (MP4)**](Team-REACTOR_VIDEO.mp4) 
 - [**Dependencies Manifest**](requirements.txt)
 - [**Kaggle Evaluation Notebook**](REACTOR_Kaggle_Evaluation.ipynb)
 - [**Measured 100-Recording Evaluation Evidence**](docs/results/README.md)
-- [**Live Demonstration Script**](docs/submission/DEMO_SCRIPT.md)
 - [**Final Code Checkpoint**](docs/FINAL_CODE_CHECKPOINT.md)
 
 ---
