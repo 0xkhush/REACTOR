@@ -47,6 +47,8 @@ def parse_timer_command(transcript: str) -> dict | None:
         return None
     if re.search(r"\b(?:don't|do not|not|never|maybe|perhaps|not sure|or later|minus|negative)\b", text):
         return None
+    if re.search(r"\b(?:how (?:do|can|could|should|would|to)|what happens|why|explain|tell me how)\b", text):
+        return None
     actions = re.findall(r"\b(?:set|start|create|cancel|stop|clear|list|show)\b", text)
     if len(actions) != 1 or len(NAMED.findall(text)) > 1:
         return None
@@ -62,7 +64,9 @@ def parse_timer_command(transcript: str) -> dict | None:
     for match in durations:
         preceding = text[:match.start()].rstrip()
         word = preceding.split()[-1] if preceding else ""
-        if preceding.endswith((".", "-")) or word in NUMBERS or word in {"point", "hundred", "thousand"}:
+        if (preceding.endswith((".", "-", "/")) or word in NUMBERS
+                or word in {"point", "hundred", "thousand"}
+                or re.search(r"\b(?:half|quarter|third)(?:\s+of)?$", preceding)):
             return None
     if re.search(r"\b(?:maybe|perhaps|not sure|or later)\b", text):
         return None
