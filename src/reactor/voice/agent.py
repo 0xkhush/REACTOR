@@ -51,6 +51,13 @@ def tool_execution_summary(ev):
             for call, output in ev.zipped()]
 
 
+def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str, object]:
+    args = dict(raw_arguments)
+    if tool == "search_products" and "budget" in args and "max_price" not in args:
+        args["max_price"] = args.pop("budget")
+    return args
+
+
 def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
     """Conservative turn-level heuristic, not an ASR or semantic slot parser."""
     if not has_request:
@@ -81,7 +88,7 @@ def create_tool_functions(bridge: TurnBridge, definitions):
                             argument_types={key: type(value).__name__
                                             for key, value in raw_arguments.items()})
             try:
-                outcome = await bridge.execute(_tool, raw_arguments, call_id)
+                outcome = await bridge.execute(_tool, normalize_tool_args(_tool, raw_arguments), call_id)
             except BaseException as exc:
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)

@@ -71,6 +71,28 @@ async def test_exchange_rate_tool_uses_livekit_raw_arguments_and_controller():
         await controller.close()
 
 
+async def test_search_product_budget_alias_uses_declared_max_price_argument():
+    backend = BenchmarkTools()
+    controller = Controller("catalog", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        await bridge.resolve("Find headphones for less than $100", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "search_products")
+        proposed = {"query": "wireless headphones", "budget": 100}
+        result = json.loads(await tool(raw_arguments=proposed,
+                                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="catalog-1"))))
+        assert result["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {
+            "query": "wireless headphones", "max_price": 100,
+        }
+        assert proposed["budget"] == 100
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
 async def test_model_proposal_is_logged_before_first_turn_resolves():
     timers = TimerService()
     log = io.StringIO()
