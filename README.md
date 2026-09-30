@@ -1,4 +1,4 @@
-<![CDATA[<a id="readme-top"></a>
+<a id="readme-top"></a>
 
 <!-- PROJECT LOGO -->
 <br />
@@ -391,4 +391,4 @@ AI assistance was used for planning, implementation, and tests. This is document
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
-]]>
+
