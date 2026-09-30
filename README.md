@@ -134,6 +134,8 @@ The report labels `official_score: false`, `judge: none`, and separates tool-sel
 
 In kitchen mode, use a LiveKit microphone/console session to try a corrected timer and an interruption. The existing `reactor-demo` command tests only the scripted control path.
 
+On a Mac, `.venv/bin/python scripts/kitchen_smoke.py` generates a spoken two-turn kitchen scenario and records the agent's reply. The current live voice extension has **not** completed this scenario: the model either omitted a required timer name or refused to call timer tools. Do not use the offline timer tests as evidence of a working voice extension.
+
 ### NVIDIA benchmark route
 
 On a machine with supported CUDA, Python 3.10–3.12, ffmpeg, NeMo ASR and access to a **confirmed-free** Live model, install the upstream requirements and run:

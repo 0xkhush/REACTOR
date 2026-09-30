@@ -4,7 +4,7 @@ The private audio-only dataset is [zxkhush/reactor-fdb-v3-audio](https://www.kag
 
 The private T4 [GPU ASR check](https://www.kaggle.com/code/zxkhush/reactor-gpu-asr-check) passed on Python 3.12.13, PyTorch 2.10.0+cu128 and Tesla T4: the pinned `nvidia/parakeet-tdt-0.6b-v2` model transcribed one recording. `gpu_probe_report.json` is available from that notebook's Output tab.
 
-The private [overnight FDB-v3 notebook](https://www.kaggle.com/code/zxkhush/reactor-overnight-fdb-v3-evaluation) is prepared but its first short check did **not** run inference: Kaggle Secrets access failed before any model call.
+The private [overnight FDB-v3 notebook](https://www.kaggle.com/code/zxkhush/reactor-overnight-fdb-v3-evaluation) is prepared. Versions 1 and 2 completed without inference because the four Kaggle Secrets had not been granted. Their saved `reactor-run-manifest.json` files report an error before any model call. A new notebook version must be pushed after the Secrets are enabled.
 
 ## One user action before the full run
 

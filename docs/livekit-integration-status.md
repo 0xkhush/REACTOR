@@ -48,6 +48,12 @@ On a failed finance run, the trace showed a model proposal for `get_exchange_rat
 - An actual FDB inference run, official-style tool telemetry extraction from a recorded session, Parakeet on Colab, and semantic judge results.
 - `scripts/reproduce.py` has not been executed on a CUDA Linux machine; its `--help` and offline components were checked only. Exact-match reports from that script are not official scores.
 
+## Kitchen voice extension status (30 September)
+
+The local timer backend passes automated tests, but three live synthesized-voice attempts did not complete an end-to-end timer workflow. In the first attempt, the model proposed `create_timer(duration_seconds=420)` without its required name; the controller rejected it. A second attempt missed the first utterance because the agent joined after the audio started. With a longer lead-in, the model heard both turns but replied that it could not create or cancel timers and proposed no tool calls. Stronger instructions did not resolve that behavior and were reverted. The kitchen demo is **not** verified as working by voice; do not present it as a completed extension.
+
+The private Kaggle dataset has 100 audio inputs with no scenario answers or credentials. Kaggle's T4 GPU successfully loaded `nvidia/parakeet-tdt-0.6b-v2` and transcribed a sample. The full overnight notebook currently stops at the Kaggle Secrets grant gate, so no full benchmark score exists.
+
 The local `.env.local` currently has no selected `GOOGLE_LIVE_MODEL` or persistent free-quota flag. A one-off, nonsecret process-environment override was used for the bounded smoke attempt. The CLI refuses live calls unless the model and explicit free-quota flag are supplied.
 
 ## Next interactive test

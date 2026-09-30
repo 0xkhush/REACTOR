@@ -24,7 +24,7 @@ Local smoke evidence before the overnight run: expected tool selected for all th
 
 ## Slide 6: Extension demonstration
 
-Hands-free kitchen timers: revise ten minutes to seven, create one timer, cancel by verified ID, and speak the confirmed state. Include a still/frame from a **live** voice run rather than the scripted core test.
+Hands-free kitchen timers: the timer backend and correction-aware controller work in offline tests. Live voice attempts have not yet completed the create-and-cancel workflow, so this slide must be updated with a real recording before claiming an end-to-end extension. The unresolved behavior is documented in the repo.
 
 ## Slide 7: Reproduction and limitations
 
