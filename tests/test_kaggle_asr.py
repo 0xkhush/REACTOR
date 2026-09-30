@@ -2,10 +2,14 @@ from types import SimpleNamespace
 from pathlib import Path
 
 import pytest
+import json
+import subprocess
+import sys
 
 from remote_eval.asr_eval.run_asr_eval import (
     normalize_words, speech_end, strict_coverage, result_coverage, relative_call_times,
-    prepare_workspace, locate_results_source, checkout_pinned,
+    prepare_workspace, locate_results_source, checkout_pinned, REACTOR_SHA,
+    publish_reports,
 )
 
 
@@ -87,3 +91,33 @@ def test_existing_non_git_checkout_is_rejected_without_overwrite(tmp_path):
     with pytest.raises(RuntimeError, match="not a pinned Git checkout"):
         checkout_pinned("https://example.invalid/repo.git", repo, "abcdef0")
     assert marker.read_text() == "keep"
+
+
+def test_reactor_source_revision_is_full_git_sha_for_repeatable_kaggle_clones():
+    assert len(REACTOR_SHA) == 40
+    assert all(character in "0123456789abcdef" for character in REACTOR_SHA)
+
+
+def test_publish_reports_removes_audio_and_clones_but_preserves_reports(tmp_path):
+    work, output = tmp_path / "work", tmp_path / "published"
+    (work / "reports").mkdir(parents=True)
+    (work / "repo" / ".git").mkdir(parents=True)
+    (work / "audio" / "example").mkdir(parents=True)
+    (work / "reports" / "run_manifest.json").write_text(json.dumps({"full_coverage": False}))
+    publish_reports(work, output)
+    assert not work.exists()
+    assert (output / "reports" / "run_manifest.json").is_file()
+    assert list(output.rglob("*.wav")) == []
+
+
+def test_asr_cli_diagnoses_once_without_installing_or_connecting():
+    result = subprocess.run([sys.executable, "remote_eval/asr_eval/run_asr_eval.py", "--diagnose"],
+                            capture_output=True, text=True, timeout=10)
+    assert result.returncode == 0, result.stderr
+    assert len(result.stdout.splitlines()) == 1
+    assert json.loads(result.stdout)["mode"] == "offline_diagnostic"
+
+
+def test_relative_timestamps_are_not_subtracted_twice():
+    calls = [{"timestamp_start": 15.5, "timestamp_end": 16.0}]
+    assert relative_call_times(calls, 1790735958.0) == calls

@@ -11,7 +11,7 @@ from pathlib import Path
 
 
 FDB_SHA = "3e799c45a045256f47d5f1c9cda90157e2d2ec9e"
-REACTOR_SHA = "b2622ba"
+REACTOR_SHA = "b2622ba1a52373c647a8c98e43cccba60a95f77f"
 PROVIDER = "gemini2_5"
 MODEL = "nvidia/parakeet-tdt-0.6b-v2"
 AUDIO_DATASET = Path("/kaggle/input/datasets/zxkhush/reactor-fdb-v3-audio/recordings")
@@ -23,6 +23,21 @@ FOLDER = re.compile(r"^(.+)_([0-9a-f]{24})$")
 def prepare_workspace(work: Path) -> Path:
     work.mkdir(parents=True, exist_ok=True)
     return work
+
+
+def publish_reports(work: Path, destination: Path) -> Path:
+    work, destination = work.resolve(), destination.resolve()
+    if destination == work or work in destination.parents:
+        raise ValueError("Published report directory must be outside the temporary workspace")
+    report_source = work / "reports"
+    if not report_source.is_dir():
+        raise FileNotFoundError("ASR evaluation reports are missing")
+    if destination.exists():
+        shutil.rmtree(destination)
+    destination.mkdir(parents=True)
+    shutil.copytree(report_source, destination / "reports")
+    shutil.rmtree(work)
+    return destination
 
 
 def normalize_words(hypothesis):
@@ -50,7 +65,7 @@ def relative_call_times(calls: list[dict], stream_start: float | None) -> list[d
     if stream_start is not None:
         for call in calls:
             for key in ("timestamp_start", "timestamp_end"):
-                if isinstance(call.get(key), (int, float)):
+                if isinstance(call.get(key), (int, float)) and call[key] >= stream_start - 120:
                     call[key] = round(call[key] - stream_start, 2)
     return calls
 
@@ -199,13 +214,7 @@ def transcribe_all(dataset: Path, upstream: Path, result_payloads: dict):
 
 
 def call_timestamps_relative(calls: list[dict], stream_start: float | None) -> list[dict]:
-    adjusted = json.loads(json.dumps(calls))
-    if stream_start is not None:
-        for call in adjusted:
-            for key in ("timestamp_start", "timestamp_end"):
-                if isinstance(call.get(key), (int, float)):
-                    call[key] = round(call[key] - stream_start, 2)
-    return adjusted
+    return relative_call_times(calls, stream_start)
 
 
 def parse_results_bundle(capture_dir: Path, dataset: Path) -> dict:
@@ -217,8 +226,6 @@ def parse_results_bundle(capture_dir: Path, dataset: Path) -> dict:
         if not result_path.is_file():
             continue
         payload = json.loads(result_path.read_text())
-        payload["actual_tool_calls"] = call_timestamps_relative(
-            payload.get("actual_tool_calls", []), payload.get("stream_start_time"))
         payloads[folder.name] = payload
         target = dataset / folder.name
         target.mkdir(parents=True, exist_ok=True)
@@ -253,6 +260,10 @@ def run_evaluators(upstream: Path, dataset: Path, reports: Path):
 
 
 def main():
+    if "--diagnose" in sys.argv:
+        print(json.dumps({"mode": "offline_diagnostic", "asr_model": MODEL,
+                          "benchmark_revision": FDB_SHA, "judge": "none"}))
+        return
     if "--worker" in sys.argv:
         upstream = WORK / "REACTOR" / "vendor" / "Full-Duplex-Bench" / "v3"
         dataset = WORK / "fdb_v3_data_released"
@@ -283,15 +294,15 @@ def main():
     run_evaluators(upstream, dataset, WORK / "reports")
     result_files = list(dataset.glob(f"*/result_{PROVIDER}.json"))
     status_results = [json.loads(path.read_text()) for path in result_files]
+    with (WORK / "reports" / "captured_results.jsonl").open("w") as evidence:
+        for result in status_results:
+            evidence.write(json.dumps(result, ensure_ascii=False) + "\n")
     report = {**result_coverage(len(list(AUDIO_DATASET.glob("*/input.wav"))), status_results),
               "provider": PROVIDER, "asr_model": MODEL, "benchmark_revision": FDB_SHA,
               "judge": "none", "score_mode": "exact_match_tool_only"}
     (WORK / "reports" / "run_manifest.json").write_text(json.dumps(report, indent=2) + "\n")
-    print(json.dumps(report, indent=2))
-
-
-if __name__ == "__main__":
-    main()
+    destination = publish_reports(WORK, Path("/kaggle/working/reactor-final-results"))
+    print(json.dumps({**report, "published_reports": str(destination / "reports")}, indent=2))
 
 
 if __name__ == "__main__":
