@@ -3,9 +3,6 @@
 import re
 from typing import Any
 
-from reactor.state import Proposal
-
-
 NUMBERS = {
     "a": 1, "an": 1, "one": 1, "two": 2, "three": 3, "four": 4, "five": 5,
     "six": 6, "seven": 7, "eight": 8, "nine": 9, "ten": 10,
@@ -48,6 +45,11 @@ def parse_timer_command(transcript: str) -> dict | None:
     text = transcript.strip().lower()
     if not text:
         return None
+    if re.search(r"\b(?:don't|do not|not|never|maybe|perhaps|not sure|or later|minus|negative)\b", text):
+        return None
+    actions = re.findall(r"\b(?:set|start|create|cancel|stop|clear|list|show)\b", text)
+    if len(actions) != 1 or len(NAMED.findall(text)) > 1:
+        return None
     if re.search(r"\b(?:list|show)\b.*\btimers?\b", text):
         return {"action": "list"}
     if re.search(r"\b(?:cancel|stop|clear)\b.*\btimer\b", text):
@@ -57,6 +59,11 @@ def parse_timer_command(transcript: str) -> dict | None:
     durations = list(DURATION.finditer(text))
     if not durations:
         return None
+    for match in durations:
+        preceding = text[:match.start()].rstrip()
+        word = preceding.split()[-1] if preceding else ""
+        if preceding.endswith((".", "-")) or word in NUMBERS or word in {"point", "hundred", "thousand"}:
+            return None
     if re.search(r"\b(?:maybe|perhaps|not sure|or later)\b", text):
         return None
     if len(durations) > 1 and not re.search(r"\b(?:actually|instead|sorry|make it|make that)\b", text):
@@ -85,7 +92,7 @@ async def dispatch_kitchen_command(bridge, transcript: str, *, event_id: str) ->
         outcome = await bridge.execute("create_timer", {
             "name": command["name"], "duration_seconds": command["duration_seconds"],
         }, f"kitchen:{event_id}:create", request=request)
-        if outcome.status != "succeeded" or outcome.result is None:
+        if outcome.status != "succeeded" or outcome.superseded or outcome.result is None:
             return {"handled": True, "message": "I couldn't confirm the timer was created.",
                     "timer": None, "outcome": outcome}
         return {"handled": True, "message": (
@@ -94,11 +101,17 @@ async def dispatch_kitchen_command(bridge, transcript: str, *, event_id: str) ->
 
     if command["action"] == "list":
         outcome = await bridge.execute("list_timers", {}, f"kitchen:{event_id}:list", request=request)
+        if outcome.status != "succeeded" or outcome.superseded or outcome.result is None:
+            return {"handled": True, "message": "I couldn't verify the timer list.",
+                    "timers": None, "outcome": outcome}
         timers = outcome.result["timers"] if outcome.result else []
         return {"handled": True, "message": f"There are {len(timers)} timers.",
                 "timers": timers, "outcome": outcome}
 
     listing = await bridge.execute("list_timers", {}, f"kitchen:{event_id}:list", request=request)
+    if listing.status != "succeeded" or listing.superseded or listing.result is None:
+        return {"handled": True, "message": "I couldn't verify the timer list to cancel that timer.",
+                "timer": None, "outcome": listing}
     matches = [timer for timer in (listing.result or {}).get("timers", [])
                if timer["name"].casefold() == command["name"].casefold() and timer["state"] == "running"]
     if len(matches) != 1:
@@ -108,7 +121,7 @@ async def dispatch_kitchen_command(bridge, transcript: str, *, event_id: str) ->
     outcome = await bridge.execute("cancel_timer", {"timer_id": matches[0]["timer_id"]},
                                    f"kitchen:{event_id}:cancel", request=request)
     timer = outcome.result
-    if not timer or timer["state"] != "cancelled":
+    if outcome.status != "succeeded" or outcome.superseded or not timer or timer["state"] != "cancelled":
         message = f"Timer {command['name']} was not cancelled."
     else:
         message = f"Cancelled timer {timer['name']}."

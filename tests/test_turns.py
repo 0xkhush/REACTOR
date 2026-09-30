@@ -175,3 +175,75 @@ async def test_bridge_close_wakes_tool_waiting_for_unavailable_first_transcript(
             await asyncio.wait_for(waiting, 2)
     finally:
         await controller.close()
+
+
+async def test_late_provider_call_id_stays_bound_to_original_intent():
+    bridge, controller, calls = await make_bridge()
+    try:
+        await bridge.resolve("write Boston", mode="new", event_id=1)
+        first = await bridge.execute("write", {"value": "Boston"}, "call-1")
+        await bridge.resolve("write Chicago", mode="new", event_id=2)
+        replay = await bridge.execute("write", {"value": "Boston"}, "call-1")
+        assert replay.operation_id == first.operation_id
+        assert replay.superseded
+        assert calls == ["Boston"]
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_old_final_or_duplicate_cannot_resolve_new_input():
+    bridge, controller, _ = await make_bridge()
+    try:
+        await bridge.resolve("Boston", mode="new", event_id=1)
+        current = await bridge.resolve("Chicago", mode="new", event_id=2)
+        revision = await bridge.speech_started()
+        await bridge.resolve("Chicago", mode="new", event_id=2)
+        await bridge.resolve("Boston", mode="new", event_id=1)
+        assert not controller.snapshot()["resolved"]
+        assert controller.snapshot()["input_revision"] == revision
+        assert controller.snapshot()["request_id"] == current.request_id
+        next_request = await bridge.resolve("Seattle", mode="new", event_id=3)
+        assert next_request.request_id == current.request_id + 1
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_explicit_identical_actions_in_one_request_can_be_distinguished():
+    bridge, controller, calls = await make_bridge()
+    try:
+        await bridge.resolve("perform two identical actions", mode="new")
+        first = await bridge.execute("write", {"value": "item"}, "a", action_id="first-item")
+        second = await bridge.execute("write", {"value": "item"}, "b", action_id="second-item")
+        assert first.operation_id != second.operation_id
+        assert calls == ["item", "item"]
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_spoken_intentional_twice_is_not_silently_coalesced():
+    bridge, controller, calls = await make_bridge()
+    try:
+        await bridge.resolve("Do the same action twice", mode="new")
+        await bridge.execute("write", {"value": "item"}, "a")
+        await bridge.execute("write", {"value": "item"}, "b")
+        assert calls == ["item", "item"]
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_late_new_call_from_known_generation_keeps_original_request():
+    bridge, controller, calls = await make_bridge()
+    try:
+        await bridge.resolve("write Boston", mode="new", event_id="first-turn")
+        await bridge.execute("write", {"value": "Boston"}, "first-call", origin_id="generation-1")
+        await bridge.resolve("write Chicago", mode="new", event_id="second-turn")
+        late = await bridge.execute("write", {"value": "Boston-old"}, "late-call", origin_id="generation-1")
+        assert late.status == "cancelled_before_dispatch" and late.superseded
+        assert calls == ["Boston"]
+    finally:
+        await bridge.close()
+        await controller.close()

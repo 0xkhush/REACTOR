@@ -14,6 +14,8 @@ from reactor.tools.timers import TimerService
 from reactor.voice.agent import (create_tool_functions, normalize_tool_args, resolve_transcript_mode,
                                  safe_transcript, tool_execution_summary, model_tools_for_mode)
 from reactor.voice.agent import handle_kitchen_transcript
+from reactor.voice.agent import ReactorVoiceAgent
+from reactor.voice.agent import room_mode
 from reactor.voice.turns import TurnBridge
 
 
@@ -63,7 +65,8 @@ async def test_final_kitchen_transcript_interrupts_model_and_speaks_verified_tim
         async def interrupt(self, *, force):
             self.interrupted = force
 
-        async def say(self, text):
+        async def say(self, text, *, audio):
+            assert hasattr(audio, "__aiter__")
             self.spoken.append(text)
 
     session = Session()
@@ -81,6 +84,17 @@ async def test_final_kitchen_transcript_interrupts_model_and_speaks_verified_tim
         await bridge.close()
         await controller.close()
         await timers.close()
+
+
+async def test_kitchen_discards_ungrounded_native_model_audio():
+    from livekit import rtc
+
+    async def provider_audio():
+        yield rtc.AudioFrame(b"\x01\x00" * 480, 24000, 1, 480)
+
+    agent = ReactorVoiceAgent("kitchen")
+    frames = [frame async for frame in agent.realtime_audio_output_node(provider_audio(), {})]
+    assert frames == []
 
 
 async def test_exchange_rate_tool_uses_livekit_raw_arguments_and_controller():
@@ -171,7 +185,7 @@ async def test_tool_bridge_failure_records_only_exception_type():
     class BrokenBridge:
         controller = SimpleNamespace(_trace=TraceRecorder("room", log, io.StringIO()))
 
-        async def execute(self, *args):
+        async def execute(self, *args, **kwargs):
             raise ValueError("provider-secret-value")
 
     tool = next(tool for tool in create_tool_functions(BrokenBridge(), TimerService().definitions())
@@ -199,6 +213,13 @@ def test_kitchen_mode_handles_timer_commands_locally_without_model_tool_calls():
         assert len(model_tools_for_mode("benchmark", object(), BenchmarkTools().definitions())) == 12
     finally:
         asyncio.run(timers.close())
+
+
+def test_concurrent_smoke_and_batch_workers_use_mode_from_room_not_worker_environment():
+    assert room_mode("kitchen", "reactor-batch-abc") == "benchmark"
+    assert room_mode("benchmark", "reactor-kitchen-abc") == "kitchen"
+    assert room_mode("kitchen", "eval-abc") == "benchmark"
+    assert room_mode("kitchen", "console") == "kitchen"
 
 
 def test_diagnostic_transcript_redacts_known_credentials_and_is_bounded():

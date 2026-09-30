@@ -5,6 +5,7 @@ from reactor.tools.timers import TimerService
 from reactor.voice.turns import TurnBridge
 from reactor.voice.kitchen import parse_timer_command
 from reactor.voice.kitchen import dispatch_kitchen_command
+from reactor.state import Outcome
 
 
 def test_create_command_uses_latest_duration_after_self_correction():
@@ -91,3 +92,34 @@ async def test_ambiguous_timer_command_is_not_executed():
         await bridge.close()
         await controller.close()
         await timers.close()
+
+
+@pytest.mark.parametrize("text", [
+    "Don't set a timer called pasta for seven minutes",
+    "Don't cancel the timer called pasta", "Maybe cancel the timer called pasta",
+    "Set a timer for twenty five minutes", "Set a timer for 1.5 minutes",
+    "Set a timer for -5 minutes", "Set a timer for minus five minutes",
+    "Set pasta timer for seven minutes; actually set another timer called rice for five minutes",
+    "Set a timer called pasta for seven minutes and cancel the timer called rice",
+])
+def test_router_rejects_negated_compound_or_unsupported_commands(text):
+    assert parse_timer_command(text) is None
+
+
+@pytest.mark.parametrize("action,text", [
+    ("list", "List my timers"), ("cancel", "Cancel the timer called pasta"),
+])
+async def test_unavailable_listing_is_not_reported_as_zero_or_missing_timer(action, text):
+    class FailedBridge:
+        has_request = False
+
+        async def resolve(self, *args, **kwargs):
+            return object()
+
+        async def execute(self, *args, **kwargs):
+            return Outcome("op-1", "cancelled_before_dispatch", True)
+
+    result = await dispatch_kitchen_command(FailedBridge(), text, event_id="event")
+    assert "couldn't verify" in result["message"]
+    assert "0 timers" not in result["message"]
+    assert "couldn't find" not in result["message"]

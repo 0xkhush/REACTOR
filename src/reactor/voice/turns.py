@@ -46,6 +46,10 @@ class TurnBridge:
         self._last_event_id = None
         self._semantic_actions: dict[tuple, str] = {}
         self._flight_actions: list[dict] = []
+        self._seen_events: set = set()
+        self._provider_requests: dict[str, RequestToken] = {}
+        self._provider_actions: dict[str, str] = {}
+        self._origin_requests: dict[str, RequestToken] = {}
 
     @property
     def has_request(self) -> bool:
@@ -64,6 +68,11 @@ class TurnBridge:
         async with self._lock:
             if self._closed:
                 raise RuntimeError("turn bridge closed")
+            if event_id is not None and event_id in self._seen_events:
+                return self._request
+            if (isinstance(event_id, (int, float)) and isinstance(self._last_event_id, (int, float))
+                    and event_id < self._last_event_id):
+                return self._request
             if self._input_revision is None:
                 if self._request is not None:
                     if (event_id is not None and event_id == self._last_event_id
@@ -74,6 +83,8 @@ class TurnBridge:
             revision = self._input_revision
             token = await self.controller.resolve_input(revision, mode=mode, changes=changes)
             self._request = token
+            if event_id is not None:
+                self._seen_events.add(event_id)
             self._last_transcript = transcript
             self._last_event_id = event_id
             self._input_revision = None
@@ -81,14 +92,19 @@ class TurnBridge:
             return token
 
     async def execute(self, tool: str, args: dict, call_id: str, *,
-                      request: RequestToken | None = None, depends_on: tuple[str, ...] = ()):
+                      request: RequestToken | None = None, depends_on: tuple[str, ...] = (),
+                      action_id: str | None = None, origin_id: str | None = None):
         if not isinstance(call_id, str) or not call_id.strip():
             raise ValueError("provider call_id must be nonblank")
         while request is None:
             async with self._lock:
                 if self._closed:
                     raise RuntimeError("turn bridge closed")
-                request = self._request
+                request = self._provider_requests.get(call_id)
+                if request is None and origin_id is not None:
+                    request = self._origin_requests.get(origin_id)
+                if request is None:
+                    request = self._request
             if request is None:
                 await self._ready.wait()
         args = copy_json(args)
@@ -97,9 +113,22 @@ class TurnBridge:
         async with self._lock:
             if self._closed:
                 raise RuntimeError("turn bridge closed")
-            action_id = self._semantic_actions.setdefault(key, call_id)
+            if origin_id is not None:
+                request = self._origin_requests.setdefault(origin_id, request)
+            request = self._provider_requests.setdefault(call_id, request)
+            key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
+            intentional_repeat = bool(re.search(
+                r"\b(?:twice|again|another|two identical|two separate|second identical)\b",
+                self._last_transcript or "", re.I,
+            ))
+            if call_id in self._provider_actions:
+                action_id = self._provider_actions[call_id]
+            elif action_id is not None or intentional_repeat:
+                action_id = action_id or call_id
+            else:
+                action_id = self._semantic_actions.setdefault(key, call_id)
             day = calendar_day(args.get("date")) if tool == "search_flights" else None
-            if day is not None:
+            if day is not None and not intentional_repeat:
                 explicit_user_year = bool(re.search(r"\b(?:19|20)\d{2}\b", self._last_transcript or ""))
                 for previous in self._flight_actions:
                     if (previous["request"] != request or previous["depends_on"] != tuple(depends_on)
@@ -121,6 +150,7 @@ class TurnBridge:
                 else:
                     self._flight_actions.append({"request": request, "depends_on": tuple(depends_on),
                                                  "day": day, "args": copy_json(args), "action_id": action_id})
+            self._provider_actions.setdefault(call_id, action_id)
         return await self.controller.execute(Proposal(request, action_id, tool, args, depends_on))
 
     async def close(self):
