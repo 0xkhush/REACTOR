@@ -30,16 +30,22 @@ CONTRACTS = {
     "get_exchange_rate": (False, {"amount": field("number"), "from_currency": field("string"),
                                   "to_currency": field("string")}, ()),
     "modify_autopay": (True, {"bill_type": field("string"), "source_account": field("string")}, ()),
-    "search_apartments": (False, {"city": field("string"), "bedrooms": field("integer"),
-                                  "max_price": field("number")}, ()),
+    "search_apartments": (False, {"city": field("string"),
+                                  "bedrooms": field("integer", optional=True, default=1),
+                                  "max_price": field("number", optional=True, default=2000.0),
+                                  "pets_allowed": field(["boolean", "null"], optional=True)},
+                          ("bedrooms", "max_price", "pets_allowed")),
     "calculate_commute": (False, {"origin_address": field("string"), "destination_address": field("string"),
                                   "mode": field("string", optional=True, default="driving")}, ("mode",)),
-    "update_search_filter": (True, {"filter_name": field("string"), "value": field("string")}, ()),
+    "update_search_filter": (True, {"filter_name": field("string"),
+                                    "value": field(["string", "number", "integer", "boolean"])}, ()),
     "track_order": (False, {"order_id": field("string")}, ()),
     "search_products": (False, {"query": field("string"),
-                                "max_price": field(["number", "null"], optional=True)}, ("max_price",)),
+                                "max_price": field(["number", "null"], optional=True),
+                                "category": field(["string", "null"], optional=True)},
+                        ("max_price", "category")),
     "add_to_cart": (True, {"product_id": field("string"),
-                           "quantity": field("integer", optional=True, default=1)}, ("quantity",)),
+                            "quantity": field("integer", optional=True, default=1)}, ("quantity",)),
 }
 
 
@@ -65,9 +71,15 @@ class BenchmarkTools:
             schema = {
                 "type": "object", "properties": properties,
                 "required": [key for key in properties if key not in optional],
-                "additionalProperties": False,
+                "additionalProperties": True,
             }
             def invoke(*, _name=name, **kwargs):
+                if _name == "search_apartments":
+                    kwargs.setdefault("bedrooms", 1)
+                    kwargs.setdefault("max_price", 2000.0)
+                    kwargs.pop("pets_allowed", None)
+                elif _name == "search_products":
+                    kwargs.pop("category", None)
                 return self.registry.call(_name, **kwargs)
             definitions.append(ToolDefinition(name, write, schema, invoke, blocking=True))
         return definitions

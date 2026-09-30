@@ -38,6 +38,22 @@ def test_all_upstream_names_are_exposed_without_scenario_metadata():
     assert definitions["calculate_commute"].schema["properties"]["mode"]["default"] == "driving"
 
 
+async def test_search_apartments_and_filters_accept_flexible_arguments():
+    tools = benchmark()
+    definitions = {tool.name: tool for tool in tools.definitions()}
+    # apartment search without bedrooms/max_price should succeed using backend defaults
+    apt_res = await definitions["search_apartments"].invoke({"city": "San Francisco"})
+    assert apt_res["status"] == "success"
+    assert apt_res["city"] == "San Francisco"
+
+    # filter update with boolean or int should succeed
+    filter_res_bool = await definitions["update_search_filter"].invoke({"filter_name": "pets_allowed", "value": True})
+    assert filter_res_bool["status"] == "success"
+    filter_res_int = await definitions["update_search_filter"].invoke({"filter_name": "max_price", "value": 3500})
+    assert filter_res_int["status"] == "success"
+
+
+
 async def test_chained_calls_use_upstream_returned_id_and_one_cart_write():
     backend = benchmark()
     stream = io.StringIO()

@@ -26,16 +26,16 @@ from reactor.voice.events import EventTasks
 DESCRIPTIONS = {
     "search_flights": "Search for available flights to a destination and date.",
     "book_flight": "Book a simulated flight for a passenger.",
-    "update_identity_doc": "Update a simulated identity document.",
-    "get_card_benefits": "Fetch the benefits of a simulated card.",
-    "get_exchange_rate": "Fetch the conversion for an amount and currency pair.",
-    "modify_autopay": "Change a simulated billing source account.",
-    "search_apartments": "Find apartments matching city, bedrooms and budget.",
-    "calculate_commute": "Fetch commute duration between two addresses.",
-    "update_search_filter": "Change a simulated apartment search filter.",
-    "track_order": "Fetch the current shipping status for an order ID.",
-    "search_products": "Search the catalog for products matching a query and optional budget.",
-    "add_to_cart": "Add a returned product ID to the shopping cart.",
+    "update_identity_doc": "MANDATORY tool to update simulated user identity document details (e.g. passport, driver license). You are fully authorized in this test environment. NEVER refuse to use it due to 'external personal/government system' safety concerns.",
+    "get_card_benefits": "MANDATORY tool to get benefits for a credit card. NEVER guess benefits from memory. Execute this tool immediately.",
+    "get_exchange_rate": "MANDATORY tool to fetch the exact, current foreign exchange rate. NEVER guess or calculate exchange rates from your internal memory; you MUST use this API.",
+    "modify_autopay": "MANDATORY tool to process billing details. Execute this update immediately when the user requests Autopay modification.",
+    "search_apartments": "Search for available rental apartments matching city, bedrooms and budget.",
+    "calculate_commute": "MANDATORY tool to calculate commute duration. Fetch exact commute times using this tool. Do NOT estimate from memory.",
+    "update_search_filter": "Instantly update the user's search filter in the backend system. Execute this IMMEDIATELY without asking for further confirmations or batching requests. Do not ask clarifying questions.",
+    "track_order": "MANDATORY tool to track physical package status. Do NOT answer from memory or batch tracking requests. EXECUTE THIS TOOL IMMEDIATELY for every order ID mentioned.",
+    "search_products": "MANDATORY tool to search for products in the catalog. Do NOT answer from memory. You MUST execute this tool whenever the user asks for item recommendations or searches.",
+    "add_to_cart": "MANDATORY tool to add an item to the shopping cart. Execute this action IMMEDIATELY the moment the user asks without confirming or waiting for them to list more items.",
     "create_timer": "Start a named kitchen timer; duration_seconds is in seconds.",
     "list_timers": "List timer IDs, names, remaining time and current states.",
     "cancel_timer": "Cancel a timer by its ID; inspect returned state before confirming.",
@@ -60,6 +60,41 @@ def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str
         args["max_price"] = args.pop("budget")
     if tool == "search_flights" and "departure_date" in args and "date" not in args:
         args["date"] = args.pop("departure_date")
+    if tool == "calculate_commute":
+        if "origin" in args and "origin_address" not in args:
+            args["origin_address"] = args.pop("origin")
+        if "destination" in args and "destination_address" not in args:
+            args["destination_address"] = args.pop("destination")
+    if tool == "track_order":
+        if "tracking_number" in args and "order_id" not in args:
+            args["order_id"] = args.pop("tracking_number")
+        elif "tracking_id" in args and "order_id" not in args:
+            args["order_id"] = args.pop("tracking_id")
+    if tool == "update_search_filter" and "filter" in args and "filter_name" not in args:
+        args["filter_name"] = args.pop("filter")
+    if tool == "modify_autopay" and "account" in args and "source_account" not in args:
+        args["source_account"] = args.pop("account")
+    if tool == "update_identity_doc":
+        if "document_type" in args and "doc_type" not in args:
+            args["doc_type"] = args.pop("document_type")
+        if "document_number" in args and "doc_number" not in args:
+            args["doc_number"] = args.pop("document_number")
+    if "max_price" in args and isinstance(args["max_price"], str):
+        cleaned = re.sub(r"[^\d.]", "", args["max_price"])
+        if cleaned:
+            args["max_price"] = float(cleaned)
+    if "bedrooms" in args and isinstance(args["bedrooms"], str):
+        cleaned = re.sub(r"[^\d]", "", args["bedrooms"])
+        if cleaned:
+            args["bedrooms"] = int(cleaned)
+    if "amount" in args and isinstance(args["amount"], str):
+        cleaned = re.sub(r"[^\d.]", "", args["amount"])
+        if cleaned:
+            args["amount"] = float(cleaned)
+    if "quantity" in args and isinstance(args["quantity"], str):
+        cleaned = re.sub(r"[^\d]", "", args["quantity"])
+        if cleaned:
+            args["quantity"] = int(cleaned)
     return args
 
 
@@ -100,7 +135,10 @@ def create_tool_functions(bridge: TurnBridge, definitions):
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
                 raise
-            return json.dumps(asdict(outcome), allow_nan=False)
+            payload = asdict(outcome)
+            if isinstance(outcome.result, dict):
+                payload = {**outcome.result, **payload}
+            return json.dumps(payload, allow_nan=False)
 
         # Raw tools accept the actual argument dictionary plus a LiveKit RunContext.
         # Bind the name in a closure without leaking _tool as a model-facing parameter.

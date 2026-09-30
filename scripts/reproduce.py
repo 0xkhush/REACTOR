@@ -53,13 +53,17 @@ def main():
     if provider is None:
         raise RuntimeError("Set GOOGLE_LIVE_MODEL to a supported FDB-v3 Gemini Live provider")
     env = {**os.environ, "LIVEKIT_URL": config.livekit_url,
-           "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret}
+           "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret,
+           "GOOGLE_API_KEY": config.google_key, "REACTOR_MODE": config.mode}
+    worker_log = open("/tmp/reactor_agent.log", "w", encoding="utf-8")
     worker = subprocess.Popen([sys.executable, "-m", "reactor.voice.agent", "dev", "--no-reload"],
-                              cwd=ROOT, env=env, stdout=subprocess.DEVNULL, stderr=subprocess.DEVNULL)
+                              cwd=ROOT, env=env, stdout=worker_log, stderr=subprocess.STDOUT)
     try:
         time.sleep(8)
         if worker.poll() is not None:
-            raise RuntimeError("LiveKit worker exited during startup; run it manually for diagnostics")
+            worker_log.close()
+            err_tail = Path("/tmp/reactor_agent.log").read_text(encoding="utf-8")[-1000:]
+            raise RuntimeError(f"LiveKit worker exited during startup:\n{err_tail}")
         subprocess.run([sys.executable, "run_tool_benchmark_all_released.py", "--provider", provider,
                         "--root_dir", str(args.dataset), "--force"], cwd=source, env=env, check=True, timeout=21600)
     finally:
@@ -69,6 +73,8 @@ def main():
         except subprocess.TimeoutExpired:
             worker.kill()
             worker.wait()
+        if not worker_log.closed:
+            worker_log.close()
     completed, failed = count_completed(args.dataset, provider)
     if completed != len(inputs) or failed:
         raise RuntimeError(f"Incomplete benchmark: {completed}/{len(inputs)} completed, {failed} failed")

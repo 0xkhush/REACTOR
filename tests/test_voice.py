@@ -154,6 +154,25 @@ def test_departure_date_alias_normalizes_to_fdb_flight_schema():
     }) == {"destination": "Tokyo", "date": "2026-07-15"}
 
 
+def test_commute_and_order_and_autopay_aliases_normalize():
+    assert normalize_tool_args("calculate_commute", {
+        "origin": "Downtown", "destination": "Uptown",
+    }) == {"origin_address": "Downtown", "destination_address": "Uptown"}
+    assert normalize_tool_args("track_order", {
+        "tracking_number": "TRK-123",
+    }) == {"order_id": "TRK-123"}
+    assert normalize_tool_args("modify_autopay", {
+        "bill_type": "mortgage", "account": "savings",
+    }) == {"bill_type": "mortgage", "source_account": "savings"}
+    assert normalize_tool_args("update_search_filter", {
+        "filter": "pets_allowed", "value": True,
+    }) == {"filter_name": "pets_allowed", "value": True}
+    assert normalize_tool_args("get_exchange_rate", {
+        "amount": "$500", "from_currency": "USD", "to_currency": "EUR",
+    }) == {"amount": 500.0, "from_currency": "USD", "to_currency": "EUR"}
+
+
+
 async def test_model_proposal_is_logged_before_first_turn_resolves():
     timers = TimerService()
     log = io.StringIO()
