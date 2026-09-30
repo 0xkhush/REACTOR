@@ -26,6 +26,7 @@ from reactor.voice.kitchen import dispatch_kitchen_command
 from reactor.voice.speech import local_audio
 from reactor.voice.events import EventTasks
 from reactor.voice.native_types import JsonInteger, JsonNumber
+from reactor.voice.arguments import normalize_argument_values
 
 
 DESCRIPTIONS = {
@@ -86,25 +87,9 @@ def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str
     if tool == "calculate_commute" and isinstance(args.get("mode"), str):
         modes = {"drive": "driving", "walk": "walking"}
         args["mode"] = modes.get(args["mode"].lower().strip(), args["mode"])
-    if "max_price" in args and isinstance(args["max_price"], str):
-        cleaned = re.sub(r"[^\d.]", "", args["max_price"])
-        if cleaned:
-            args["max_price"] = float(cleaned)
-    if "bedrooms" in args and isinstance(args["bedrooms"], str):
-        cleaned = re.sub(r"[^\d]", "", args["bedrooms"])
-        if cleaned:
-            args["bedrooms"] = int(cleaned)
-    if "amount" in args and isinstance(args["amount"], str):
-        cleaned = re.sub(r"[^\d.]", "", args["amount"])
-        if cleaned:
-            args["amount"] = float(cleaned)
-    if "quantity" in args and isinstance(args["quantity"], str):
-        cleaned = re.sub(r"[^\d]", "", args["quantity"])
-        if cleaned:
-            args["quantity"] = int(cleaned)
     if tool == "search_products":
         args.pop("category", None)
-    return args
+    return normalize_argument_values(tool, args)
 
 
 def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
