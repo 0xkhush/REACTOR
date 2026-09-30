@@ -19,9 +19,27 @@ else:
 from reactor.config import load_config
 
 
-def pending_inputs(source: Path, output: Path) -> list[Path]:
-    return [path for path in sorted(source.glob("*/input.wav"))
-            if not (output / path.parent.name / "result.json").exists()]
+def pending_inputs(source: Path, output: Path, *, retry_failed: bool = False) -> list[Path]:
+    pending = []
+    for audio in sorted(source.glob("*/input.wav")):
+        result_file = output / audio.parent.name / "result.json"
+        if not result_file.is_file():
+            pending.append(audio)
+            continue
+        try:
+            status = json.loads(result_file.read_text()).get("status")
+        except (ValueError, OSError):
+            status = None
+        if status == "completed" or status == "no_tool_call":
+            continue
+        if retry_failed and status == "inference_failed":
+            # Retry only if the inference client did not leave an output WAV;
+            # a present/partial recording may correspond to a live model request.
+            if not (result_file.parent / "output.wav").exists():
+                pending.append(audio)
+            continue
+        # Existing failures remain recorded rather than silently replayed.
+    return pending
 
 
 def report_progress(*, expected: int, terminal: dict[str, str]) -> dict:
@@ -31,6 +49,17 @@ def report_progress(*, expected: int, terminal: dict[str, str]) -> dict:
             "inference_failed": sum(status == "inference_failed" for status in terminal.values()),
             "remaining": max(0, expected - len(terminal)),
             "official_score": False, "mode": "audio_capture_no_asr"}
+
+
+def relative_calls(calls: list[dict], stream_start: float | None) -> list[dict]:
+    adjusted = json.loads(json.dumps(calls))
+    if stream_start is None:
+        return adjusted
+    for call in adjusted:
+        for key in ("timestamp_start", "timestamp_end"):
+            if isinstance(call.get(key), (int, float)):
+                call[key] = round(call[key] - stream_start, 2)
+    return adjusted
 
 
 def scrub(text: str, secrets) -> str:
@@ -52,6 +81,8 @@ def main():
     parser.add_argument("--dataset", type=Path, default=ROOT / "fdb_v3_data_released")
     parser.add_argument("--output", type=Path, default=ROOT / "artifacts" / "batch_inference")
     parser.add_argument("--limit", type=int, default=None, help="Maximum new recordings to capture this run")
+    parser.add_argument("--retry-failed", action="store_true",
+                        help="Retry pre-output connection failures; completed/no-tool runs stay fixed")
     args = parser.parse_args()
     if args.limit is not None and args.limit < 1:
         parser.error("--limit must be positive")
@@ -64,7 +95,7 @@ def main():
     inputs = check_dataset(args.dataset)
     asyncio.run(check_livekit_credentials(config))
     args.output.mkdir(parents=True, exist_ok=True)
-    pending = pending_inputs(args.dataset, args.output)
+    pending = pending_inputs(args.dataset, args.output, retry_failed=args.retry_failed)
     if args.limit is not None:
         pending = pending[:args.limit]
     terminal = {}
@@ -100,11 +131,13 @@ def main():
                 if completed.returncode:
                     result["error"] = scrub("\n".join(completed.stderr.splitlines()[-5:]), secret_values)[:700]
                 else:
-                    result["actual_tool_calls"] = actual_calls_for_room(Path("/tmp/agent_tool_calls.log"), room)
+                    stream_start = next((float(line.split(": ", 1)[1]) for line in completed.stdout.splitlines()
+                                         if line.startswith("STREAM_START_TIME: ")), None)
+                    result["stream_start_time"] = stream_start
+                    result["actual_tool_calls"] = relative_calls(
+                        actual_calls_for_room(Path("/tmp/agent_tool_calls.log"), room), stream_start
+                    )
                     result["status"] = "completed" if result["actual_tool_calls"] else "no_tool_call"
-                    for line in completed.stdout.splitlines():
-                        if line.startswith("STREAM_START_TIME: "):
-                            result["stream_start_time"] = float(line.split(": ", 1)[1])
             except subprocess.TimeoutExpired:
                 result["error"] = "FDB audio replay exceeded 110 seconds"
             result["elapsed_seconds"] = round(time.monotonic() - start, 2)
