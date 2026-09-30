@@ -52,7 +52,7 @@
 | **Source Code** | ✅ **Complete** | Production-ready execution engine in [`src/reactor/`](src/reactor), complete 203/203 offline test suite in [`tests/`](tests), evaluation & automation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | ✅ **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root) and formatted companion slide outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
 | **Video** | ✅ **Complete** | **Demo Video Link:** [Click to Watch Demo Video (YouTube / Google Drive)](https://youtu.be/placeholder-reactor-demo) *(update with final video link)*.<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
-| **AI Disclosure** | ✅ **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure(1).docx`](LangAI3.0_AI_Disclosure(1).docx), fully documented in the [AI Usage Disclosure Form](#ai-disclosure) section below and in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
+| **AI Disclosure** | ✅ **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in the [AI Usage Disclosure Form](#ai-disclosure) section below and in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
 | **README** | ✅ **Complete** | Detailed end-to-end documentation: problem statement, architecture diagrams, step-by-step setup, Kaggle GPU T4 evaluation instructions, FDB-v3 benchmark reproduction, and 203-test suite matrix. |
 | **APK / SDK (if any)** | ✅ **SDK Built** | **Python SDK Packages Ready:** Distributable wheel and source distribution in [`dist/`](dist):<br>• Wheel: [`dist/reactor_agent-0.1.0-py3-none-any.whl`](dist/reactor_agent-0.1.0-py3-none-any.whl)<br>• Source: [`dist/reactor_agent-0.1.0.tar.gz`](dist/reactor_agent-0.1.0.tar.gz)<br>*(Install via `pip install dist/reactor_agent-0.1.0-py3-none-any.whl`). Note: APK is N/A for Theme 05 (cloud/WebRTC voice service); mobile devices connect via standard LiveKit WebRTC client SDKs.* |
 | **TAG** | ✅ **Tagged** | **Required Tag Name:** `PRISM_GENAI_HACKATHON_Y2026`<br>Tagged on GitHub pointing to this final verified submission commit:<br>`git tag PRISM_GENAI_HACKATHON_Y2026 && git push origin PRISM_GENAI_HACKATHON_Y2026` |
@@ -63,7 +63,7 @@
 
 ## 🤖 AI Usage Disclosure Form
 
-*Completed in accordance with the official Samsung PRISM GenAI Hackathon [`LangAI3.0_AI_Disclosure(1).docx`](LangAI3.0_AI_Disclosure(1).docx) guideline.*
+*Completed in accordance with the official Samsung PRISM GenAI Hackathon [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx) guideline.*
 
 ### 1. Team Details
 - **Team Name:** REACTOR
