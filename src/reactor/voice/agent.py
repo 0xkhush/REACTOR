@@ -4,7 +4,7 @@ import asyncio
 import json
 import os
 import re
-from dataclasses import asdict
+from dataclasses import asdict, replace
 from pathlib import Path
 
 from livekit import agents
@@ -18,6 +18,9 @@ from reactor.tools.timers import TimerService
 from reactor.trace import TraceRecorder
 from reactor.voice.prompts import BENCHMARK, KITCHEN
 from reactor.voice.turns import TurnBridge
+from reactor.voice.kitchen import dispatch_kitchen_command
+from reactor.voice.speech import local_audio
+from reactor.voice.events import EventTasks
 
 
 DESCRIPTIONS = {
@@ -51,6 +54,15 @@ def tool_execution_summary(ev):
             for call, output in ev.zipped()]
 
 
+def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str, object]:
+    args = dict(raw_arguments)
+    if tool in {"search_products", "search_apartments"} and "budget" in args and "max_price" not in args:
+        args["max_price"] = args.pop("budget")
+    if tool == "search_flights" and "departure_date" in args and "date" not in args:
+        args["date"] = args.pop("departure_date")
+    return args
+
+
 def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
     """Conservative turn-level heuristic, not an ASR or semantic slot parser."""
     if not has_request:
@@ -72,8 +84,8 @@ def create_tool_functions(bridge: TurnBridge, definitions):
         }
 
         async def invoke(raw_arguments: dict[str, object], ctx: RunContext, *, _tool=definition.name) -> str:
-            # A provider call ID is stable across retransmission, while a new call ID is
-            # a distinct action even if its arguments happen to be equal.
+            # Provider IDs remain bound to the request where they first appeared.
+            # The bridge coalesces retries and allows explicit logical action IDs.
             call_id = ctx.function_call.call_id
             trace = getattr(getattr(bridge, "controller", None), "_trace", None)
             if trace:
@@ -81,7 +93,9 @@ def create_tool_functions(bridge: TurnBridge, definitions):
                             argument_types={key: type(value).__name__
                                             for key, value in raw_arguments.items()})
             try:
-                outcome = await bridge.execute(_tool, raw_arguments, call_id)
+                origin = getattr(getattr(ctx, "speech_handle", None), "id", None)
+                outcome = await bridge.execute(_tool, normalize_tool_args(_tool, raw_arguments), call_id,
+                                               origin_id=origin)
             except BaseException as exc:
                 if trace:
                     trace.event("tool_bridge_error", tool=_tool, error_type=type(exc).__name__)
@@ -103,14 +117,60 @@ def create_tool_functions(bridge: TurnBridge, definitions):
     return tools
 
 
+def model_tools_for_mode(mode: str, bridge: TurnBridge, definitions):
+    # Native-audio Gemini repeatedly refused the timer tools in live tests. The
+    # timer extension now routes clear final transcripts through the controller.
+    return [] if mode == "kitchen" else create_tool_functions(bridge, definitions)
+
+
+async def handle_kitchen_transcript(session, bridge: TurnBridge, transcript: str, event_id: str):
+    result = await dispatch_kitchen_command(bridge, transcript, event_id=event_id)
+    if result is None:
+        mode = resolve_transcript_mode(transcript, has_request=bridge.has_request)
+        changes = None if mode == "resume" else {"latest_utterance": transcript}
+        await bridge.resolve(transcript, mode=mode, changes=changes, event_id=event_id)
+        return None
+    # Stop an unsolicited realtime response before speaking the controller's verified result.
+    await session.interrupt(force=True)
+    await session.say(result["message"], audio=local_audio(result["message"]))
+    return result
+
+
 class ReactorVoiceAgent(Agent):
-    def __init__(self, mode: str):
+    def __init__(self, mode: str, bridge: TurnBridge | None = None):
+        self.mode = mode
+        self.bridge = bridge
         super().__init__(instructions=BENCHMARK if mode == "benchmark" else KITCHEN)
+
+    async def on_user_turn_completed(self, turn_ctx, new_message):
+        if self.mode != "kitchen" or self.bridge is None:
+            return
+        # Kitchen turns are routed from the final transcript callback to avoid
+        # relying on model-generated timer calls. Leave normal chat generation enabled.
+        return
+
+    def realtime_audio_output_node(self, audio, model_settings):
+        if self.mode == "kitchen":
+            async def discard():
+                async for _ in audio:
+                    pass
+                if False:
+                    yield  # keep an async-iterable node with no provider speech frames
+            return discard()
+        return super().realtime_audio_output_node(audio, model_settings)
 
 
 def build_model(config: AgentConfig):
     config.require_live_access()
     return google.realtime.RealtimeModel(model=config.model, voice="Puck", api_key=config.google_key)
+
+
+def room_mode(default_mode: str, room_name: str) -> str:
+    if room_name.startswith("reactor-kitchen-"):
+        return "kitchen"
+    if room_name.startswith(("reactor-batch-", "reactor-smoke-", "eval-")):
+        return "benchmark"
+    return default_mode
 
 
 server = AgentServer()
@@ -119,6 +179,7 @@ server = AgentServer()
 @server.rtc_session()
 async def entrypoint(ctx: agents.JobContext):
     config = load_config()
+    config = replace(config, mode=room_mode(config.mode, ctx.room.name))
     config.require_live_access()
     model = build_model(config)
     timers = TimerService() if config.mode == "kitchen" else None
@@ -130,19 +191,17 @@ async def entrypoint(ctx: agents.JobContext):
     # FDB's run_tool_benchmark.py reads this room-keyed actual-call log.
     tool_log = Path("/tmp/agent_tool_calls.log").open("a", encoding="utf-8")
     controller = Controller(ctx.room.name, definitions, TraceRecorder(ctx.room.name, diagnostics, tool_log))
+    controller._trace.event("session_configured", mode=config.mode, model=config.model,
+                            tools=[definition.name for definition in definitions])
     bridge = TurnBridge(controller)
-    pending_events: set[asyncio.Task] = set()
+    events = EventTasks(controller._trace)
+    spawn = events.spawn
 
-    def spawn(coroutine):
-        task = asyncio.create_task(coroutine)
-        pending_events.add(task)
-        task.add_done_callback(pending_events.discard)
-
-    session = AgentSession(llm=model, tools=create_tool_functions(bridge, definitions))
+    session = AgentSession(llm=model, tools=model_tools_for_mode(config.mode, bridge, definitions))
 
     @session.on("user_state_changed")
     def on_user_state(ev):
-        if ev.new_state == "speaking":
+        if config.mode == "benchmark" and ev.new_state == "speaking":
             spawn(bridge.speech_started())
 
     @session.on("user_input_transcribed")
@@ -153,15 +212,20 @@ async def entrypoint(ctx: agents.JobContext):
                 trace.event("user_transcript", text=safe_transcript(ev.transcript, (
                     config.livekit_key, config.livekit_secret, config.google_key,
                 )))
-            # Model transcription can arrive after a tool proposal on realtime APIs;
-            # the bridge waits for the first resolved turn rather than using guesses.
-            mode = resolve_transcript_mode(ev.transcript, has_request=bridge.has_request)
-            changes = {"latest_utterance": ev.transcript} if mode != "resume" else None
-            spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes, event_id=ev.created_at))
+            # Trace only. The user ChatMessage below carries the provider item ID,
+            # unlike UserInputTranscribedEvent.created_at (a delivery timestamp).
 
     @session.on("conversation_item_added")
     def on_conversation_item(ev):
         item = ev.item
+        if item.type == "message" and item.role == "user":
+            text = item.text_content or ""
+            if config.mode == "benchmark":
+                mode = resolve_transcript_mode(text, has_request=bridge.has_request)
+                changes = {"latest_utterance": text} if mode != "resume" else None
+                spawn(bridge.resolve(text, mode=mode, changes=changes, event_id=item.id))
+            else:
+                spawn(handle_kitchen_transcript(session, bridge, text, item.id))
         if item.type == "message" and item.role == "assistant" and item.text_content:
             controller._trace.event("agent_transcript", text=safe_transcript(
                 item.text_content, (config.livekit_key, config.livekit_secret, config.google_key),
@@ -178,7 +242,7 @@ async def entrypoint(ctx: agents.JobContext):
     async def shutdown():
         try:
             await bridge.close()
-            await asyncio.gather(*pending_events, return_exceptions=True)
+            await events.drain()
             await controller.close()
         finally:
             if timers is not None:
@@ -187,7 +251,7 @@ async def entrypoint(ctx: agents.JobContext):
             tool_log.close()
 
     ctx.add_shutdown_callback(shutdown)
-    await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode))
+    await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode, bridge))
 
 
 def main():

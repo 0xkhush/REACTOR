@@ -1,0 +1,13 @@
+.git
+.env
+.env.*
+!.env.example
+.venv*
+.superpowers
+vendor
+artifacts
+fdb_v3_data_released
+__pycache__
+.pytest_cache
+*.egg-info
+docs/submission/*.mp4

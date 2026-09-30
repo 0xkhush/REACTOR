@@ -11,7 +11,11 @@ from reactor.state import Proposal
 from reactor.trace import TraceRecorder
 from reactor.tools.benchmark import BenchmarkTools
 from reactor.tools.timers import TimerService
-from reactor.voice.agent import create_tool_functions, resolve_transcript_mode, safe_transcript, tool_execution_summary
+from reactor.voice.agent import (create_tool_functions, normalize_tool_args, resolve_transcript_mode,
+                                 safe_transcript, tool_execution_summary, model_tools_for_mode)
+from reactor.voice.agent import handle_kitchen_transcript
+from reactor.voice.agent import ReactorVoiceAgent
+from reactor.voice.agent import room_mode
 from reactor.voice.turns import TurnBridge
 
 
@@ -48,6 +52,51 @@ async def test_timer_tool_calls_flow_through_bridge_with_provider_call_id():
         await timers.close()
 
 
+async def test_final_kitchen_transcript_interrupts_model_and_speaks_verified_timer_result():
+    timers = TimerService()
+    controller = Controller("kitchen", timers.definitions())
+    bridge = TurnBridge(controller)
+
+    class Session:
+        def __init__(self):
+            self.interrupted = False
+            self.spoken = []
+
+        async def interrupt(self, *, force):
+            self.interrupted = force
+
+        async def say(self, text, *, audio):
+            assert hasattr(audio, "__aiter__")
+            self.spoken.append(text)
+
+    session = Session()
+    try:
+        result = await handle_kitchen_transcript(
+            session, bridge,
+            "Please create a timer called pasta for 10 minutes. Actually, make it seven minutes.",
+            "event-1",
+        )
+        assert result["timer"]["duration_seconds"] == 420
+        assert session.interrupted
+        assert session.spoken == ["Timer pasta set for 420 seconds."]
+        assert (await timers.list_timers())["timers"][0]["state"] == "running"
+    finally:
+        await bridge.close()
+        await controller.close()
+        await timers.close()
+
+
+async def test_kitchen_discards_ungrounded_native_model_audio():
+    from livekit import rtc
+
+    async def provider_audio():
+        yield rtc.AudioFrame(b"\x01\x00" * 480, 24000, 1, 480)
+
+    agent = ReactorVoiceAgent("kitchen")
+    frames = [frame async for frame in agent.realtime_audio_output_node(provider_audio(), {})]
+    assert frames == []
+
+
 async def test_exchange_rate_tool_uses_livekit_raw_arguments_and_controller():
     backend = BenchmarkTools()
     controller = Controller("finance", backend.definitions())
@@ -69,6 +118,40 @@ async def test_exchange_rate_tool_uses_livekit_raw_arguments_and_controller():
     finally:
         await bridge.close()
         await controller.close()
+
+
+async def test_search_product_budget_alias_uses_declared_max_price_argument():
+    backend = BenchmarkTools()
+    controller = Controller("catalog", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.speech_started()
+        await bridge.resolve("Find headphones for less than $100", mode="new")
+        tool = next(tool for tool in create_tool_functions(bridge, backend.definitions())
+                    if tool.info.name == "search_products")
+        proposed = {"query": "wireless headphones", "budget": 100}
+        result = json.loads(await tool(raw_arguments=proposed,
+                                       ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="catalog-1"))))
+        assert result["status"] == "succeeded"
+        assert controller.snapshot()["operations"][0]["args"] == {
+            "query": "wireless headphones", "max_price": 100,
+        }
+        assert proposed["budget"] == 100
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+def test_budget_alias_normalizes_to_max_price_for_search_tools():
+    assert normalize_tool_args("search_apartments", {
+        "city": "Seattle", "bedrooms": 2, "budget": 2500,
+    }) == {"city": "Seattle", "bedrooms": 2, "max_price": 2500}
+
+
+def test_departure_date_alias_normalizes_to_fdb_flight_schema():
+    assert normalize_tool_args("search_flights", {
+        "destination": "Tokyo", "departure_date": "2026-07-15",
+    }) == {"destination": "Tokyo", "date": "2026-07-15"}
 
 
 async def test_model_proposal_is_logged_before_first_turn_resolves():
@@ -102,7 +185,7 @@ async def test_tool_bridge_failure_records_only_exception_type():
     class BrokenBridge:
         controller = SimpleNamespace(_trace=TraceRecorder("room", log, io.StringIO()))
 
-        async def execute(self, *args):
+        async def execute(self, *args, **kwargs):
             raise ValueError("provider-secret-value")
 
     tool = next(tool for tool in create_tool_functions(BrokenBridge(), TimerService().definitions())
@@ -121,6 +204,22 @@ def test_transcript_mode_is_conservative_and_has_no_benchmark_answers():
     assert resolve_transcript_mode("thanks", has_request=True) == "resume"
     assert resolve_transcript_mode("Track order A12", has_request=True) == "new"
     assert resolve_transcript_mode("actually Chicago", has_request=False) == "new"
+
+
+def test_kitchen_mode_handles_timer_commands_locally_without_model_tool_calls():
+    timers = TimerService()
+    try:
+        assert model_tools_for_mode("kitchen", object(), timers.definitions()) == []
+        assert len(model_tools_for_mode("benchmark", object(), BenchmarkTools().definitions())) == 12
+    finally:
+        asyncio.run(timers.close())
+
+
+def test_concurrent_smoke_and_batch_workers_use_mode_from_room_not_worker_environment():
+    assert room_mode("kitchen", "reactor-batch-abc") == "benchmark"
+    assert room_mode("benchmark", "reactor-kitchen-abc") == "kitchen"
+    assert room_mode("kitchen", "eval-abc") == "benchmark"
+    assert room_mode("kitchen", "console") == "kitchen"
 
 
 def test_diagnostic_transcript_redacts_known_credentials_and_is_bounded():
