@@ -60,5 +60,6 @@ if __name__ == "__main__":
     parser.add_argument("--destination", type=Path, default=Path("vendor/Full-Duplex-Bench"))
     parser.add_argument("--with-data", action="store_true", help="Download released benchmark dataset if missing")
     args = parser.parse_args()
+    args.destination.parent.mkdir(parents=True, exist_ok=True)
     print(setup(args.destination, with_data=args.with_data))
 
