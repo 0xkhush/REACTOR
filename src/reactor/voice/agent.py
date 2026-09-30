@@ -172,8 +172,19 @@ def room_mode(default_mode: str, room_name: str) -> str:
         return "benchmark"
     return default_mode
 
+try:
+    _initial_config = load_config()
+    os.environ.setdefault("LIVEKIT_URL", _initial_config.livekit_url)
+    os.environ.setdefault("LIVEKIT_API_KEY", _initial_config.livekit_key)
+    os.environ.setdefault("LIVEKIT_API_SECRET", _initial_config.livekit_secret)
+except Exception:
+    _initial_config = None
 
-server = AgentServer()
+server = AgentServer(
+    ws_url=_initial_config.livekit_url if _initial_config else None,
+    api_key=_initial_config.livekit_key if _initial_config else None,
+    api_secret=_initial_config.livekit_secret if _initial_config else None,
+)
 
 
 @server.rtc_session()
@@ -260,6 +271,9 @@ def main():
     os.environ["LIVEKIT_URL"] = config.livekit_url
     os.environ["LIVEKIT_API_KEY"] = config.livekit_key
     os.environ["LIVEKIT_API_SECRET"] = config.livekit_secret
+    server._ws_url = config.livekit_url
+    server._api_key = config.livekit_key
+    server._api_secret = config.livekit_secret
     agents.cli.run_app(server)
 
 

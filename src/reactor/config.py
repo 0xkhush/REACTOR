@@ -53,10 +53,13 @@ class AgentConfig:
 
 
 def load_config(path: Path | str = ".env.local") -> AgentConfig:
-    path = Path(path)
-    if not path.is_file():
-        raise ConfigurationError("Create .env.local in the repository root")
-    values = dotenv_values(path)
+    target = Path(path)
+    if not target.is_file():
+        if (path == ".env.local" or str(path) == ".env.local") and Path(".env").is_file():
+            target = Path(".env")
+        else:
+            raise ConfigurationError("Create .env.local in the repository root")
+    values = dotenv_values(target)
     # Permit nonsecret one-off run settings without rewriting the user's API keys.
     for name in ("GOOGLE_LIVE_MODEL", "REACTOR_FREE_QUOTA_CONFIRMED", "REACTOR_MODE"):
         if name in os.environ:
