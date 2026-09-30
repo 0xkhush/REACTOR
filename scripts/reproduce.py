@@ -45,8 +45,14 @@ def main():
                           "hosted_requests": 0, "cuda_not_checked": True}))
         return
     config.require_live_access()
-    if args.use_llm and not os.getenv("OPENAI_API_KEY"):
-        raise RuntimeError("--use-llm requires evaluator-supplied OPENAI_API_KEY")
+    from dotenv import dotenv_values
+    raw_env = dotenv_values(ROOT / ".env.local") if (ROOT / ".env.local").is_file() else {}
+    openai_key = (os.getenv("OPENAI_API_KEY") or raw_env.get("OPENAI_API_KEY") or "").strip().strip("'\"").strip()
+    if openai_key:
+        os.environ["OPENAI_API_KEY"] = openai_key
+    elif args.use_llm:
+        print("⚠️ OPENAI_API_KEY not found; falling back to exact-match evaluator.")
+        args.use_llm = False
     require_cuda()
     import asyncio
     asyncio.run(check_livekit_credentials(config))
@@ -57,6 +63,8 @@ def main():
     env = {**os.environ, "LIVEKIT_URL": config.livekit_url,
            "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret,
            "GOOGLE_API_KEY": config.google_key, "REACTOR_MODE": config.mode}
+    if openai_key:
+        env["OPENAI_API_KEY"] = openai_key
     worker_log = open("/tmp/reactor_agent.log", "w", encoding="utf-8")
     worker = subprocess.Popen([sys.executable, "-m", "reactor.voice.agent", "dev", "--no-reload"],
                               cwd=ROOT, env=env, stdout=worker_log, stderr=subprocess.STDOUT)
