@@ -248,12 +248,20 @@ flowchart TD
 
 ```
 REACTOR/
+├── VITV_Team-REACTOR.pptx            # Official hackathon presentation slide deck
+├── LangAI3.0_AI_Disclosure.docx      # Official AI disclosure form (Word format)
+├── AI_DISCLOSURE.md                  # Filled AI usage disclosure (Markdown format)
 ├── REACTOR_Kaggle_Evaluation.ipynb   # Complete Kaggle evaluation notebook (GPU T4 x2)
-├── pyproject.toml                    # Build metadata, pinned dependencies, tool configs
+├── requirements.txt                  # Full pinned project dependencies
 ├── requirements-dev.lock             # Exact frozen development dependencies
-├── .env.example                      # Template for required environment variables
+├── pyproject.toml                    # Build metadata, pinned dependencies, tool configs
 ├── Dockerfile                        # Multi-stage container definition
 ├── logo.png                          # Project logo asset
+├── .env.example                      # Template for required environment variables
+│
+├── dist/                             # Distributable Python SDK packages
+│   ├── reactor_agent-0.1.0-py3-none-any.whl
+│   └── reactor_agent-0.1.0.tar.gz
 │
 ├── src/reactor/                      # Core Application Package
 │   ├── __init__.py                   # Package exports
@@ -308,7 +316,17 @@ REACTOR/
 │
 └── docs/                             # Documentation & Submission Assets
     ├── submission/                   # Presentation slides, setup notes, demo script
+    │   ├── VITV_Team-REACTOR.pptx    # Slide deck (PPTX)
+    │   ├── SLIDES.md                 # Slide outline & narration cues
+    │   ├── DEMO_SCRIPT.md            # Video walkthrough storyboard
+    │   ├── AI_DISCLOSURE.md          # Filled AI disclosure markdown
+    │   ├── LangAI3.0_AI_Disclosure.docx # Official AI disclosure Word document
+    │   ├── AI_USAGE_NOTES.md         # Assistant details & verification notes
+    │   └── KAGGLE_SETUP.md           # Kaggle GPU replication walkthrough
     ├── results/                      # 100-recording evaluation methodology & findings
+    │   ├── README.md                 # Results report & metrics tables
+    │   ├── SUMMARY.json              # Aggregate pass rates and latencies
+    │   └── FDB_v3_exact_reports.zip  # Captured ground truth evaluation evidence
     └── livekit-integration-status.md # Live verification log & architecture status
 ```
 
@@ -335,14 +353,20 @@ cd REACTOR
 python3.12 -m venv .venv
 source .venv/bin/activate
 
-# Install dependencies in editable mode
+# Option A: Install dependencies via requirements.txt
+pip install -r requirements.txt
+
+# Option B: Editable development install
 pip install -e ".[dev,voice]"
+
+# Option C: Install pre-built SDK wheel
+pip install dist/reactor_agent-0.1.0-py3-none-any.whl
 
 # Run full test suite (203 tests, zero network needed)
 pytest -q
 
 # Run scripted offline controller demo
-python -m reactor.demo
+reactor-demo   # or: python -m reactor.demo
 ```
 
 The offline demo verifies:
