@@ -29,7 +29,7 @@
     &middot;
     <a href="#reproduction"><strong>Reproduction &rarr;</strong></a>
     &middot;
-    <a href="#test-matrix"><strong>Test Matrix (203/203) &rarr;</strong></a>
+    <a href="#test-matrix"><strong>Test Matrix (236/236) &rarr;</strong></a>
   </p>
 </div>
 
@@ -47,11 +47,11 @@
 
 | Checklist Item | Status | Submission Details & Direct Artifact Links |
 |:---|:---:|:---|
-| **Source Code** | **Complete** | Production-ready execution engine in [`src/reactor/`](src/reactor), complete 203/203 offline test suite in [`tests/`](tests), evaluation & automation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
+| **Source Code** | **Complete** | Production-ready execution engine in [`src/reactor/`](src/reactor), complete 236/236 offline test suite in [`tests/`](tests), evaluation & automation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root) and formatted companion slide outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
 | **Video** | **Complete** | **Demo Video Link:** [Click to Watch Demo Video (YouTube / Google Drive)](https://youtu.be/placeholder-reactor-demo) *(update with final video link)*.<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
-| **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in the [AI Usage Disclosure Form](#ai-disclosure) section below and in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
-| **README** | **Complete** | Detailed end-to-end documentation: problem statement, architecture diagrams, step-by-step setup, Kaggle GPU T4 evaluation instructions, FDB-v3 benchmark reproduction, and 203-test suite matrix. |
+| **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
+| **README** | **Complete** | Detailed end-to-end documentation: problem statement, architecture diagrams, step-by-step setup, Kaggle GPU T4 evaluation instructions, FDB-v3 benchmark reproduction, and 236-test suite matrix. |
 | **APK / SDK (if any)** | **SDK Built** | **Python SDK Packages Ready:** Distributable wheel and source distribution in [`dist/`](dist):<br>- Wheel: [`dist/reactor_agent-0.1.0-py3-none-any.whl`](dist/reactor_agent-0.1.0-py3-none-any.whl)<br>- Source: [`dist/reactor_agent-0.1.0.tar.gz`](dist/reactor_agent-0.1.0.tar.gz)<br>*(Install via `pip install dist/reactor_agent-0.1.0-py3-none-any.whl`). Note: APK is N/A for Theme 05 (cloud/WebRTC voice service); mobile devices connect via standard LiveKit WebRTC client SDKs.* |
 | **TAG** | **Tagged** | **Required Tag Name:** `PRISM_GENAI_HACKATHON_Y2026`<br>Tagged on GitHub pointing to this final verified submission commit:<br>`git tag PRISM_GENAI_HACKATHON_Y2026 && git push origin PRISM_GENAI_HACKATHON_Y2026` |
 
@@ -211,7 +211,7 @@ REACTOR/
 │   ├── gpu_check/                    # GPU & CUDA diagnostic probe
 │   └── overnight/                    # Standalone batch job runner
 │
-├── tests/                            # Comprehensive Test Suite (24 suites, 203 tests)
+├── tests/                            # Comprehensive Test Suite (27 suites, 236 tests)
 │   ├── test_controller.py            # Execution DAG, write gate, cancellation tests
 │   ├── test_state.py                 # Intent frame superseding & slot tests
 │   ├── test_turns.py                 # Bridge, coalescing, turn detection tests
@@ -249,7 +249,7 @@ REACTOR/
 
 - **Python**: 3.10–3.12 (tested on Python 3.12).
 - **System**: `ffmpeg` (required for audio conversion).
-- **No credentials needed** to run the complete unit test suite (203/203) or offline demo.
+- **No credentials needed** to run the complete unit test suite (236/236) or offline demo.
 
 ### 1. Installation & Offline Verification
 
@@ -271,7 +271,7 @@ pip install -e ".[dev,voice]"
 # Option C: Install pre-built SDK wheel
 pip install dist/reactor_agent-0.1.0-py3-none-any.whl
 
-# Run full test suite (203 tests, zero network needed)
+# Run full test suite (236 tests, zero network needed)
 pytest -q
 
 # Run scripted offline controller demo
@@ -342,7 +342,7 @@ The notebook automatically runs `scripts/setup_fdb.py --with-data`, downloading 
 4. **Pip Dependencies:** Installs LiveKit, Google GenAI plugin, and NeMo Parakeet ASR.
 5. **Credentials Generation:** Writes masked `.env.local` with `0600` permissions.
 6. **Dataset & Benchmark Fetch:** Pulls upstream pinned FDB commit (`3e799c45`) and extracts 100 audio files.
-7. **Preflight & Unit Tests:** Runs `pytest -q` (all 203 pass) and `scripts/reproduce.py --check`.
+7. **Preflight & Unit Tests:** Runs `pytest -q` (all 236 pass) and `scripts/reproduce.py --check`.
 8. **Live Duplex Benchmark:** Streams all 100 scenarios, executes tools via Gemini Live, and runs Parakeet ASR.
 9. **Metrics Display:** Displays tool selection accuracy, argument accuracy, and binary pass rates.
 10. **Archive Package:** Packages results and worker logs into `/kaggle/working/REACTOR_Kaggle_Results.zip`.
@@ -369,7 +369,7 @@ REACTOR bridges all 12 official FDB-v3 mock tools across 4 real-world domains:
 | **Housing** | `calculate_commute` | Read (Concurrent) | `origin_address`, `destination_address`, `mode` | Alias mapping (`origin` → `origin_address`) |
 | **Housing** | `update_search_filter` | Write (Serialized) | `filter_name`, `value` | Widened to string, number, integer, boolean |
 | **E-Commerce** | `track_order` | Read (Concurrent) | `order_id` | Strips tracking number prefix |
-| **E-Commerce** | `search_products` | Read (Concurrent) | `query`, `max_price`, `category` | Strips optional unprovided fields |
+| **E-Commerce** | `search_products` | Read (Concurrent) | `query`, `max_price` | Normalizes budget aliases, strips undeclared |
 | **E-Commerce** | `add_to_cart` | Write (Serialized) | `product_id`, `quantity` | Defaults `quantity=1` |
 
 ### Benchmark Hardening Applied
@@ -413,7 +413,7 @@ bash scripts/reproduce.sh --use-llm
 
 ## Verification & Testing Matrix
 
-REACTOR maintains **100% passing tests** across 24 test suites with 203 automated assertions:
+REACTOR maintains **100% passing tests** across 27 test suites with 236 automated assertions:
 
 ```
 ┌──────────────────────────────────────────────────────────────────────────────────┐
@@ -421,35 +421,35 @@ REACTOR maintains **100% passing tests** across 24 test suites with 203 automate
 ├──────────────────────────────┬──────────────────────────────┬────────┬───────────┤
 │ Test Suite                   │ Target Layer                 │ Tests  │ Result    │
 ├──────────────────────────────┼──────────────────────────────┼────────┼───────────┤
-│ test_controller.py           │ Core execution engine & DAG  │ 40     │ ✓ Passed  │
+│ test_controller.py           │ Core execution engine & DAG  │ 32     │ ✓ Passed  │
 │ test_state.py                │ Versioned intent frames      │ 16     │ ✓ Passed  │
 │ test_turns.py                │ Speech → controller bridge   │ 14     │ ✓ Passed  │
-│ test_voice.py                │ LiveKit tool registration    │ 17     │ ✓ Passed  │
+│ test_voice.py                │ LiveKit tool registration    │ 43     │ ✓ Passed  │
 │ test_voice_events.py         │ Event logging & error safety │ 1      │ ✓ Passed  │
-│ test_benchmark_tools.py      │ 12 FDB-v3 mock tool bridge   │ 6      │ ✓ Passed  │
+│ test_benchmark_tools.py      │ 12 FDB-v3 mock tool bridge   │ 5      │ ✓ Passed  │
 │ test_timers.py               │ Kitchen timer service        │ 19     │ ✓ Passed  │
-│ test_kitchen_commands.py     │ Kitchen command routing      │ 4      │ ✓ Passed  │
+│ test_kitchen_commands.py     │ Kitchen command routing      │ 30     │ ✓ Passed  │
 │ test_kitchen_smoke.py        │ Audio turn separation        │ 2      │ ✓ Passed  │
 │ test_local_speech.py         │ Local speech synthesis       │ 2      │ ✓ Passed  │
-│ test_config.py               │ Credential safety & parsing  │ 5      │ ✓ Passed  │
+│ test_config.py               │ Credential safety & parsing  │ 11     │ ✓ Passed  │
 │ test_smoke_fdb.py            │ Smoke runner mechanics       │ 9      │ ✓ Passed  │
 │ test_smoke_evaluation.py     │ Exact-match evaluator        │ 4      │ ✓ Passed  │
 │ test_summarize_smokes.py     │ Summary report generator     │ 2      │ ✓ Passed  │
 │ test_evaluate_batch_calls.py │ Full-denominator call scorer │ 2      │ ✓ Passed  │
-│ test_batch_infer.py          │ Resumable batch runner       │ 5      │ ✓ Passed  │
+│ test_batch_infer.py          │ Resumable batch runner       │ 4      │ ✓ Passed  │
 │ test_package_batch_results.py│ Kaggle artifact packaging    │ 2      │ ✓ Passed  │
 │ test_reproduction.py         │ CLI reproduction flags       │ 2      │ ✓ Passed  │
 │ test_archive_evidence.py     │ Evidence archiving & hashes  │ 2      │ ✓ Passed  │
 │ test_setup_fdb.py            │ FDB-v3 checkout pinning      │ 2      │ ✓ Passed  │
 │ test_tools.py                │ Schema validation            │ 4      │ ✓ Passed  │
 │ test_trace.py                │ JSONL trace recording        │ 2      │ ✓ Passed  │
-│ test_demo.py                 │ Scripted offline demo        │ 1      │ ✓ Passed  │
+│ test_demo.py                 │ Scripted offline demo        │ 2      │ ✓ Passed  │
 │ test_kaggle_bundle.py        │ Kaggle dataset packaging     │ 4      │ ✓ Passed  │
-│ test_kaggle_probe.py         │ Kaggle GPU environment probe │ 4      │ ✓ Passed  │
-│ test_kaggle_asr.py           │ Kaggle ASR runner            │ 1      │ ✓ Passed  │
-│ test_kaggle_overnight.py     │ Kaggle overnight batch job   │ 2      │ ✓ Passed  │
+│ test_kaggle_probe.py         │ Kaggle GPU environment probe │ 3      │ ✓ Passed  │
+│ test_kaggle_asr.py           │ Kaggle ASR runner            │ 13     │ ✓ Passed  │
+│ test_kaggle_overnight.py     │ Kaggle overnight batch job   │ 4      │ ✓ Passed  │
 ├──────────────────────────────┼──────────────────────────────┼────────┼───────────┤
-│ TOTAL                        │ Full source coverage         │ 203    │ ✓ Passed  │
+│ TOTAL                        │ Full source coverage         │ 236    │ ✓ Passed  │
 └──────────────────────────────┴──────────────────────────────┴────────┴───────────┘
 ```
 
@@ -503,6 +503,17 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 - [**Final Code Checkpoint**](docs/FINAL_CODE_CHECKPOINT.md)
 
 ---
+
+## Contributors
+
+<p align="center">
+  <a href="https://github.com/0xkhush/REACTOR/graphs/contributors">
+    <img
+      src="https://contrib.rocks/image?repo=0xkhush/REACTOR"
+      alt="REACTOR contributors"
+    />
+  </a>
+</p>
 
 <p align="center">
   <strong>PRISM GenAI Hackathon 2026 — Theme 05: Full-Duplex Voice Agents</strong>
