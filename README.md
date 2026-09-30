@@ -158,5 +158,8 @@ Follow-on integration work:
 
 - [Approved design](docs/superpowers/specs/2026-09-26-reactor-design.md)
 - [Offline-core implementation plan](docs/superpowers/plans/2026-09-26-reactor-core.md)
+- [Private Kaggle GPU evaluation and download steps](docs/submission/KAGGLE_SETUP.md)
+- [Eight-slide deck source](docs/submission/SLIDES.md) and [editable draft deck](docs/submission/REACTOR_Submission.pptx)
+- [Four-minute demo script](docs/submission/DEMO_SCRIPT.md)
 
 AI assistance was used for planning, implementation, and tests of this milestone. Keep that fact in the team's final AI usage disclosure.

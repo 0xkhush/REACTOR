@@ -108,8 +108,9 @@ def main():
                 timeout=2400, secrets=credentials.values())
         command([sys.executable, "-m", "pip", "install", "--quiet", "-e", str(repo) + "[voice]"],
                 timeout=1800, secrets=credentials.values())
-        import torch
-        if not torch.cuda.is_available():
+        cuda_check = command([sys.executable, "-c", "import torch; print(torch.cuda.is_available())"],
+                             timeout=90, secrets=credentials.values())
+        if cuda_check.strip().splitlines()[-1] != "True":
             raise RuntimeError("CUDA became unavailable after dependency installation")
 
         result_dir = WORK / "fdb_v3_data_released"

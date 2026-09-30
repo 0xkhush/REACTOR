@@ -21,6 +21,14 @@ def choose_audio_sample(dataset: Path) -> Path:
     return min(audio, key=lambda path: (path.stat().st_size, path.name))
 
 
+def fresh_python(code: str, arguments: list[str]) -> str:
+    completed = subprocess.run([sys.executable, "-c", code, *arguments], text=True,
+                               stdout=subprocess.PIPE, stderr=subprocess.STDOUT, timeout=1200)
+    if completed.returncode:
+        raise RuntimeError("Fresh NeMo interpreter failed: " + completed.stdout[-1200:])
+    return completed.stdout
+
+
 def main():
     report = {"model": MODEL, "python": platform.python_version(), "status": "starting"}
     try:
@@ -39,10 +47,19 @@ def main():
         subprocess.run([sys.executable, "-m", "pip", "install", "--quiet", "--no-cache-dir",
                         "nemo_toolkit[asr]==2.5.3"], check=True, timeout=1800)
         start = time.monotonic()
-        import nemo.collections.asr as nemo_asr
-        model = nemo_asr.models.ASRModel.from_pretrained(model_name=MODEL).cuda()
-        transcript = model.transcribe([str(audio)], timestamps=True)[0]
-        report["word_count"] = len((getattr(transcript, "text", "") or "").split())
+        code = (
+            "import json,sys\n"
+            "import nemo.collections.asr as asr\n"
+            "model=asr.models.ASRModel.from_pretrained(model_name=sys.argv[1]).cuda()\n"
+            "result=model.transcribe([sys.argv[2]],timestamps=True)[0]\n"
+            "print('REACTOR_ASR_JSON='+json.dumps({'words':len((getattr(result,'text','') or '').split())}))\n"
+        )
+        output = fresh_python(code, [MODEL, str(audio)])
+        matches = [line.removeprefix("REACTOR_ASR_JSON=") for line in output.splitlines()
+                   if line.startswith("REACTOR_ASR_JSON=")]
+        if not matches:
+            raise ValueError("NeMo produced no machine-readable transcript marker")
+        report["word_count"] = json.loads(matches[-1])["words"]
         report["asr_seconds"] = round(time.monotonic() - start, 2)
         report["status"] = "ok"
     except BaseException as exc:

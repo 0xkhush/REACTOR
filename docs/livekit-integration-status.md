@@ -1,6 +1,6 @@
 # LiveKit/FDB-v3 integration checkpoint
 
-Branch: `feat/reactor-livekit` (not merged or pushed).
+The LiveKit integration was fast-forward merged and pushed to `main` at `b2622ba`. Kaggle evaluation work continues on `feat/kaggle-evaluation`.
 
 ## Live smoke evidence (29 September 2026)
 
