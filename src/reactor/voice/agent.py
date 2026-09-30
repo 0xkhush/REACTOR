@@ -18,6 +18,7 @@ from reactor.tools.timers import TimerService
 from reactor.trace import TraceRecorder
 from reactor.voice.prompts import BENCHMARK, KITCHEN
 from reactor.voice.turns import TurnBridge
+from reactor.voice.kitchen import dispatch_kitchen_command, parse_timer_command
 
 
 DESCRIPTIONS = {
@@ -53,8 +54,10 @@ def tool_execution_summary(ev):
 
 def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str, object]:
     args = dict(raw_arguments)
-    if tool == "search_products" and "budget" in args and "max_price" not in args:
+    if tool in {"search_products", "search_apartments"} and "budget" in args and "max_price" not in args:
         args["max_price"] = args.pop("budget")
+    if tool == "search_flights" and "departure_date" in args and "date" not in args:
+        args["date"] = args.pop("departure_date")
     return args
 
 
@@ -110,9 +113,37 @@ def create_tool_functions(bridge: TurnBridge, definitions):
     return tools
 
 
+def model_tools_for_mode(mode: str, bridge: TurnBridge, definitions):
+    # Native-audio Gemini repeatedly refused the timer tools in live tests. The
+    # timer extension now routes clear final transcripts through the controller.
+    return [] if mode == "kitchen" else create_tool_functions(bridge, definitions)
+
+
+async def handle_kitchen_transcript(session, bridge: TurnBridge, transcript: str, event_id: str):
+    result = await dispatch_kitchen_command(bridge, transcript, event_id=event_id)
+    if result is None:
+        mode = resolve_transcript_mode(transcript, has_request=bridge.has_request)
+        changes = None if mode == "resume" else {"latest_utterance": transcript}
+        await bridge.resolve(transcript, mode=mode, changes=changes, event_id=event_id)
+        return None
+    # Stop an unsolicited realtime response before speaking the controller's verified result.
+    await session.interrupt(force=True)
+    await session.say(result["message"])
+    return result
+
+
 class ReactorVoiceAgent(Agent):
-    def __init__(self, mode: str):
+    def __init__(self, mode: str, bridge: TurnBridge | None = None):
+        self.mode = mode
+        self.bridge = bridge
         super().__init__(instructions=BENCHMARK if mode == "benchmark" else KITCHEN)
+
+    async def on_user_turn_completed(self, turn_ctx, new_message):
+        if self.mode != "kitchen" or self.bridge is None:
+            return
+        # Kitchen turns are routed from the final transcript callback to avoid
+        # relying on model-generated timer calls. Leave normal chat generation enabled.
+        return
 
 
 def build_model(config: AgentConfig):
@@ -145,11 +176,11 @@ async def entrypoint(ctx: agents.JobContext):
         pending_events.add(task)
         task.add_done_callback(pending_events.discard)
 
-    session = AgentSession(llm=model, tools=create_tool_functions(bridge, definitions))
+    session = AgentSession(llm=model, tools=model_tools_for_mode(config.mode, bridge, definitions))
 
     @session.on("user_state_changed")
     def on_user_state(ev):
-        if ev.new_state == "speaking":
+        if config.mode == "benchmark" and ev.new_state == "speaking":
             spawn(bridge.speech_started())
 
     @session.on("user_input_transcribed")
@@ -160,11 +191,14 @@ async def entrypoint(ctx: agents.JobContext):
                 trace.event("user_transcript", text=safe_transcript(ev.transcript, (
                     config.livekit_key, config.livekit_secret, config.google_key,
                 )))
-            # Model transcription can arrive after a tool proposal on realtime APIs;
-            # the bridge waits for the first resolved turn rather than using guesses.
-            mode = resolve_transcript_mode(ev.transcript, has_request=bridge.has_request)
-            changes = {"latest_utterance": ev.transcript} if mode != "resume" else None
-            spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes, event_id=ev.created_at))
+            # Benchmark mode receives semantic decisions from the realtime model.
+            # Kitchen mode resolves final text in on_user_turn_completed first.
+            if config.mode == "benchmark":
+                mode = resolve_transcript_mode(ev.transcript, has_request=bridge.has_request)
+                changes = {"latest_utterance": ev.transcript} if mode != "resume" else None
+                spawn(bridge.resolve(ev.transcript, mode=mode, changes=changes, event_id=ev.created_at))
+            else:
+                spawn(handle_kitchen_transcript(session, bridge, ev.transcript, str(ev.created_at)))
 
     @session.on("conversation_item_added")
     def on_conversation_item(ev):
@@ -194,7 +228,7 @@ async def entrypoint(ctx: agents.JobContext):
             tool_log.close()
 
     ctx.add_shutdown_callback(shutdown)
-    await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode))
+    await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode, bridge))
 
 
 def main():

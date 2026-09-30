@@ -11,7 +11,9 @@ from reactor.state import Proposal
 from reactor.trace import TraceRecorder
 from reactor.tools.benchmark import BenchmarkTools
 from reactor.tools.timers import TimerService
-from reactor.voice.agent import create_tool_functions, resolve_transcript_mode, safe_transcript, tool_execution_summary
+from reactor.voice.agent import (create_tool_functions, normalize_tool_args, resolve_transcript_mode,
+                                 safe_transcript, tool_execution_summary, model_tools_for_mode)
+from reactor.voice.agent import handle_kitchen_transcript
 from reactor.voice.turns import TurnBridge
 
 
@@ -42,6 +44,39 @@ async def test_timer_tool_calls_flow_through_bridge_with_provider_call_id():
         cancelled = json.loads(await cancel(raw_arguments={"timer_id": first["result"]["timer_id"]},
                                             ctx=SimpleNamespace(function_call=SimpleNamespace(call_id="provider-2"))))
         assert cancelled["result"]["state"] == "cancelled"
+    finally:
+        await bridge.close()
+        await controller.close()
+        await timers.close()
+
+
+async def test_final_kitchen_transcript_interrupts_model_and_speaks_verified_timer_result():
+    timers = TimerService()
+    controller = Controller("kitchen", timers.definitions())
+    bridge = TurnBridge(controller)
+
+    class Session:
+        def __init__(self):
+            self.interrupted = False
+            self.spoken = []
+
+        async def interrupt(self, *, force):
+            self.interrupted = force
+
+        async def say(self, text):
+            self.spoken.append(text)
+
+    session = Session()
+    try:
+        result = await handle_kitchen_transcript(
+            session, bridge,
+            "Please create a timer called pasta for 10 minutes. Actually, make it seven minutes.",
+            "event-1",
+        )
+        assert result["timer"]["duration_seconds"] == 420
+        assert session.interrupted
+        assert session.spoken == ["Timer pasta set for 420 seconds."]
+        assert (await timers.list_timers())["timers"][0]["state"] == "running"
     finally:
         await bridge.close()
         await controller.close()
@@ -91,6 +126,18 @@ async def test_search_product_budget_alias_uses_declared_max_price_argument():
     finally:
         await bridge.close()
         await controller.close()
+
+
+def test_budget_alias_normalizes_to_max_price_for_search_tools():
+    assert normalize_tool_args("search_apartments", {
+        "city": "Seattle", "bedrooms": 2, "budget": 2500,
+    }) == {"city": "Seattle", "bedrooms": 2, "max_price": 2500}
+
+
+def test_departure_date_alias_normalizes_to_fdb_flight_schema():
+    assert normalize_tool_args("search_flights", {
+        "destination": "Tokyo", "departure_date": "2026-07-15",
+    }) == {"destination": "Tokyo", "date": "2026-07-15"}
 
 
 async def test_model_proposal_is_logged_before_first_turn_resolves():
@@ -143,6 +190,15 @@ def test_transcript_mode_is_conservative_and_has_no_benchmark_answers():
     assert resolve_transcript_mode("thanks", has_request=True) == "resume"
     assert resolve_transcript_mode("Track order A12", has_request=True) == "new"
     assert resolve_transcript_mode("actually Chicago", has_request=False) == "new"
+
+
+def test_kitchen_mode_handles_timer_commands_locally_without_model_tool_calls():
+    timers = TimerService()
+    try:
+        assert model_tools_for_mode("kitchen", object(), timers.definitions()) == []
+        assert len(model_tools_for_mode("benchmark", object(), BenchmarkTools().definitions())) == 12
+    finally:
+        asyncio.run(timers.close())
 
 
 def test_diagnostic_transcript_redacts_known_credentials_and_is_bounded():
