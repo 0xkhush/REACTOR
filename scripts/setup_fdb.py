@@ -37,6 +37,31 @@ def download_dataset_if_missing(dataset_dir: Path) -> None:
         zip_path.unlink()
 
 
+def patch_upstream_evaluator(v3_dir: Path) -> None:
+    eval_script = v3_dir / "evaluate_tool_calls.py"
+    if not eval_script.is_file():
+        return
+    content = eval_script.read_text(encoding="utf-8")
+    target = '    print(f"    Tool Selection Acc : {bm[\'tool_selection_acc\']:.1%}")'
+    if target in content:
+        replacement = (
+            '    tool_sel_str = f"{bm[\'tool_selection_acc\']:.1%}" if bm[\'tool_selection_acc\'] is not None else "N/A"\n'
+            '    arg_acc_str = f"{bm[\'argument_acc\']:.1%}" if bm[\'argument_acc\'] is not None else "N/A"\n'
+            '    print(f"    Tool Selection Acc : {tool_sel_str}")\n'
+            '    print(f"    Argument Acc       : {arg_acc_str}")'
+        )
+        content = content.replace(
+            '    print(f"    Tool Selection Acc : {bm[\'tool_selection_acc\']:.1%}")\n'
+            '    print(f"    Argument Acc       : {bm[\'argument_acc\']:.1%}")',
+            replacement,
+        )
+        content = content.replace(
+            'parts = [f"{m}={v:.1%}" for m, v in metrics.items()]',
+            'parts = [f"{m}={v:.1%}" if v is not None else f"{m}=N/A" for m, v in metrics.items()]',
+        )
+        eval_script.write_text(content, encoding="utf-8")
+
+
 def setup(destination: Path, *, with_data: bool = False) -> Path:
     destination = destination.resolve()
     if destination.exists():
@@ -50,6 +75,7 @@ def setup(destination: Path, *, with_data: bool = False) -> Path:
             raise FileNotFoundError(f"Parent directory does not exist: {destination.parent}")
         subprocess.run(["git", "clone", "--filter=blob:none", UPSTREAM, str(destination)], check=True)
         subprocess.run(["git", "-C", str(destination), "checkout", "--detach", REVISION], check=True)
+    patch_upstream_evaluator(destination / "v3")
     if with_data:
         download_dataset_if_missing(destination.parent.parent / "fdb_v3_data_released")
     return destination / "v3"

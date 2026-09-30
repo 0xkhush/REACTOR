@@ -49,6 +49,7 @@ def read_secrets(client):
             raise RuntimeError("Enable and grant the four Kaggle Secrets to this private notebook") from None
         if not values[label]:
             raise RuntimeError("Missing Kaggle Secrets value for label: " + label)
+        values[label] = str(values[label]).strip().strip("'\"").strip()
     return values
 
 

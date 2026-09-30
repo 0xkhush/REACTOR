@@ -61,3 +61,15 @@ def test_local_nonsecret_run_settings_can_override_env_file(tmp_path, monkeypatc
     config.require_live_access()
     assert config.model == "gemini-2.5-flash-native-audio-preview-12-2025"
     assert config.google_key == "local-test-google"
+
+
+def test_strips_quotes_from_config_values():
+    values = {
+        **VALID,
+        "GOOGLE_API_KEY": '"quoted-key"',
+        "LIVEKIT_API_KEY": "'single-quoted-key'",
+    }
+    config = AgentConfig.from_values(values)
+    assert config.google_key == "quoted-key"
+    assert config.livekit_key == "single-quoted-key"
+

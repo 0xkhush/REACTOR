@@ -13,7 +13,7 @@ class ConfigurationError(ValueError):
 
 
 def _required(values: Mapping[str, str | None], name: str) -> str:
-    value = (values.get(name) or "").strip()
+    value = (values.get(name) or "").strip().strip("'\"").strip()
     if not value or value.startswith(("replace-with", "wss://your-project")):
         raise ConfigurationError(f"{name} is missing or a placeholder")
     return value

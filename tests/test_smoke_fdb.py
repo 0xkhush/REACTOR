@@ -6,7 +6,7 @@ from pathlib import Path
 
 import pytest
 
-from scripts.smoke_fdb import check_dataset, matching_calls, count_completed, managed_worker, require_ffmpeg, check_livekit_credentials, redact_line
+from scripts.smoke_fdb import check_dataset, matching_calls, count_completed, managed_worker, require_ffmpeg, check_livekit_credentials, check_google_credentials, redact_line
 from reactor.config import AgentConfig, ConfigurationError
 
 
@@ -74,6 +74,52 @@ def test_livekit_401_is_reported_without_exposing_credentials():
         asyncio.run(check_livekit_credentials(config, factory=lambda **kwargs: client))
     assert "contains-secret-value" not in str(error.value)
     assert client.closed
+
+
+def test_google_credentials_preflight_success():
+    class FakeTask:
+        def done(self): return False
+        def exception(self): return None
+
+    class FakeSession:
+        _main_atask = FakeTask()
+        closed = False
+        async def aclose(self): self.closed = True
+
+    class FakeRealtimeModel:
+        def __init__(self, api_key): self.api_key = api_key
+        def session(self): return FakeSession()
+
+    class FakeGooglePlugin:
+        class realtime:
+            RealtimeModel = FakeRealtimeModel
+
+    config = AgentConfig("wss://example.livekit.cloud", "key", "secret", "google-valid", "model")
+    asyncio.run(check_google_credentials(config, plugin_google=FakeGooglePlugin))
+
+
+def test_google_credentials_preflight_failure_rejects():
+    class FakeTask:
+        def done(self): return True
+        def exception(self): return RuntimeError("API key not valid")
+
+    class FakeSession:
+        _main_atask = FakeTask()
+        closed = False
+        async def aclose(self): self.closed = True
+
+    class FakeRealtimeModel:
+        def __init__(self, api_key): self.api_key = api_key
+        def session(self): return FakeSession()
+
+    class FakeGooglePlugin:
+        class realtime:
+            RealtimeModel = FakeRealtimeModel
+
+    config = AgentConfig("wss://example.livekit.cloud", "key", "secret", "google-invalid", "model")
+    with pytest.raises(ConfigurationError, match="Google API key failed Gemini Realtime authentication"):
+        asyncio.run(check_google_credentials(config, plugin_google=FakeGooglePlugin))
+
 
 
 def test_worker_diagnostics_redact_api_keys_and_secrets():

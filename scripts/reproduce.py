@@ -10,9 +10,9 @@ import time
 from pathlib import Path
 
 if __package__:
-    from .smoke_fdb import ROOT, check_dataset, count_completed, verify_upstream, check_livekit_credentials
+    from .smoke_fdb import ROOT, check_dataset, count_completed, verify_upstream, check_livekit_credentials, check_google_credentials
 else:
-    from smoke_fdb import ROOT, check_dataset, count_completed, verify_upstream, check_livekit_credentials
+    from smoke_fdb import ROOT, check_dataset, count_completed, verify_upstream, check_livekit_credentials, check_google_credentials
 from reactor.config import load_config
 
 
@@ -50,6 +50,7 @@ def main():
     require_cuda()
     import asyncio
     asyncio.run(check_livekit_credentials(config))
+    asyncio.run(check_google_credentials(config))
     provider = "gemini2_5" if config.model.startswith("gemini-2.5-") else "gemini3_1" if config.model.startswith("gemini-3.1-") else None
     if provider is None:
         raise RuntimeError("Set GOOGLE_LIVE_MODEL to a supported FDB-v3 Gemini Live provider")

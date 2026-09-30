@@ -53,6 +53,24 @@ async def check_livekit_credentials(config, *, factory=api.LiveKitAPI):
         await client.aclose()
 
 
+async def check_google_credentials(config, *, plugin_google=None):
+    """Probe Gemini Realtime API to confirm Google API key before model inference."""
+    try:
+        if plugin_google is None:
+            from livekit.plugins import google as plugin_google
+        llm = plugin_google.realtime.RealtimeModel(api_key=config.google_key)
+        session = llm.session()
+        await asyncio.sleep(2)
+        if session._main_atask.done() and session._main_atask.exception():
+            raise session._main_atask.exception()
+        await session.aclose()
+    except Exception as exc:
+        raise ConfigurationError(
+            f"Google API key failed Gemini Realtime authentication ({type(exc).__name__}: {exc}). "
+            "Please check GOOGLE_API_KEY in secrets/environment without quotes or extra spaces."
+        ) from None
+
+
 @contextmanager
 def managed_worker(command: list[str], *, startup_seconds: float = 5, cwd: Path = ROOT,
                    env=None, secrets=()):
