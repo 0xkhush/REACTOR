@@ -2,7 +2,7 @@
 
 Correction-aware execution for interruptible voice agents.
 
-**Code checkpoint:** LiveKit/Gemini agent, versioned controller, 12 FDB-v3 tool adapters, kitchen extension, and Kaggle ASR/evaluation scripts are implemented. Live kitchen confirmations and the full captured-data evaluation were checked. Historical strict exact pass is **12/100**; the final reviewed candidate has not had a new full capture. See [code verification](docs/FINAL_CODE_CHECKPOINT.md) and [measured results](docs/results/README.md).
+**Measured code checkpoint:** LiveKit/Gemini agent, versioned controller, 12 FDB-v3 tool adapters, kitchen extension, and Kaggle ASR/evaluation scripts are implemented. A clean full capture at `36a798b` scored **23/100 strict exact tool/argument passes** and **42/100 expected tool selections**, without a semantic judge. The requested 40% strict pass target was not met. See [code verification](docs/FINAL_CODE_CHECKPOINT.md) and [measured results](docs/results/README.md).
 
 ## Run locally
 
@@ -121,7 +121,7 @@ For a self-contained local smoke run, use `--run --start-worker`; it stops the w
 
 The smoke command refuses to run unless free quota is confirmed and a selected model ID is present. It writes the agent's audio under ignored `artifacts/`, looks for room-matched executed calls in `/tmp/agent_tool_calls.log`, and fails if none were logged. One such bounded smoke run connected, logged a `track_order` call, and captured agent audio; this is not a benchmark pass-rate result. The upstream audio client has its own recording window; validate spoken results against the actual output rather than treating a logged tool call as task completion.
 
-The resumable Mac capture processed all 100 recordings: 37 had executed tool calls, 63 had none, and zero failed at the capture/transport stage. The pinned exact tool evaluator reports 25/100 expected tool selections and 12/100 strict passes. This is local diagnostic evidence without an LLM judge, not an official normalized score. Repeated finance runs varied.
+The earlier mixed-revision Mac capture processed all 100 recordings: 37 had executed tool calls, 63 had none, and zero failed at the capture/transport stage. The pinned exact tool evaluator reported 25/100 expected tool selections and 12/100 strict passes. A newer single-revision capture at `36a798b` recorded **59 calls, 41 no-tool recordings, zero transport failures**, with **42/100 expected tool selections and 23/100 strict exact passes**. Neither report used an LLM judge, and only the earlier audio has Kaggle ASR transcripts. These are local diagnostics, not official normalized scores.
 
 The current **three-recording smoke sample** selected the expected tool in all three cases. FDB-v3's local exact-match check passed ecommerce and finance, and rejected travel's ISO date formatting. This is a curated debug sample, not a representative benchmark estimate. A rerunnable summary is available with:
 
@@ -163,7 +163,7 @@ The image includes ffmpeg and local `espeak-ng` for voice/timer mode, not CUDA A
 
 The official semantic judge uses a separate OpenAI API. We do not run it under a ₹0 budget and do not present exact-match reports as official scores. The organizers' model-key arrangement and final evaluation machine remain external dependencies.
 
-Remaining submission work: team/college/contact fields, final video hosting link, signed official AI disclosure, and final GitHub publication/release tag. Media export is deferred until the user is satisfied with this code checkpoint. The low historical score and incomplete final-candidate validation must remain disclosed.
+Remaining submission work: team/college/contact fields, final video hosting link, signed official AI disclosure, and final GitHub publication/release tag. Media export is deferred until the user is satisfied with this code checkpoint. Disclose the measured 23% strict exact result and its missing semantic-judge and ASR checks.
 
 ## Design and implementation notes
 

@@ -20,7 +20,7 @@ Full-Duplex-Bench v3: 100 recordings from 12 speakers across 79 scenarios and 12
 
 ## Slide 5: Measured evidence
 
-Mac capture batch: 100 audio attempts; 37 with tool calls; 63 without; 0 capture failures. Pinned FDB-v3 exact tool/argument evaluation without the LLM judge: 25/100 expected tool selections and 12/100 strict exact passes. These are local diagnostics, not official normalized scores. Kaggle ASR timing/transcription output is pending.
+Clean Mac capture at `36a798b`: 100 audio attempts; 59 with calls; 41 without; 0 transport failures. Pinned FDB-v3 exact tool/argument evaluation without an LLM judge: **42/100 expected tool selections and 23/100 strict exact passes**. Historical mixed-revision capture scored 12/100. The new candidate's audio has no ASR report, so no spoken-response or latency claim follows from its call log. These are local diagnostics, not official normalized scores.
 
 ## Slide 6: Extension demonstration
 
@@ -28,7 +28,7 @@ Hands-free kitchen timer extension: a live same-room smoke created one named 420
 
 ## Slide 7: Reproduction and limitations
 
-Python 3.12, LiveKit Agents 1.3.12, Gemini 2.5 Native Audio, original FDB-v3 mock tools, pinned upstream. Kaggle T4 ASR evaluation is pending; exact-match results have no semantic judge. Provider quotas and already-dispatched writes limit cancellation guarantees.
+Python 3.12, LiveKit Agents 1.3.12, Gemini 2.5 Native Audio, original FDB-v3 mock tools, pinned upstream. Kaggle T4 transcribed the historical capture; the new capture has tool-call exact scoring only. Provider quotas and already-dispatched writes limit cancellation guarantees.
 
 ## Slide 8: Next steps
 
