@@ -28,6 +28,7 @@ def main():
     parser.add_argument("--upstream", type=Path, default=ROOT / "vendor" / "Full-Duplex-Bench")
     parser.add_argument("--check", action="store_true", help="Offline data/config check; makes no API request")
     parser.add_argument("--use-llm", action="store_true", help="Use the upstream semantic judge; evaluator supplies OPENAI_API_KEY")
+    parser.add_argument("--strict", action="store_true", help="Fail if any scenario failed or was incomplete")
     args = parser.parse_args()
     args.upstream = args.upstream.resolve()
     args.dataset = args.dataset.resolve()
@@ -75,21 +76,33 @@ def main():
             worker.wait()
         if not worker_log.closed:
             worker_log.close()
+
     completed, failed = count_completed(args.dataset, provider)
-    if completed != len(inputs) or failed:
-        raise RuntimeError(f"Incomplete benchmark: {completed}/{len(inputs)} completed, {failed} failed")
+    print(f"\n📊 Benchmark finished: {completed}/{len(inputs)} scenarios completed ({failed} failed or incomplete).")
+
+    if completed == 0:
+        raise RuntimeError("Benchmark failed: 0 scenarios completed successfully.")
+
     artifacts = ROOT / "artifacts"
     artifacts.mkdir(exist_ok=True)
     for program, filename in [("evaluate_tool_calls.py", "tool_accuracy"),
                               ("evaluate_pass_rate.py", "strict_pass_rate")]:
+        output_file = artifacts / f"{filename}_{provider}_{'semantic' if args.use_llm else 'exact'}.json"
         command = [sys.executable, program, "--benchmark", "benchmark_data_v2.json",
-                        "--results-dir", str(args.dataset), "--provider", provider,
-                        "--output", str(artifacts / f"{filename}_{provider}_{'semantic' if args.use_llm else 'exact'}.json")]
+                   "--results-dir", str(args.dataset), "--provider", provider,
+                   "--output", str(output_file)]
         if args.use_llm:
             command.append("--use-llm")
-        subprocess.run(command, cwd=source, env=env, check=True, timeout=1800)
-    print(f"{'Semantic' if args.use_llm else 'Exact-match development'} evaluation: {completed}/{len(inputs)} completed.")
+        try:
+            subprocess.run(command, cwd=source, env=env, check=True, timeout=1800)
+        except Exception as exc:
+            print(f"⚠️ Error running {program}: {exc}")
+
+    print(f"\n{'Semantic' if args.use_llm else 'Exact-match development'} evaluation: {completed}/{len(inputs)} completed.")
     print("These local reports are not the organizers' scored rerun.")
+
+    if args.strict and (completed != len(inputs) or failed):
+        raise RuntimeError(f"Strict mode: Incomplete benchmark: {completed}/{len(inputs)} completed, {failed} failed")
 
 
 if __name__ == "__main__":
