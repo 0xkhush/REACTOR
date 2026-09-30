@@ -4,6 +4,8 @@ Correction-aware execution for interruptible voice agents.
 
 **Measured code checkpoint:** LiveKit/Gemini agent, versioned controller, 12 FDB-v3 tool adapters, kitchen extension, and Kaggle ASR/evaluation scripts are implemented. A clean full capture at `36a798b` scored **23/100 strict exact tool/argument passes** and **42/100 expected tool selections**, without a semantic judge. The requested 40% strict pass target was not met. See [code verification](docs/FINAL_CODE_CHECKPOINT.md) and [measured results](docs/results/README.md).
 
+The newer native-schema candidate `ceafcee` has 228 passing local tests and targeted live diagnostics, but no full-run score. Use the [benchmark handoff](docs/BENCHMARK_HANDOFF.md) to measure it in a separate capture.
+
 ## Run locally
 
 Requires Python 3.10–3.12; verified on Python 3.12 on an M1 Mac. No API keys or GPU are needed for the offline tests and demo. Package installation needs internet access.
