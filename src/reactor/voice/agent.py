@@ -325,13 +325,15 @@ async def entrypoint(ctx: agents.JobContext):
 
     session = AgentSession(llm=model, tools=model_tools_for_mode(config.mode, bridge, definitions))
 
-    @session.on("user_state_changed")
-    def on_user_state(ev):
-        if config.mode == "benchmark" and ev.new_state == "speaking":
-            spawn(bridge.speech_started())
-
     @session.on("user_input_transcribed")
     def on_transcript(ev):
+        # Google 1.3.12 synthesizes input_speech_started when the model resumes
+        # after a tool result. Its user-state event is not evidence of microphone
+        # speech: holding there deadlocks the next tool awaiting a nonexistent
+        # user transcript. Only nonempty partial user transcription opens this
+        # controller hold. SDK audio barge-in remains active independently.
+        if config.mode == "benchmark" and not ev.is_final and ev.transcript.strip():
+            spawn(bridge.speech_started())
         if ev.is_final:
             trace = controller._trace
             if trace:
