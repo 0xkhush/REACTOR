@@ -18,8 +18,14 @@ from reactor.config import load_config
 
 def require_cuda():
     import torch
-    if not torch.cuda.is_available():
-        raise RuntimeError("The pinned upstream Parakeet ASR runner requires NVIDIA CUDA")
+    if torch.cuda.is_available():
+        print(f"✅ Hardware accelerator detected: NVIDIA CUDA ({torch.cuda.get_device_name(0)})")
+    else:
+        try:
+            import torch_xla.core.xla_model as xm
+            print(f"✅ Hardware accelerator detected: Google TPU ({xm.xla_device()})")
+        except Exception:
+            print("ℹ️ NVIDIA CUDA not detected; running on TPU/CPU host.")
 
 
 def main():

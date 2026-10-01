@@ -62,6 +62,22 @@ def patch_upstream_evaluator(v3_dir: Path) -> None:
         eval_script.write_text(content, encoding="utf-8")
 
 
+def patch_upstream_asr(v3_dir: Path) -> None:
+    runner_script = v3_dir / "run_tool_benchmark.py"
+    if not runner_script.is_file():
+        return
+    content = runner_script.read_text(encoding="utf-8")
+    target = "    if hasattr(model, 'cuda'):\n        model = model.cuda()"
+    replacement = (
+        "    import torch\n"
+        "    if hasattr(model, 'cuda') and torch.cuda.is_available():\n"
+        "        model = model.cuda()"
+    )
+    if target in content:
+        content = content.replace(target, replacement)
+        runner_script.write_text(content, encoding="utf-8")
+
+
 def setup(destination: Path, *, with_data: bool = False) -> Path:
     destination = destination.resolve()
     if destination.exists():
@@ -76,6 +92,7 @@ def setup(destination: Path, *, with_data: bool = False) -> Path:
         subprocess.run(["git", "clone", "--filter=blob:none", UPSTREAM, str(destination)], check=True)
         subprocess.run(["git", "-C", str(destination), "checkout", "--detach", REVISION], check=True)
     patch_upstream_evaluator(destination / "v3")
+    patch_upstream_asr(destination / "v3")
     if with_data:
         download_dataset_if_missing(destination.parent.parent / "fdb_v3_data_released")
     return destination / "v3"
