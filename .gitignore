@@ -13,4 +13,5 @@ __pycache__/
 /.superpowers/
 build/
 /Reactor Kaggle Results/
+/REACTOR_Colab_Results/
 *.zip

@@ -13,9 +13,9 @@ UPSTREAM = ROOT / "vendor" / "Full-Duplex-Bench"
 REVISION = "3e799c45a045256f47d5f1c9cda90157e2d2ec9e"
 
 
-def field(type_, *, default=None, optional=False):
+def field(type_, *, default=None, optional=False, include_default=True):
     result = {"type": type_}
-    if optional:
+    if optional and include_default:
         result["default"] = default
     return result
 
@@ -43,7 +43,8 @@ CONTRACTS = {
                                     "value": field(["string", "number", "integer", "boolean"])}, ()),
     "track_order": (False, {"order_id": field("string")}, ()),
     "search_products": (False, {"query": field("string"),
-                                "max_price": field(["number", "null"], optional=True)}, ("max_price",)),
+                                "category": field(["string", "null"], optional=True, include_default=False),
+                                "max_price": field(["number", "null"], optional=True)}, ("max_price", "category")),
     "add_to_cart": (True, {"product_id": field("string"),
                             "quantity": field("integer", optional=True, default=1)}, ("quantity",)),
 }
@@ -78,8 +79,6 @@ class BenchmarkTools:
                     kwargs.setdefault("bedrooms", 1)
                     kwargs.setdefault("max_price", 2000.0)
                     kwargs.pop("pets_allowed", None)
-                elif _name == "search_products":
-                    kwargs.pop("category", None)
                 return self.registry.call(_name, **kwargs)
             definitions.append(ToolDefinition(name, write, schema, invoke, blocking=True))
         return definitions
