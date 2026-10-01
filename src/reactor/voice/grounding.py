@@ -24,7 +24,9 @@ def ground_request_arguments(tool, arguments, transcript):
         # Only remove a model-added year with matching month/day evidence. Do
         # not translate relative dates, change the requested day, or discard a
         # year present anywhere in this request's accumulated transcript.
-        if day is not None and day[2] is not None and not re.search(r"\b\d{4}\b", transcript):
+        if (day is not None and isinstance(args.get("date"), str)
+                and re.fullmatch(r"\d{4}-\d{2}-\d{2}", args["date"])
+                and not re.search(r"\b\d{4}\b", transcript)):
             mentioned = [calendar_day(match.group()) for match in MONTH_DAY.finditer(transcript)]
             if any(item is not None and item[:2] == day[:2] for item in mentioned):
                 args["date"] = f"{calendar.month_name[day[0]]} {day[1]}"

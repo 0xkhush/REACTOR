@@ -31,6 +31,7 @@ class TurnBridge:
         self._provider_actions: dict[str, str] = {}
         self._origin_requests: dict[str, RequestToken] = {}
         self._request_transcripts: dict[RequestToken, str] = {}
+        self._request_action_text: dict[RequestToken, str] = {}
 
     @property
     def has_request(self) -> bool:
@@ -68,6 +69,10 @@ class TurnBridge:
                 self._request_transcripts[token] = f"{prior_text}\n{transcript}"
             elif mode == "new":
                 self._request_transcripts[token] = transcript
+            if mode != "resume":
+                # Historical text grounds retained slots, but superseded repeat
+                # permission must not authorize another state-changing action.
+                self._request_action_text[token] = transcript
             self._request = token
             if event_id is not None:
                 self._seen_events.add(event_id)
@@ -106,7 +111,7 @@ class TurnBridge:
             key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
             intentional_repeat = bool(re.search(
                 r"\b(?:twice|again|another|two identical|two separate|second identical)\b",
-                request_text, re.I,
+                self._request_action_text.get(request, ""), re.I,
             ))
             if call_id in self._provider_actions:
                 action_id = self._provider_actions[call_id]

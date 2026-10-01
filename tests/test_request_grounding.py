@@ -10,6 +10,8 @@ from reactor.voice.turns import TurnBridge
     ("Fly to Oslo on November 9th, 2028", "2028-11-09", "2028-11-09"),
     ("Fly to Oslo on November 9th", "2029-11-10", "2029-11-10"),
     ("Fly to Oslo next Thursday", "2029-11-09", "2029-11-09"),
+    ("Fly to Oslo on November 9", "11/09/2029", "11/09/2029"),
+    ("Fly to Oslo on November 9", "November 9, 2029", "November 9, 2029"),
 ])
 async def test_flight_year_grounding_changes_only_matching_user_month_day_without_a_year(transcript, proposed, expected):
     backend = BenchmarkTools()
@@ -72,6 +74,22 @@ async def test_only_separate_single_character_identifier_tokens_are_joined(ident
         await bridge.resolve("Track my order", mode="new")
         result = await bridge.execute("track_order", {"order_id": identifier}, "track")
         assert result.result["order_id"] == expected
+    finally:
+        await bridge.close()
+        await controller.close()
+
+
+async def test_old_repeat_keyword_does_not_override_corrected_single_action_intent():
+    backend = BenchmarkTools()
+    controller = Controller("corrected-repeat", backend.definitions())
+    bridge = TurnBridge(controller)
+    try:
+        await bridge.resolve("Add the same product twice", mode="new", event_id="first")
+        await bridge.resolve("Actually only once", mode="correction", event_id="second")
+        first = await bridge.execute("add_to_cart", {"product_id": "desk-1", "quantity": 1}, "a")
+        duplicate = await bridge.execute("add_to_cart", {"product_id": "desk-1", "quantity": 1}, "b")
+        assert first.operation_id == duplicate.operation_id
+        assert len(controller.snapshot()["operations"]) == 1
     finally:
         await bridge.close()
         await controller.close()
