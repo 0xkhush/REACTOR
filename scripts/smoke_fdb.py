@@ -159,6 +159,7 @@ def main():
         raise ValueError("Set REACTOR_MODE=benchmark for a benchmark recording")
     require_ffmpeg()
     asyncio.run(check_livekit_credentials(config))
+    asyncio.run(check_google_credentials(config))
     input_path = args.input.resolve() if args.input else files[0]
     if input_path not in [path.resolve() for path in files]:
         raise ValueError("--input must be one of the dataset's input.wav recordings")
@@ -166,7 +167,8 @@ def main():
     output = ROOT / "artifacts" / f"{room}.wav"
     output.parent.mkdir(exist_ok=True)
     env = {**os.environ, "LIVEKIT_URL": config.livekit_url,
-           "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret}
+           "LIVEKIT_API_KEY": config.livekit_key, "LIVEKIT_API_SECRET": config.livekit_secret,
+           "GOOGLE_API_KEY": config.google_key, "REACTOR_MODE": config.mode}
     worker = (managed_worker([sys.executable, "-m", "reactor.voice.agent", "dev", "--no-reload"], env=env,
                              secrets=(config.livekit_key, config.livekit_secret, config.google_key))
               if args.start_worker else nullcontext())
