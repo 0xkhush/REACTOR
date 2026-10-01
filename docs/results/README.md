@@ -1,5 +1,7 @@
 # Measured evaluation evidence
 
+**Improvement branch checkpoint:** candidate `9150eb6` scored **57/100 strict exact passes** and **80/100 expected tool selections**, with zero capture failures. See [accuracy-v2 evidence and limits](ACCURACY_V2.md) and [per-recording report](9150eb6-call-exact.json). The requested strict pass rate above 80% is not met. The older captures below retain their own revisions and provenance.
+
 `FDB_v3_exact_reports.zip` contains the historical Kaggle reports and 100 per-recording transcript/tool-result records. `SUMMARY.json` gives their hashes, counts, and limits. `CANDIDATE_SUMMARY.json` records a newer, single-revision Mac capture. The agent loads none of these documents.
 
 ## New candidate at `36a798b` (30 September)
