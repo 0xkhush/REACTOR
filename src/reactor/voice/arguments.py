@@ -3,7 +3,7 @@
 import math
 import re
 
-from reactor.voice.turns import calendar_day
+from reactor.voice.dates import calendar_day
 
 
 def _number(value, *, integer=False, money=False):

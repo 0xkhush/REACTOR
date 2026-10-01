@@ -1,0 +1,31 @@
+"""Ground representational changes in the originating request, not scenario answers."""
+
+import calendar
+import re
+
+from reactor.voice.dates import calendar_day
+
+
+MONTH_DAY = re.compile(
+    r"\b(?:January|February|March|April|May|June|July|August|September|October|November|December|"
+    r"Jan|Feb|Mar|Apr|Jun|Jul|Aug|Sep|Oct|Nov|Dec)\s+\d{1,2}(?:st|nd|rd|th)?\b", re.I,
+)
+
+
+def ground_request_arguments(tool, arguments, transcript):
+    args = dict(arguments)
+    field = {"track_order": "order_id", "update_identity_doc": "doc_number", "add_to_cart": "product_id"}.get(tool)
+    identifier = args.get(field) if field else None
+    if isinstance(identifier, str) and re.fullmatch(r"[A-Za-z0-9](?:[\s,]+[A-Za-z0-9])+", identifier.strip()):
+        args[field] = re.sub(r"[\s,]+", "", identifier.strip())
+
+    if tool == "search_flights":
+        day = calendar_day(args.get("date"))
+        # Only remove a model-added year with matching month/day evidence. Do
+        # not translate relative dates, change the requested day, or discard a
+        # year present anywhere in this request's accumulated transcript.
+        if day is not None and day[2] is not None and not re.search(r"\b\d{4}\b", transcript):
+            mentioned = [calendar_day(match.group()) for match in MONTH_DAY.finditer(transcript)]
+            if any(item is not None and item[:2] == day[:2] for item in mentioned):
+                args["date"] = f"{calendar.month_name[day[0]]} {day[1]}"
+    return args
