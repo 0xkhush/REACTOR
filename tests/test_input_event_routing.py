@@ -62,7 +62,13 @@ async def runtime(monkeypatch, tmp_path):
     monkeypatch.setattr(agent, "Controller", controller)
     monkeypatch.setattr(agent, "EventTasks", events)
     shutdown = []
-    ctx = SimpleNamespace(room=SimpleNamespace(name="reactor-batch-event-test"),
+    state["ready_signals"] = []
+
+    async def set_attributes(attributes):
+        state["ready_signals"].append(attributes)
+
+    ctx = SimpleNamespace(room=SimpleNamespace(name="reactor-batch-event-test",
+                                              local_participant=SimpleNamespace(set_attributes=set_attributes)),
                           add_shutdown_callback=shutdown.append)
     await agent.entrypoint(ctx)
     try:
@@ -129,3 +135,7 @@ async def test_empty_and_late_final_transcription_notifications_do_not_reopen_re
     await runtime["events"].drain()
     result = await asyncio.wait_for(session.call("search_products", {"query": "desk"}, "search-1"), 1)
     assert result["status"] == "succeeded"
+
+
+async def test_entrypoint_publishes_explicit_readiness_after_session_start(runtime):
+    assert runtime["ready_signals"] == [{"reactor.ready": "1"}]

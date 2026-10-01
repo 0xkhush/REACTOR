@@ -380,6 +380,8 @@ async def entrypoint(ctx: agents.JobContext):
 
     ctx.add_shutdown_callback(shutdown)
     await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode, bridge))
+    await ctx.room.local_participant.set_attributes({"reactor.ready": "1"})
+    controller._trace.event("agent_ready")
 
 
 def main():
