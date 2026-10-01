@@ -60,6 +60,13 @@ def main():
         print("⚠️ OPENAI_API_KEY not found; falling back to exact-match evaluator.")
         args.use_llm = False
     require_cuda()
+    try:
+        import nemo.collections.asr  # noqa: F401
+    except ImportError:
+        raise RuntimeError(
+            "NVIDIA NeMo is required for benchmark audio transcription.\n"
+            "Please run: pip install Cython && pip install nemo_toolkit[asr]"
+        ) from None
     import asyncio
     asyncio.run(check_livekit_credentials(config))
     asyncio.run(check_google_credentials(config))

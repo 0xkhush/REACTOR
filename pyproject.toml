@@ -6,7 +6,7 @@ build-backend = "setuptools.build_meta"
 name = "reactor-agent"
 version = "0.1.0"
 description = "Correction-aware execution core for interruptible voice agents"
-requires-python = ">=3.10,<3.13"
+requires-python = ">=3.10"
 dependencies = ["jsonschema>=4.23,<5", "python-dotenv>=1.0,<2"]
 
 [project.optional-dependencies]
@@ -20,7 +20,7 @@ reactor-demo = "reactor.demo:main"
 where = ["src"]
 
 [tool.pytest.ini_options]
-pythonpath = ["."]
+pythonpath = ["src", "."]
 asyncio_mode = "auto"
 asyncio_default_fixture_loop_scope = "function"
 testpaths = ["tests"]
