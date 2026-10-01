@@ -280,9 +280,18 @@ class ReactorVoiceAgent(Agent):
         return super().realtime_audio_output_node(audio, model_settings)
 
 
+def normalize_model_name(model: str) -> str:
+    if model in ("gemini-2.5-flash", "gemini-2.5"):
+        return "gemini-2.5-flash-native-audio-preview-12-2025"
+    if model in ("gemini-3.1-flash", "gemini-3.1"):
+        return "gemini-3.1-flash-native-audio-preview-12-2025"
+    return model
+
+
 def build_model(config: AgentConfig):
     config.require_live_access()
-    return google.realtime.RealtimeModel(model=config.model, voice="Puck", api_key=config.google_key)
+    model = normalize_model_name(config.model)
+    return google.realtime.RealtimeModel(model=model, voice="Puck", api_key=config.google_key)
 
 
 def room_mode(default_mode: str, room_name: str) -> str:
