@@ -1,6 +1,8 @@
 # Measured evaluation evidence
 
-**Latest isolated branch:** `feat/tool-call-accuracy-v3-70`, candidate `c070094`, scored **72/100 strict exact passes** and **87/100 expected tool selections**, with zero capture failures. The 70% strict target was reached. See [accuracy-v3 evidence and limits](ACCURACY_V3.md) and the [per-recording report](c070094-call-exact.json). These are local exact tool/argument checks, not official semantic-judge scores.
+**Latest current-model repair branch:** `feat/tool-call-accuracy-v4-90`, candidate `9f1128c`, scored **75/100 strict exact passes** and **89/100 expected tool selections**, with zero capture failures. The 90%+ strict target was not reached. See [v4 evidence and limits](ACCURACY_V4.md), [per-recording report](9f1128c-call-exact.json), and the [preceding 28-failure audit](FAILURE_AUDIT_72.md).
+
+**Preserved 70%-target branch:** `feat/tool-call-accuracy-v3-70`, candidate `c070094`, scored **72/100 strict exact passes** and **87/100 expected tool selections**, with zero capture failures. The 70% strict target was reached. See [accuracy-v3 evidence and limits](ACCURACY_V3.md) and the [per-recording report](c070094-call-exact.json). These are local exact tool/argument checks, not official semantic-judge scores.
 
 **Previous improvement checkpoint:** candidate `9150eb6` scored **57/100 strict exact passes** and **80/100 expected tool selections**, with zero capture failures. See [accuracy-v2 evidence and limits](ACCURACY_V2.md) and [per-recording report](9150eb6-call-exact.json). That run did not meet its then-requested strict target above 80%. The older captures below retain their own revisions and provenance.
 

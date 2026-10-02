@@ -1,0 +1,1018 @@
+{
+  "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "mode": "captured_calls_exact_match_no_asr_no_judge",
+  "official_score": false,
+  "expected": 100,
+  "captured_results": 100,
+  "missing_results": 0,
+  "full_capture_coverage": true,
+  "tool_selection_passed": 89,
+  "exact_arguments_passed": 75,
+  "strict_tool_passed": 75,
+  "capture_status_counts": {
+    "completed": 94,
+    "no_tool_call": 6
+  },
+  "examples": [
+    {
+      "example_id": "ecommerce_01",
+      "folder": "ecommerce_01_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_01",
+      "folder": "ecommerce_01_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_02",
+      "folder": "ecommerce_02_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_04",
+      "folder": "ecommerce_04_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_05",
+      "folder": "ecommerce_05_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_06",
+      "folder": "ecommerce_06_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_07",
+      "folder": "ecommerce_07_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_08",
+      "folder": "ecommerce_08_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_products']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_08",
+      "folder": "ecommerce_08_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_products']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_09",
+      "folder": "ecommerce_09_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_10",
+      "folder": "ecommerce_10_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_11",
+      "folder": "ecommerce_11_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_12",
+      "folder": "ecommerce_12_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_products']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_13",
+      "folder": "ecommerce_13_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['add_to_cart', 'track_order']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_13",
+      "folder": "ecommerce_13_61517db6a7589569521b2356",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['add_to_cart', 'track_order']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_14",
+      "folder": "ecommerce_14_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['add_to_cart']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_14",
+      "folder": "ecommerce_14_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_15",
+      "folder": "ecommerce_15_56780a5a89319e0011644cb4",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_15",
+      "folder": "ecommerce_15_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_16",
+      "folder": "ecommerce_16_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_17",
+      "folder": "ecommerce_17_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_18",
+      "folder": "ecommerce_18_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['track_order']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_19",
+      "folder": "ecommerce_19_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_20",
+      "folder": "ecommerce_20_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Missing tools: ['add_to_cart']; Unexpected tools: ['track_order']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "ecommerce_21",
+      "folder": "ecommerce_21_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_21",
+      "folder": "ecommerce_21_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_23",
+      "folder": "ecommerce_23_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_25",
+      "folder": "ecommerce_25_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "ecommerce_25",
+      "folder": "ecommerce_25_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_01",
+      "folder": "finance_01_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_01",
+      "folder": "finance_01_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_02",
+      "folder": "finance_02_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_03",
+      "folder": "finance_03_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_03",
+      "folder": "finance_03_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_04",
+      "folder": "finance_04_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_06",
+      "folder": "finance_06_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_07",
+      "folder": "finance_07_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_07",
+      "folder": "finance_07_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_08",
+      "folder": "finance_08_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_08",
+      "folder": "finance_08_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_10",
+      "folder": "finance_10_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['get_card_benefits']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "finance_11",
+      "folder": "finance_11_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_12",
+      "folder": "finance_12_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_12",
+      "folder": "finance_12_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_14",
+      "folder": "finance_14_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_15",
+      "folder": "finance_15_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_16",
+      "folder": "finance_16_62a885d5b6af18b3d4579e1b",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['get_exchange_rate']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "finance_17",
+      "folder": "finance_17_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_18",
+      "folder": "finance_18_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_19",
+      "folder": "finance_19_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_20",
+      "folder": "finance_20_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['modify_autopay']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "finance_21",
+      "folder": "finance_21_5e3c1fbece3a7b000a6fd95a",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_22",
+      "folder": "finance_22_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "finance_23",
+      "folder": "finance_23_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_01",
+      "folder": "housing_01_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_02",
+      "folder": "housing_02_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_03",
+      "folder": "housing_03_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_04",
+      "folder": "housing_04_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_05",
+      "folder": "housing_05_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_05",
+      "folder": "housing_05_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_06",
+      "folder": "housing_06_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['calculate_commute']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_08",
+      "folder": "housing_08_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_09",
+      "folder": "housing_09_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_10",
+      "folder": "housing_10_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['update_search_filter']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_11",
+      "folder": "housing_11_62a885d5b6af18b3d4579e1b",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_apartments']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_13",
+      "folder": "housing_13_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_search_filter']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_14",
+      "folder": "housing_14_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_14",
+      "folder": "housing_14_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_15",
+      "folder": "housing_15_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_15",
+      "folder": "housing_15_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_17",
+      "folder": "housing_17_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_17",
+      "folder": "housing_17_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_18",
+      "folder": "housing_18_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_apartments', 'calculate_commute']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_19",
+      "folder": "housing_19_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_20",
+      "folder": "housing_20_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_21",
+      "folder": "housing_21_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_apartments', 'calculate_commute']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "housing_22",
+      "folder": "housing_22_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_24",
+      "folder": "housing_24_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_24",
+      "folder": "housing_24_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "housing_25",
+      "folder": "housing_25_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_01",
+      "folder": "travel_01_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_02",
+      "folder": "travel_02_5e3c1fbece3a7b000a6fd95a",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_03",
+      "folder": "travel_03_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_03",
+      "folder": "travel_03_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_05",
+      "folder": "travel_05_6998abd731d2ec50d067d5bd",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_flights']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_07",
+      "folder": "travel_07_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_07",
+      "folder": "travel_07_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_08",
+      "folder": "travel_08_695bd157114f0d2317f88617",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_flights']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_10",
+      "folder": "travel_10_5f4a4da1575d605c43bef871",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_11",
+      "folder": "travel_11_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_14",
+      "folder": "travel_14_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_16",
+      "folder": "travel_16_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_18",
+      "folder": "travel_18_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_19",
+      "folder": "travel_19_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_20",
+      "folder": "travel_20_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Missing tools: ['book_flight']",
+      "tool_selection_passed": false,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_21",
+      "folder": "travel_21_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['book_flight']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_21",
+      "folder": "travel_21_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['book_flight']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    },
+    {
+      "example_id": "travel_23",
+      "folder": "travel_23_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_23",
+      "folder": "travel_23_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": true
+    },
+    {
+      "example_id": "travel_24",
+      "folder": "travel_24_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "exact_arguments_passed": false
+    }
+  ]
+}
