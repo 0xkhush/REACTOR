@@ -1,6 +1,8 @@
 # Measured evaluation evidence
 
-**Improvement branch checkpoint:** candidate `9150eb6` scored **57/100 strict exact passes** and **80/100 expected tool selections**, with zero capture failures. See [accuracy-v2 evidence and limits](ACCURACY_V2.md) and [per-recording report](9150eb6-call-exact.json). The requested strict pass rate above 80% is not met. The older captures below retain their own revisions and provenance.
+**Latest isolated branch:** `feat/tool-call-accuracy-v3-70`, candidate `c070094`, scored **72/100 strict exact passes** and **87/100 expected tool selections**, with zero capture failures. The 70% strict target was reached. See [accuracy-v3 evidence and limits](ACCURACY_V3.md) and the [per-recording report](c070094-call-exact.json). These are local exact tool/argument checks, not official semantic-judge scores.
+
+**Previous improvement checkpoint:** candidate `9150eb6` scored **57/100 strict exact passes** and **80/100 expected tool selections**, with zero capture failures. See [accuracy-v2 evidence and limits](ACCURACY_V2.md) and [per-recording report](9150eb6-call-exact.json). That run did not meet its then-requested strict target above 80%. The older captures below retain their own revisions and provenance.
 
 `FDB_v3_exact_reports.zip` contains the historical Kaggle reports and 100 per-recording transcript/tool-result records. `SUMMARY.json` gives their hashes, counts, and limits. `CANDIDATE_SUMMARY.json` records a newer, single-revision Mac capture. The agent loads none of these documents.
 
