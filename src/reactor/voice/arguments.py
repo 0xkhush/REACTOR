@@ -60,7 +60,7 @@ def normalize_argument_values(tool: str, arguments: dict) -> dict:
             if not isinstance(address, str):
                 continue
             address = re.sub(r"\bAv\.?$", "Ave", address.strip(), flags=re.I)
-            if re.fullmatch(r"the (?:university|office|airport|hospital|station|mall|city hall)", address, re.I):
+            if re.fullmatch(r"the (?:university|airport|hospital|station|mall|city hall)", address, re.I):
                 address = address[4:]
             args[key] = address
 

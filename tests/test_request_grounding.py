@@ -10,8 +10,8 @@ from reactor.voice.turns import TurnBridge
     ("Fly to Oslo on November 9th, 2028", "2028-11-09", "2028-11-09"),
     ("Fly to Oslo on November 9th", "2029-11-10", "2029-11-10"),
     ("Fly to Oslo next Thursday", "2029-11-09", "2029-11-09"),
-    ("Fly to Oslo on November 9", "11/09/2029", "11/09/2029"),
-    ("Fly to Oslo on November 9", "November 9, 2029", "November 9, 2029"),
+    ("Fly to Oslo on November 9", "11/09/2029", "November 9"),
+    ("Fly to Oslo on November 9", "November 9, 2029", "November 9"),
 ])
 async def test_flight_year_grounding_changes_only_matching_user_month_day_without_a_year(transcript, proposed, expected):
     backend = BenchmarkTools()

@@ -8,7 +8,7 @@ def calendar_day(value):
     if not isinstance(value, str):
         return None
     text = re.sub(r"(?<=\d)(st|nd|rd|th)\b", "", value.strip(), flags=re.I)
-    for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%B %d %Y", "%b %d %Y", "%B %d, %Y"):
+    for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%B %d %Y", "%b %d %Y", "%B %d, %Y", "%b %d, %Y"):
         try:
             date = datetime.strptime(text, fmt)
             return date.month, date.day, date.year
