@@ -1,5 +1,7 @@
 # Measured evaluation evidence
 
+[Optional pinned semantic argument judging](SEMANTIC_EVALUATION.md) is available for saved captures. It requires confirmed judge access; no real semantic run has occurred here. Exact reports below remain unchanged.
+
 **Latest current-model repair branch:** `feat/tool-call-accuracy-v4-90`, candidate `9f1128c`, scored **75/100 strict exact passes** and **89/100 expected tool selections**, with zero capture failures. The 90%+ strict target was not reached. See [v4 evidence and limits](ACCURACY_V4.md), [per-recording report](9f1128c-call-exact.json), and the [preceding 28-failure audit](FAILURE_AUDIT_72.md).
 
 **Preserved 70%-target branch:** `feat/tool-call-accuracy-v3-70`, candidate `c070094`, scored **72/100 strict exact passes** and **87/100 expected tool selections**, with zero capture failures. The 70% strict target was reached. See [accuracy-v3 evidence and limits](ACCURACY_V3.md) and the [per-recording report](c070094-call-exact.json). These are local exact tool/argument checks, not official semantic-judge scores.
