@@ -31,11 +31,15 @@ def _identifier_format(tool, identifier, transcript):
         "add_to_cart": r"product(?:\s+(?:id|number|code))?|item|number|reference",
     }
     compact = re.sub(r"[\s,-]+", "", value)
-    spelling = (r"[\s,]*".join(re.escape(character) for character in compact)
-                + r"(?![A-Za-z0-9_-])(?![\s,]+(?:[A-Za-z]|[0-9]+)(?=$|[\s,.;!?]))")
+    spelling = r"[\s,]*".join(re.escape(character) for character in compact) + r"(?![A-Za-z0-9_-])"
     prefix = r"\b(?:" + contexts[tool] + r")\b(?:\s+(?:number|id|is|was|to|as)\b)*[\s:]*"
     for context in re.finditer(prefix, transcript, re.I):
-        if re.match(spelling, transcript[context.end():], re.I):
+        following = transcript[context.end():]
+        match = re.match(spelling, following, re.I)
+        if match:
+            next_token = re.match(r"[\s,]+([A-Za-z0-9_-]+)", following[match.end():])
+            if next_token and (len(next_token.group(1)) == 1 or re.search(r"[0-9_-]", next_token.group(1))):
+                continue  # a longer spelling, not a complete identifier match
             return compact
     return identifier
 
