@@ -48,6 +48,8 @@ The first failed-subset experiment passed **2/25**, using 14 requests, 25 argume
 
 The Google rubric follows the original FDB argument-judge rules and adds explicit handling of untrusted argument strings, missing constraints and category-query grammatical number. This is an alternative provider/rubric implementation. A later score difference can reflect both the revised rubric and the selected model; this experiment cannot isolate their effects.
 
+The revised blind comparison at `7684f4b` qualified Flash with **24/24 grouped controls and 4/4 scalar checks**; Pro returned HTTP 404. The subsequent subset attempt hit HTTP 429 and used exact fallback for all 25 argument comparisons. It established no revised semantic result. See [GOOGLE_JUDGE_V2.md](GOOGLE_JUDGE_V2.md) and [GOOGLE_JUDGE_V2.json](GOOGLE_JUDGE_V2.json) for outcomes, verdicts and artifact hashes.
+
 ## Commands
 
 From the isolated improvement worktree, using the existing environment:

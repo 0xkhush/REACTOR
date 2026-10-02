@@ -1,0 +1,95 @@
+{
+  "scope": "blind_google_calibration_and_quota_blocked_failed_subset",
+  "code_revision": "7684f4b",
+  "official_score": false,
+  "calibration": {
+    "evaluated_at": "2026-10-02T17:59:28.050265+00:00",
+    "calibration_version": "blind-controls-v2",
+    "policy_version": "google-semantic-v2-category-query",
+    "controls_payload_sha256": "5bcd043d784194d91376893a95e73a245919ee21fbf227672696371b9a71d65e",
+    "raw_report": "artifacts/google-blind-v2-calibration.json",
+    "raw_report_sha256": "7dbf4549899771afe388848bebbd1623497a1c59dc66dc833ad877c8a75b2b64",
+    "selected_model": "gemini-2.5-flash",
+    "selection_rule": "valid complete JSON; zero grouped false positives; at most one grouped false negative; all single-context checks correct; highest grouped accuracy; ties prefer Gemma then Pro then stable Flash then newest Flash",
+    "candidates": [
+      {
+        "model": "gemini-2.5-pro", "valid_response": false,
+        "total_controls": 24, "context_total_controls": 4, "context_correct_controls": 0,
+        "context_checks_passed": false, "api_requests": 1, "reported_total_tokens": 0,
+        "returned_model_versions": [], "quota_blocked": false,
+        "error_type": "GoogleJudgeRequestError", "upstream_error_type": "ClientError", "status_code": 404,
+        "elapsed_seconds": 0.832
+      },
+      {
+        "model": "gemini-2.5-flash", "valid_response": true,
+        "total_controls": 24, "correct_controls": 24, "false_positives": 0, "false_negatives": 0,
+        "context_total_controls": 4, "context_correct_controls": 4, "context_checks_passed": true,
+        "api_requests": 5, "reported_total_tokens": 9374,
+        "returned_model_versions": ["gemini-2.5-flash"], "quota_blocked": false,
+        "elapsed_seconds": 75.276,
+        "grouped_verdicts": [
+          {"case_id":"028949c7e741","correct":false,"explanation":"The explicit quantity changed from 'two' to 'one', which is not allowed by rule 6."},
+          {"case_id":"04bd2aa8c85e","correct":true,"explanation":"Singular and plural forms are equivalent for product category search queries (rule 6)."},
+          {"case_id":"052717d2b65e","correct":true,"explanation":"Underscores versus spaces in document categories are acceptable (rule 5)."},
+          {"case_id":"0ac109f9e955","correct":false,"explanation":"The 'max_price' argument changed from 90 to 190, which is not within the 5% numeric tolerance and is a changed constraint (rule 6)."},
+          {"case_id":"23b21bd79aad","correct":false,"explanation":"The product feature changed from 'sugar-free' to 'with sugar', which is a negation and not semantically equivalent (rule 6)."},
+          {"case_id":"2a5fdf3b441a","correct":false,"explanation":"The 'order_id' argument 'RQ66' does not match 'RQ661'."},
+          {"case_id":"2b5a661a8420","correct":false,"explanation":"The product feature changed from 'wired' to 'wireless', which is not allowed (rule 6)."},
+          {"case_id":"5808f1e03c86","correct":false,"explanation":"The brand 'Acme' is missing from the query, which is not allowed (rule 6)."},
+          {"case_id":"60ad6b1e2eb9","correct":false,"explanation":"The 'from_currency' and 'to_currency' arguments were swapped, changing the meaning of the request."},
+          {"case_id":"6170a4800e9a","correct":false,"explanation":"The required argument 'max_price' is missing from the actual arguments."},
+          {"case_id":"73ef5891a13c","correct":true,"explanation":"Singular and plural forms are equivalent for product category search queries (rule 6), and 'max_price' matches."},
+          {"case_id":"7b80327f2454","correct":false,"explanation":"The 'passenger_name' argument is a different identity, which is not allowed."},
+          {"case_id":"7d04b4005fe0","correct":true,"explanation":"Minor formatting differences like case-insensitivity for 'destination' are acceptable (rule 2)."},
+          {"case_id":"81643f07afd8","correct":false,"explanation":"The 'date' argument is different, which is not allowed."},
+          {"case_id":"92023829e001","correct":true,"explanation":"The queries are semantically equivalent, describing the same product feature."},
+          {"case_id":"958346d0c675","correct":true,"explanation":"Singular and plural forms are equivalent for product category search queries (rule 6)."},
+          {"case_id":"9f1e4e0d27a9","correct":false,"explanation":"The actual query is completely different and does not match the expected query."},
+          {"case_id":"a51ba87b3ae0","correct":false,"explanation":"The 'amount' argument changed from 500 to 1500, which is not within the 5% numeric tolerance (rule 4)."},
+          {"case_id":"a7cffbe374f8","correct":true,"explanation":"Singular and plural forms are equivalent for product category search queries (rule 6), and 'max_price' matches."},
+          {"case_id":"b869f26e1ca4","correct":false,"explanation":"The product feature 'adjustable' is missing from the actual query, which is not allowed (rule 6)."},
+          {"case_id":"ce7a4fdd1423","correct":true,"explanation":"The 'amount' of 515 is within 5% tolerance of 500 (475-525) (rule 4)."},
+          {"case_id":"f2c2a9f24b1a","correct":true,"explanation":"Common geographic aliases ('Las Vegas' vs 'Vegas') and minor date formatting differences are acceptable (rules 2 and 3)."},
+          {"case_id":"fb623e41b7b7","correct":false,"explanation":"The explicit quantity 'three' is missing from the actual query, which is not allowed (rule 6)."},
+          {"case_id":"fdcdd4cd0637","correct":false,"explanation":"The 'quantity' in a purchase action changed from 1 to 10, which is not allowed (rule 6)."}
+        ],
+        "single_context_verdicts": [
+          {"case_id":"028949c7e741","correct":false,"explanation":"The explicit quantity in the query changed from 'two' to 'one', which is not allowed."},
+          {"case_id":"04bd2aa8c85e","correct":true,"explanation":"For product-category search queries, singular and plural forms are equivalent when they name the same category and retain all modifiers and constraints."},
+          {"case_id":"958346d0c675","correct":true,"explanation":"For product-category search queries, singular and plural forms are equivalent when they name the same category."},
+          {"case_id":"b869f26e1ca4","correct":false,"explanation":"The actual query 'office chairs' is missing the 'adjustable' modifier/feature present in the expected query 'adjustable office chair'."}
+        ]
+      }
+    ]
+  },
+  "subset_attempt": {
+    "status": "quota_blocked_no_usable_semantic_verdicts",
+    "raw_report": "artifacts/failed25_9f1128c/google-blind-v2-semantic-subset.json",
+    "raw_report_sha256": "c159bb3565319317fb68f231d756827c5d0ce921e0ed7fe52d5b0f5b87f69036",
+    "mode": "captured_calls_google_mixed_semantic_exact_arguments_no_asr",
+    "model": "gemini-2.5-flash", "policy_version": "google-semantic-v2-category-query",
+    "expected": 25, "captured_results": 25, "missing_results": 0,
+    "tool_selection_passed": 14, "tool_selection_failed": 11,
+    "api_requests": 2, "argument_comparisons_attempted": 25, "exact_fallbacks": 25,
+    "reported_total_tokens": 0, "returned_model_versions": [], "quota_blocked": true,
+    "fallback_strict_passed": 0, "revised_semantic_result": null,
+    "raw_mixed_population_count": 75, "population_size": 100, "fully_semantic": false,
+    "first_request_error_cause_retained": false
+  },
+  "baseline": {
+    "report": "docs/results/9f1128c-call-exact.json",
+    "sha256": "da03ccc1440b166aaa81a111e73c11358eb8695027057f4b0807c9fa44502aaf",
+    "exact_passed": 75, "expected": 100, "byte_identical_offline_reproduction": true,
+    "exact_passes_rejudged": 0
+  },
+  "earlier_experiment": {
+    "calibration_report": "artifacts/google-stable-judge-calibration.json",
+    "calibration_sha256": "a5638a2068ae708a39b36af7444a2b23b3de7a35616ad79afb7984fb2e17aa19",
+    "subset_report": "artifacts/failed25_9f1128c/google-semantic-subset.json",
+    "subset_sha256": "6d45d4cb1411412bffaf085d679360b94c5d8e744f6ea492c761c9a7185eef3b",
+    "subset_passed": 2, "mixed_population_passed": 77, "fully_semantic": false,
+    "earlier_artifact_bytes_preserved": true
+  },
+  "verification": {"automated_tests_passed": 358, "diff_check_passed": true},
+  "remaining_step": "Finish fixed-subset semantic judging once confirmed-free Google quota is available, using a new output path."
+}
