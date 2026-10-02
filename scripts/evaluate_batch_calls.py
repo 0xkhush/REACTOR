@@ -91,7 +91,8 @@ def score_captures(recordings, outputs, scenarios, scorer):
             del row["exact_arguments_passed"]
             row.update(arguments_passed=arguments_passed,
                        semantic_arguments_passed=arguments_passed and attempts > 0 and fallbacks == 0,
-                       judge_attempts=attempts, judge_exact_fallbacks=fallbacks)
+                       judge_attempts=attempts, judge_exact_fallbacks=fallbacks,
+                       argument_judgements=scored["checks"].get("argument_accuracy"))
         results.append(row)
     report = {
         "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",

@@ -16,7 +16,7 @@ else:
 
 # Verified against Google pricing and model-list metadata on 2026-10-02.
 # Standard text requests only: no grounding, paid batch service, or paid fallback.
-FREE_JUDGE_MODELS = ("gemma-4-31b-it", "gemini-3.8-flash")
+FREE_JUDGE_MODELS = ("gemma-4-31b-it", "gemini-3.8-flash", "gemini-2.5-flash")
 DEFAULT_GOOGLE_JUDGE = "gemma-4-31b-it"
 PRICING_SOURCE = "https://ai.google.dev/gemini-api/docs/pricing"
 
@@ -33,6 +33,15 @@ Use the pinned FDB-v3 argument-judge rules:
 Assess all required expected arguments. Semantic equivalence does not excuse a changed product feature, missing constraint, changed numeric magnitude, or different identity.
 Return only the requested JSON, with JSON booleans and brief explanations.
 """
+
+
+class GoogleJudgeRequestError(RuntimeError):
+    """Safe transport metadata without API keys, URLs or provider response text."""
+
+    def __init__(self, upstream_error_type, status_code=None):
+        self.upstream_error_type = upstream_error_type
+        self.status_code = status_code
+        super().__init__(f"Google judge request failed ({upstream_error_type}); no provider fallback")
 
 
 def google_judge_settings():
@@ -66,7 +75,7 @@ def valid_verdict(value):
 
 
 class GoogleArgumentJudge:
-    def __init__(self, model=None, *, min_request_interval=6):
+    def __init__(self, model=None, *, min_request_interval=13):
         self.model = model or DEFAULT_GOOGLE_JUDGE
         if self.model not in FREE_JUDGE_MODELS:
             raise ValueError("Select a model on the verified free-tier judge list")
@@ -96,11 +105,13 @@ class GoogleArgumentJudge:
         self.requests += 1
         try:
             response = self.client.models.generate_content(model=self.model, contents=prompt,
-                config=types.GenerateContentConfig(temperature=0, max_output_tokens=8192))
+                config=types.GenerateContentConfig(temperature=0, max_output_tokens=8192,
+                    automatic_function_calling=types.AutomaticFunctionCallingConfig(disable=True)))
         except Exception as exc:
-            if getattr(exc, "code", None) == 429:
+            code = getattr(exc, "code", None)
+            if code == 429:
                 self.quota_blocked = True
-            raise RuntimeError(f"Google judge request failed ({type(exc).__name__}); no provider fallback") from None
+            raise GoogleJudgeRequestError(type(exc).__name__, code) from None
         version = getattr(response, "model_version", None)
         if version:
             self.returned_versions.add(version)

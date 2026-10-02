@@ -17,6 +17,7 @@ CALLS = [{"function": "search_products", "args": {"query": "running shoe"}}]
 def google_judge(monkeypatch):
     monkeypatch.setenv("GOOGLE_API_KEY", "google-test-key-not-for-network")
     monkeypatch.setenv("REACTOR_GOOGLE_JUDGE_FREE_CONFIRMED", "yes")
+    monkeypatch.setattr("scripts.google_argument_judge.time.sleep", lambda seconds: None)
     state = {"requests": [], "closed": [], "text": '{"correct":true,"explanation":"same product category"}'}
 
     def generate(**kwargs):
@@ -188,3 +189,41 @@ def test_failed_selection_never_rejudges_passes_and_labels_population_as_mixed(t
     assert report["mixed_population_diagnostic"]["passed"] == 2
     assert report["mixed_population_diagnostic"]["fully_semantic"] is False
     assert report["official_score"] is False
+
+
+def test_stable_flash_candidate_is_allowed_and_has_no_automatic_function_calling(google_judge):
+    with CallEvaluator(use_llm=True, judge_provider="google", judge_model="gemini-2.5-flash") as scorer:
+        assert scorer.evaluate(SCENARIO, CALLS)["passed"] is True
+    request = google_judge["requests"][0]
+    assert request["model"] == "gemini-2.5-flash"
+    assert request["config"].automatic_function_calling.disable is True
+
+
+def test_multi_step_argument_comparisons_use_one_google_request_per_recording(google_judge):
+    scenario = {"expected_tool_calls": [
+        {"function": "track_order", "args": {"order_id": "RQ61"}},
+        {"function": "search_products", "args": {"query": "running shoes"}},
+    ]}
+    actual = [{"function": "track_order", "args": {"order_id": "RQ61"}},
+              {"function": "search_products", "args": {"query": "running shoe"}}]
+    google_judge["text"] = '{"verdicts":[{"case_id":"0","correct":true,"explanation":"same ID"},' \
+                           '{"case_id":"1","correct":true,"explanation":"same category"}]}'
+    with CallEvaluator(use_llm=True, judge_provider="google") as scorer:
+        assert scorer.evaluate(scenario, actual)["passed"] is True
+        assert scorer.judge_stats["attempts"] == 2
+        assert scorer.judge_stats["api_requests"] == 1
+    assert len(google_judge["requests"]) == 1
+
+
+def test_grouped_request_failure_records_each_fallback_and_does_not_cache_across_cases(google_judge):
+    scenario = {"expected_tool_calls": [{"function": "track_order", "args": {"order_id": "RQ61"}},
+                                         {"function": "search_products", "args": {"query": "running shoes"}}]}
+    actual = [{"function": "track_order", "args": {"order_id": "RQ61"}},
+              {"function": "search_products", "args": {"query": "running shoe"}}]
+    with CallEvaluator(use_llm=True, judge_provider="google") as scorer:
+        assert scorer.evaluate(scenario, actual)["passed"] is False  # scalar verdict is invalid for a pair set
+        assert scorer.judge_stats["exact_fallbacks"] == 2
+        google_judge["text"] = '{"verdicts":[{"case_id":"0","correct":true,"explanation":"same ID"},' \
+                               '{"case_id":"1","correct":true,"explanation":"same category"}]}'
+        assert scorer.evaluate(scenario, actual)["passed"] is True
+    assert len(google_judge["requests"]) == 2

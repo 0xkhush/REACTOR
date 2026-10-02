@@ -70,7 +70,10 @@ def compare(models):
         start = time.monotonic()
         try:
             with GoogleArgumentJudge(model) as judge:
-                verdicts = judge.calibrate(calibration_inputs(CONTROLS))
+                try:
+                    verdicts = judge.calibrate(calibration_inputs(CONTROLS))
+                finally:
+                    row["judge"] = judge.stats
                 row.update(valid_response=True,
                            correct_controls=sum(verdicts[item["case_id"]]["correct"] == item["expected_correct"] for item in CONTROLS),
                            false_positives=sum(verdicts[item["case_id"]]["correct"] and not item["expected_correct"] for item in CONTROLS),
@@ -79,6 +82,9 @@ def compare(models):
                            controls=[{**item, "verdict": verdicts[item["case_id"]]} for item in CONTROLS])
         except Exception as exc:
             row["error_type"] = type(exc).__name__
+            if hasattr(exc, "upstream_error_type"):
+                row["upstream_error_type"] = exc.upstream_error_type
+                row["status_code"] = exc.status_code
         row["elapsed_seconds"] = round(time.monotonic() - start, 3)
         candidates.append(row)
         print(json.dumps({key: value for key, value in row.items() if key != "controls"}), flush=True)

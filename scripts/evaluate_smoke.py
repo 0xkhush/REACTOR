@@ -1,6 +1,7 @@
 """Score recorded calls with the pinned FDB evaluator; exact matching is the default."""
 
 import argparse
+from collections import Counter, defaultdict, deque
 import importlib.util
 import json
 import os
@@ -98,11 +99,12 @@ class CallEvaluator:
                 self._client = OpenAI(api_key=settings["OPENAI_API_KEY"], max_retries=0, timeout=30)
                 self._module._openai_client = self._client
                 active_judge = original_judge
+            self._active_judge = active_judge
 
             def tracked_judge(expected_args, actual_args, function_name):
                 self._attempts += 1
                 try:
-                    verdict = active_judge(expected_args, actual_args, function_name)
+                    verdict = self._active_judge(expected_args, actual_args, function_name)
                 except Exception:
                     if self.judge_provider != "google":
                         raise
@@ -131,6 +133,40 @@ class CallEvaluator:
     def evaluate(self, scenario, actual_calls):
         if self._closed:
             raise RuntimeError("Call evaluator is closed")
+        expected = scenario["expected_tool_calls"]
+        if (self.use_llm and self.judge_provider == "google" and len(expected) > 1
+                and Counter(row["function"] for row in expected) == Counter(row["function"] for row in actual_calls)):
+            # One standard API request per recording, not the paid Batch API.
+            # The pinned classifier still consumes one verdict per expected
+            # tool using its original FIFO duplicate-function pairing.
+            actual_by_function = defaultdict(deque)
+            for row in actual_calls:
+                actual_by_function[row["function"]].append(row)
+            items = []
+            for index, row in enumerate(expected):
+                actual = actual_by_function[row["function"]].popleft()
+                items.append({"case_id": str(index), "function_name": row["function"],
+                              "expected_args": row.get("args", {}), "actual_args": actual.get("args", {})})
+            try:
+                verdicts = self._google_judge.calibrate(items)
+            except Exception:
+                verdicts = None
+            pending = deque(items)
+
+            def recording_judge(expected_args, actual_args, function_name):
+                item = pending.popleft()
+                if (item["function_name"] != function_name or item["expected_args"] != expected_args
+                        or item["actual_args"] != actual_args or verdicts is None):
+                    raise RuntimeError("Grouped argument verdict is unavailable or does not match this comparison")
+                result = verdicts[item["case_id"]]
+                return result["correct"], result["explanation"]
+
+            previous = self._active_judge
+            self._active_judge = recording_judge
+            try:
+                return self._module.evaluate_scenario_pass(scenario, actual_calls, use_llm=True)
+            finally:
+                self._active_judge = previous  # no verdict state survives a recording
         return self._module.evaluate_scenario_pass(scenario, actual_calls, use_llm=self.use_llm)
 
     def close(self):
