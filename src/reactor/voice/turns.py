@@ -106,7 +106,8 @@ class TurnBridge:
                 request = self._origin_requests.setdefault(origin_id, request)
             request = self._provider_requests.setdefault(call_id, request)
             request_text = self._request_transcripts.get(request, "")
-            args = ground_request_arguments(tool, args, request_text)
+            args = ground_request_arguments(tool, args, request_text,
+                                            identifier_transcript=self._request_action_text.get(request, ""))
             fingerprint = json.dumps(args, sort_keys=True, allow_nan=False, separators=(",", ":"))
             key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
             intentional_repeat = bool(re.search(

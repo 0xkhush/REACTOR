@@ -7,10 +7,11 @@ import os
 import re
 from dataclasses import asdict, replace
 from pathlib import Path
-from typing import Union
+from typing import Annotated, Union
 
 from jsonschema import ValidationError
 from google.genai import types
+from pydantic import Field
 
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession, RunContext, llm
@@ -210,6 +211,8 @@ def native_function_tool(raw_tool, definition):
             annotation = Union[tuple(python_types[item] for item in kind)]
         else:
             annotation = python_types[kind]
+        if spec.get("description"):
+            annotation = Annotated[annotation, Field(description=spec["description"])]
         annotations[name] = annotation
         default = inspect.Parameter.empty if name in schema.get("required", []) else spec.get("default")
         parameters.append(inspect.Parameter(name, inspect.Parameter.KEYWORD_ONLY,

@@ -45,6 +45,25 @@ def normalize_argument_values(tool: str, arguments: dict) -> dict:
         if category:
             args["source_account"] = category.group(1).lower()
 
+    card = args.get("card_type")
+    if tool == "get_card_benefits" and isinstance(card, str):
+        category = re.fullmatch(
+            r"(basic|standard|premium|gold|silver|platinum|travel|cashback|student|business)\s+(?:credit\s+)?card",
+            card.strip(), re.I,
+        )
+        if category:
+            args["card_type"] = category.group(1).lower()
+
+    if tool == "calculate_commute":
+        for key in ("origin_address", "destination_address"):
+            address = args.get(key)
+            if not isinstance(address, str):
+                continue
+            address = re.sub(r"\bAv\.?$", "Ave", address.strip(), flags=re.I)
+            if re.fullmatch(r"the (?:university|office|airport|hospital|station|mall|city hall)", address, re.I):
+                address = address[4:]
+            args[key] = address
+
     document = args.get("doc_type")
     if tool == "update_identity_doc" and isinstance(document, str):
         label = document.lower().strip().replace("_", " ").replace("-", " ")
