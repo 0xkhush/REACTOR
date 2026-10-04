@@ -1,0 +1,32 @@
+{
+  "example_id": "finance_21",
+  "room": "reactor-batch-c5cc569340d7",
+  "input": "scratch/test_dataset/finance_21_5e3c1fbece3a7b000a6fd95a/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/finance_21_5e3c1fbece3a7b000a6fd95a/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "get_card_benefits",
+      "args": {
+        "card_type": "gold"
+      },
+      "timestamp_start": 24.19,
+      "timestamp_end": 24.19
+    },
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "to_currency": "JPY",
+        "amount": 500,
+        "from_currency": "USD"
+      },
+      "timestamp_start": 24.68,
+      "timestamp_end": 24.68
+    }
+  ],
+  "stream_start_time": 1791105315.6159801,
+  "agent_ready_wait_seconds": 1.978,
+  "elapsed_seconds": 55.65
+}

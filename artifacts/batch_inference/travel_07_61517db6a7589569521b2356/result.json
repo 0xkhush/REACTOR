@@ -1,0 +1,23 @@
+{
+  "example_id": "travel_07",
+  "room": "reactor-batch-0a89659fbc15",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/travel_07_61517db6a7589569521b2356/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/travel_07_61517db6a7589569521b2356/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_identity_doc",
+      "args": {
+        "doc_number": "DL555",
+        "doc_type": "driver_license"
+      },
+      "timestamp_start": 18.03,
+      "timestamp_end": 18.03
+    }
+  ],
+  "stream_start_time": 1791097958.1568131,
+  "agent_ready_wait_seconds": 0.816,
+  "elapsed_seconds": 48.33
+}

@@ -1,0 +1,40 @@
+{
+  "example_id": "ecommerce_18",
+  "room": "reactor-batch-d7779dc92861",
+  "input": "scratch/test_dataset/ecommerce_18_62a885d5b6af18b3d4579e1b/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/ecommerce_18_62a885d5b6af18b3d4579e1b/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_products",
+      "args": {
+        "query": "gaming mouse",
+        "max_price": null
+      },
+      "timestamp_start": 24.09,
+      "timestamp_end": 24.09
+    },
+    {
+      "function": "track_order",
+      "args": {
+        "order_id": "PO999"
+      },
+      "timestamp_start": 24.19,
+      "timestamp_end": 24.19
+    },
+    {
+      "function": "add_to_cart",
+      "args": {
+        "quantity": 1,
+        "product_id": "PROD1"
+      },
+      "timestamp_start": 26.09,
+      "timestamp_end": 26.09
+    }
+  ],
+  "stream_start_time": 1791105265.005462,
+  "agent_ready_wait_seconds": 2.538,
+  "elapsed_seconds": 51.18
+}

@@ -1,0 +1,68 @@
+{
+  "n": 100,
+  "exact_pass": 92,
+  "exact_pass_pct": 0.92,
+  "exact_wilson_ci": [
+    0.8500189229905127,
+    0.9589065385156194
+  ],
+  "exact_bootstrap_ci": [
+    0.86,
+    0.97
+  ],
+  "tool_selection_pass": 98,
+  "tool_selection_pct": 0.98,
+  "tool_selection_wilson_ci": [
+    0.929988209271456,
+    0.9944980324498376
+  ],
+  "domains": {
+    "ecommerce_support": {
+      "total": 29,
+      "exact_pass": 27,
+      "tool_pass": 29
+    },
+    "finance_billing": {
+      "total": 25,
+      "exact_pass": 24,
+      "tool_pass": 24
+    },
+    "housing_location": {
+      "total": 26,
+      "exact_pass": 24,
+      "tool_pass": 26
+    },
+    "travel_identity": {
+      "total": 20,
+      "exact_pass": 17,
+      "tool_pass": 19
+    }
+  },
+  "disfluencies": {
+    "PAUSE": {
+      "total": 18,
+      "exact_pass": 16,
+      "tool_pass": 18
+    },
+    "FILLER": {
+      "total": 29,
+      "exact_pass": 28,
+      "tool_pass": 29
+    },
+    "HESITATION": {
+      "total": 10,
+      "exact_pass": 9,
+      "tool_pass": 10
+    },
+    "FALSE_START": {
+      "total": 12,
+      "exact_pass": 11,
+      "tool_pass": 12
+    },
+    "SELF_CORRECTION": {
+      "total": 17,
+      "exact_pass": 16,
+      "tool_pass": 17
+    }
+  }
+}

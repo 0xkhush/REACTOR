@@ -1,0 +1,40 @@
+{
+  "example_id": "travel_21",
+  "room": "reactor-batch-d4989afa1025",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/travel_21_69a9cf80f4d7668d5c815038/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/travel_21_69a9cf80f4d7668d5c815038/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_identity_doc",
+      "args": {
+        "doc_number": "V77",
+        "doc_type": "visa"
+      },
+      "timestamp_start": 35.05,
+      "timestamp_end": 35.05
+    },
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Las Vegas",
+        "date": "August 8"
+      },
+      "timestamp_start": 35.17,
+      "timestamp_end": 35.5
+    },
+    {
+      "function": "book_flight",
+      "args": {
+        "passenger_name": "Quinn Davis"
+      },
+      "timestamp_start": 37.71,
+      "timestamp_end": 37.71
+    }
+  ],
+  "stream_start_time": 1791098486.03234,
+  "agent_ready_wait_seconds": 1.974,
+  "elapsed_seconds": 60.65
+}

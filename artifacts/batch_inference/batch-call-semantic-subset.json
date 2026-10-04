@@ -1,0 +1,709 @@
+{
+  "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "mode": "captured_calls_google_mixed_semantic_exact_arguments_no_asr",
+  "official_score": false,
+  "expected": 26,
+  "captured_results": 26,
+  "missing_results": 0,
+  "full_capture_coverage": true,
+  "tool_selection_passed": 12,
+  "strict_tool_passed": 0,
+  "capture_status_counts": {
+    "completed": 18,
+    "inference_failed": 1,
+    "no_tool_call": 7
+  },
+  "examples": [
+    {
+      "example_id": "ecommerce_07",
+      "folder": "ecommerce_07_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['track_order']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "track_order",
+            "passed": false,
+            "expected_args": {
+              "order_id": "FAST99"
+            },
+            "actual_args": {
+              "order_id": "AST99"
+            },
+            "explanation": "Mismatch 'order_id': expected=FAST99, got=AST99"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_08",
+      "folder": "ecommerce_08_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "inference_failed",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_products']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "ecommerce_08",
+      "folder": "ecommerce_08_61517db6a7589569521b2356",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_products']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_products",
+            "passed": false,
+            "expected_args": {
+              "query": "mechanical keyboards",
+              "max_price": 200
+            },
+            "actual_args": {
+              "max_price": 200,
+              "query": "mechanical keyboard"
+            },
+            "explanation": "Mismatch 'query': expected=mechanical keyboards, got=mechanical keyboard"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_10",
+      "folder": "ecommerce_10_6998abd731d2ec50d067d5bd",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['track_order', 'search_products']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "ecommerce_12",
+      "folder": "ecommerce_12_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_products']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_products",
+            "passed": false,
+            "expected_args": {
+              "query": "gift",
+              "category": "electronics"
+            },
+            "actual_args": {
+              "query": "electronics",
+              "max_price": null
+            },
+            "explanation": "Mismatch 'query': expected=gift, got=electronics"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_13",
+      "folder": "ecommerce_13_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['add_to_cart', 'track_order']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 2,
+      "judge_exact_fallbacks": 2,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "add_to_cart",
+            "passed": false,
+            "expected_args": {
+              "product_id": "K2",
+              "quantity": 1
+            },
+            "actual_args": {
+              "product_id": "K-2",
+              "quantity": 1
+            },
+            "explanation": "Mismatch 'product_id': expected=K2, got=K-2"
+          },
+          {
+            "function": "track_order",
+            "passed": false,
+            "expected_args": {
+              "order_id": "DELIV"
+            },
+            "actual_args": {
+              "order_id": "D-e-l-i-v"
+            },
+            "explanation": "Mismatch 'order_id': expected=DELIV, got=D-e-l-i-v"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_14",
+      "folder": "ecommerce_14_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['add_to_cart']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "add_to_cart",
+            "passed": false,
+            "expected_args": {
+              "product_id": "P52",
+              "quantity": 2
+            },
+            "actual_args": {
+              "quantity": 2,
+              "product_id": "P-5-2"
+            },
+            "explanation": "Mismatch 'product_id': expected=P52, got=P-5-2"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_14",
+      "folder": "ecommerce_14_61517db6a7589569521b2356",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['add_to_cart']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "ecommerce_18",
+      "folder": "ecommerce_18_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Missing tools: ['add_to_cart']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "ecommerce_19",
+      "folder": "ecommerce_19_66f59c766e7e22e1f90d08f6",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_products', 'add_to_cart']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "finance_16",
+      "folder": "finance_16_62a885d5b6af18b3d4579e1b",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['get_exchange_rate']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "finance_20",
+      "folder": "finance_20_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['modify_autopay']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "finance_21",
+      "folder": "finance_21_5e3c1fbece3a7b000a6fd95a",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['get_exchange_rate']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "finance_22",
+      "folder": "finance_22_5f4a4da1575d605c43bef871",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['modify_autopay', 'modify_autopay']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "housing_10",
+      "folder": "housing_10_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_search_filter']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 2,
+      "judge_exact_fallbacks": 2,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "calculate_commute",
+            "passed": true,
+            "expected_args": {
+              "origin_address": "500 Central Ave",
+              "destination_address": "University",
+              "mode": "transit"
+            },
+            "actual_args": {
+              "mode": "transit",
+              "origin_address": "500 Central Ave",
+              "destination_address": "university"
+            },
+            "explanation": "All arguments match"
+          },
+          {
+            "function": "update_search_filter",
+            "passed": false,
+            "expected_args": {
+              "filter_name": "neighborhood",
+              "value": "Northside"
+            },
+            "actual_args": {
+              "value": "North side",
+              "filter_name": "neighborhood"
+            },
+            "explanation": "Mismatch 'value': expected=Northside, got=North side"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "housing_11",
+      "folder": "housing_11_62a885d5b6af18b3d4579e1b",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_apartments']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "housing_18",
+      "folder": "housing_18_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_apartments', 'calculate_commute']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 2,
+      "judge_exact_fallbacks": 2,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_apartments",
+            "passed": false,
+            "expected_args": {
+              "city": "Portland",
+              "bedrooms": 1,
+              "max_price": 1800
+            },
+            "actual_args": {
+              "max_price": 800,
+              "city": "Portland",
+              "bedrooms": 1,
+              "pets_allowed": null
+            },
+            "explanation": "Mismatch 'max_price': expected=1800, got=800"
+          },
+          {
+            "function": "calculate_commute",
+            "passed": false,
+            "expected_args": {
+              "origin_address": "$RESULT_0.cheapest_apartment_address",
+              "destination_address": "coffee shop on 5th",
+              "mode": "biking"
+            },
+            "actual_args": {
+              "destination_address": "the coffee shop on fifth street",
+              "origin_address": "APT1",
+              "mode": "biking"
+            },
+            "explanation": "Mismatch 'destination_address': expected=coffee shop on 5th, got=the coffee shop on fifth street"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "housing_19",
+      "folder": "housing_19_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['calculate_commute']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "calculate_commute",
+            "passed": false,
+            "expected_args": {
+              "origin_address": "my house",
+              "destination_address": "the gym",
+              "mode": "driving"
+            },
+            "actual_args": {
+              "destination_address": "gym",
+              "mode": "driving",
+              "origin_address": "my house"
+            },
+            "explanation": "Mismatch 'destination_address': expected=the gym, got=gym"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "housing_21",
+      "folder": "housing_21_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "no_tool_call",
+      "num_actual_calls": 0,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_apartments', 'calculate_commute']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "housing_24",
+      "folder": "housing_24_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_apartments', 'calculate_commute']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "travel_02",
+      "folder": "travel_02_5e3c1fbece3a7b000a6fd95a",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "update_identity_doc",
+            "passed": false,
+            "expected_args": {
+              "doc_type": "passport",
+              "doc_number": "P9-9-9-90011"
+            },
+            "actual_args": {
+              "doc_number": "P88990011",
+              "doc_type": "passport"
+            },
+            "explanation": "Mismatch 'doc_number': expected=P9-9-9-90011, got=P88990011"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_07",
+      "folder": "travel_07_5ff07b5ee7a1d23e719e421e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "update_identity_doc",
+            "passed": false,
+            "expected_args": {
+              "doc_type": "driver_license",
+              "doc_number": "DL555"
+            },
+            "actual_args": {
+              "doc_number": "D-L-5-5-5",
+              "doc_type": "driver_license"
+            },
+            "explanation": "Mismatch 'doc_number': expected=DL555, got=D-L-5-5-5"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_20",
+      "folder": "travel_20_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Missing tools: ['book_flight']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "travel_21",
+      "folder": "travel_21_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['book_flight']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 3,
+      "judge_exact_fallbacks": 3,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_flights",
+            "passed": true,
+            "expected_args": {
+              "destination": "Las Vegas",
+              "date": "August 8"
+            },
+            "actual_args": {
+              "destination": "Las Vegas",
+              "date": "August 8"
+            },
+            "explanation": "All arguments match"
+          },
+          {
+            "function": "book_flight",
+            "passed": false,
+            "expected_args": {
+              "passenger_name": "Quinn Davis"
+            },
+            "actual_args": {
+              "passenger_name": "Quin Davis"
+            },
+            "explanation": "Mismatch 'passenger_name': expected=Quinn Davis, got=Quin Davis"
+          },
+          {
+            "function": "update_identity_doc",
+            "passed": true,
+            "expected_args": {
+              "doc_type": "visa",
+              "doc_number": "V77"
+            },
+            "actual_args": {
+              "doc_number": "V77",
+              "doc_type": "visa"
+            },
+            "explanation": "All arguments match"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_21",
+      "folder": "travel_21_69a9cf80f4d7668d5c815038",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_flights']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 3,
+      "judge_exact_fallbacks": 3,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_flights",
+            "passed": false,
+            "expected_args": {
+              "destination": "Las Vegas",
+              "date": "August 8"
+            },
+            "actual_args": {
+              "destination": "Vegas",
+              "date": "August 8"
+            },
+            "explanation": "Mismatch 'destination': expected=Las Vegas, got=Vegas"
+          },
+          {
+            "function": "book_flight",
+            "passed": true,
+            "expected_args": {
+              "passenger_name": "Quinn Davis"
+            },
+            "actual_args": {
+              "passenger_name": "Quinn Davis"
+            },
+            "explanation": "All arguments match"
+          },
+          {
+            "function": "update_identity_doc",
+            "passed": true,
+            "expected_args": {
+              "doc_type": "visa",
+              "doc_number": "V77"
+            },
+            "actual_args": {
+              "doc_number": "V77",
+              "doc_type": "visa"
+            },
+            "explanation": "All arguments match"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_24",
+      "folder": "travel_24_695bd157114f0d2317f88617",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['search_flights', 'book_flight']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    }
+  ],
+  "judge": {
+    "provider": "google",
+    "model": "gemini-2.5-flash",
+    "api_requests": 12,
+    "policy_version": "google-semantic-v2-category-query",
+    "total_tokens": 0,
+    "returned_model_versions": [],
+    "quota_blocked": false,
+    "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+    "attempts": 19,
+    "exact_fallbacks": 19
+  },
+  "arguments_passed": 0,
+  "semantic_arguments_passed": 0,
+  "response_quality_evaluated": false,
+  "asr_used": false,
+  "selection": {
+    "scope": "previous_exact_failures_only",
+    "population_size": 100,
+    "selected_recordings": 26,
+    "baseline_exact_passes_unrejudged": 74,
+    "baseline_report": "artifacts/batch_inference/batch-call-exact.json",
+    "baseline_sha256": "4bf5f5a143e4c188d184bea5e77271aa7c651f9dbc998707bfea3e22d7f65eb1"
+  },
+  "mixed_population_diagnostic": {
+    "mode": "baseline_exact_plus_failed_subset_rejudged",
+    "expected": 100,
+    "passed": 74,
+    "fully_semantic": false,
+    "official_score": false
+  }
+}

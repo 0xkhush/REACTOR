@@ -1,0 +1,32 @@
+{
+  "example_id": "ecommerce_19",
+  "room": "reactor-batch-0cfcb407925c",
+  "input": "scratch/test_dataset/ecommerce_19_66f59c766e7e22e1f90d08f6/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/ecommerce_19_66f59c766e7e22e1f90d08f6/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_products",
+      "args": {
+        "query": "tablet",
+        "max_price": null
+      },
+      "timestamp_start": 34.48,
+      "timestamp_end": 34.48
+    },
+    {
+      "function": "add_to_cart",
+      "args": {
+        "product_id": "PROD1",
+        "quantity": 1
+      },
+      "timestamp_start": 36.94,
+      "timestamp_end": 36.94
+    }
+  ],
+  "stream_start_time": 1791104730.142922,
+  "agent_ready_wait_seconds": 5.138,
+  "elapsed_seconds": 62.86
+}

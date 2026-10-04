@@ -1,0 +1,24 @@
+{
+  "example_id": "finance_19",
+  "room": "reactor-batch-0d008fec8cfa",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/finance_19_66f59c766e7e22e1f90d08f6/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/finance_19_66f59c766e7e22e1f90d08f6/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "get_exchange_rate",
+      "args": {
+        "amount": 300,
+        "to_currency": "GBP",
+        "from_currency": "EUR"
+      },
+      "timestamp_start": 20.71,
+      "timestamp_end": 20.71
+    }
+  ],
+  "stream_start_time": 1791095895.839066,
+  "agent_ready_wait_seconds": 1.948,
+  "elapsed_seconds": 79.39
+}

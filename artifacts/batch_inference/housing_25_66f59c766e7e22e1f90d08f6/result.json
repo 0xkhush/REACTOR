@@ -1,0 +1,43 @@
+{
+  "example_id": "housing_25",
+  "room": "reactor-batch-ed0de2c960b1",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/housing_25_66f59c766e7e22e1f90d08f6/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/housing_25_66f59c766e7e22e1f90d08f6/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_search_filter",
+      "args": {
+        "filter_name": "pets_allowed",
+        "value": true
+      },
+      "timestamp_start": 41.96,
+      "timestamp_end": 42.12
+    },
+    {
+      "function": "update_search_filter",
+      "args": {
+        "filter_name": "max_price",
+        "value": 3500
+      },
+      "timestamp_start": 43.9,
+      "timestamp_end": 44.06
+    },
+    {
+      "function": "search_apartments",
+      "args": {
+        "pets_allowed": true,
+        "max_price": 3500,
+        "city": "San Francisco",
+        "bedrooms": 1
+      },
+      "timestamp_start": 45.36,
+      "timestamp_end": 45.7
+    }
+  ],
+  "stream_start_time": 1791097606.793503,
+  "agent_ready_wait_seconds": 1.916,
+  "elapsed_seconds": 58.27
+}

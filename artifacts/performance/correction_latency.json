@@ -1,0 +1,91 @@
+{
+  "benchmark": "REACTOR Synthetic Controller Correction Benchmark",
+  "scope": "In-memory software ledger overhead (excludes acoustic speech transport & ASR/LLM inference)",
+  "simulated_tool_delay_ms": 4.0,
+  "iterations": 100,
+  "metrics": {
+    "correction_detection_latency": {
+      "N": 100,
+      "mean_us": 2.85,
+      "median_us": 2.67,
+      "p50_us": 2.67,
+      "p90_us": 3.25,
+      "p95_us": 3.46,
+      "p99_us": 5.63,
+      "max_us": 5.67,
+      "std_us": 0.57
+    },
+    "intent_revision_latency": {
+      "N": 100,
+      "mean_us": 13.22,
+      "median_us": 12.15,
+      "p50_us": 12.15,
+      "p90_us": 15.67,
+      "p95_us": 16.69,
+      "p99_us": 27.09,
+      "max_us": 27.38,
+      "std_us": 3.16
+    },
+    "cancellation_latency": {
+      "N": 100,
+      "mean_us": 189.32,
+      "median_us": 181.54,
+      "p50_us": 181.54,
+      "p90_us": 230.46,
+      "p95_us": 248.91,
+      "p99_us": 297.03,
+      "max_us": 324.67,
+      "std_us": 34.77
+    },
+    "replacement_dispatch_latency": {
+      "N": 100,
+      "mean_us": 7.78,
+      "median_us": 7.02,
+      "p50_us": 7.02,
+      "p90_us": 11.55,
+      "p95_us": 12.71,
+      "p99_us": 15.21,
+      "max_us": 15.33,
+      "std_us": 2.38
+    },
+    "correction_completion_latency": {
+      "N": 100,
+      "mean_us": 4968.86,
+      "median_us": 4984.67,
+      "p50_us": 4984.67,
+      "p90_us": 5083.01,
+      "p95_us": 5098.34,
+      "p99_us": 5217.29,
+      "max_us": 5286.96,
+      "std_us": 124.11
+    }
+  },
+  "execution_integrity": {
+    "synthetic_trials": {
+      "total_trials": 100,
+      "stale_executions": 0,
+      "duplicate_executions": 0,
+      "superseded_before_dispatch": 100,
+      "cancellation_successes": 100
+    },
+    "benchmark_dataset_self_corrections": {
+      "total_scenarios_with_rollback": 17,
+      "stale_execution_rate": {
+        "count": 0,
+        "denominator": 17,
+        "percentage": 0.0
+      },
+      "duplicate_execution_rate": {
+        "count": 0,
+        "denominator": 17,
+        "percentage": 0.0
+      },
+      "cancellation_success_rate": {
+        "count": 17,
+        "denominator": 17,
+        "percentage": 100.0
+      },
+      "explanation": "Out of 100 released FDB-v3 scenarios, exactly 17 test state_rollback_test / SELF_CORRECTION. REACTOR achieved 0 stale executions across all 17 scenarios."
+    }
+  }
+}

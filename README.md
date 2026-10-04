@@ -31,6 +31,12 @@
     &middot;
     <a href="#test-matrix"><strong>Test Matrix (365/365) &rarr;</strong></a>
   </p>
+
+  <br />
+
+  <video src="Team-REACTOR_VIDEO.mp4" controls="controls" width="100%">
+    <a href="Team-REACTOR_VIDEO.mp4">Watch Team-REACTOR_VIDEO.mp4</a>
+  </video>
 </div>
 
 ---
@@ -72,7 +78,7 @@ Evaluated across all 100 released human audio recordings from the NTU Full-Duple
 |:---|:---:|:---|
 | **Source Code** | **Available** | Execution engine in [`src/reactor/`](src/reactor), interactive visualizer in [`frontend/`](frontend), 365 passing offline tests in [`tests/`](tests), evaluation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root), editable generator [`scripts/build_submission_deck.py`](scripts/build_submission_deck.py), and companion outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
-| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](https://github.com/0xkhush/REACTOR/blob/839e851299a26751a70c6636d220fab39dc0299b/Team-REACTOR_VIDEO.mp4) (main's submission recording); [`reactor.mp4`](reactor.mp4) is available on this branch.<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
+| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](Team-REACTOR_VIDEO.mp4) (official submission recording).<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
 | **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
 | **README & Audit** | **Updated** | Architecture, setup, readiness-aware capture, 92%/94% benchmark evaluation ([`ACCURACY_V5.md`](docs/results/ACCURACY_V5.md)), [Theme 05 Compliance Audit](docs/THEME05_COMPLIANCE_AUDIT.md), frontend visualizer, and the 365-test matrix. |
 | **Reproduction** | **Verified** | One-command reproduction script: [`reproduce.sh`](reproduce.sh) / [`scripts/reproduce.py`](scripts/reproduce.py) running end-to-end against pinned FDB-v3. |
@@ -298,7 +304,7 @@ REACTOR/
 
 ```bash
 # Clone the repository
-git clone --branch feat/google-semantic-evaluation https://github.com/0xkhush/REACTOR.git
+git clone https://github.com/0xkhush/REACTOR.git
 cd REACTOR
 
 # Create and activate virtual environment
@@ -351,6 +357,18 @@ Set `REACTOR_FREE_QUOTA_CONFIRMED=yes` after confirming free access. The configu
 Start the agent worker locally:
 ```bash
 python -m reactor.voice.agent dev
+```
+
+---
+
+### 3. Interactive Web Dashboard & Visualizer
+
+Launch the interactive real-time dashboard featuring live scenario audio streaming, dual-track timeline inspector, animated sequence graphs, and kitchen sandbox:
+
+```bash
+cd frontend
+pnpm install   # or: npm install
+pnpm dev       # runs locally at http://localhost:3000
 ```
 
 ---
@@ -600,10 +618,10 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 - [**Submission Checklist**](#checklist-for-github)
 - [**AI Usage Disclosure Form**](AI_DISCLOSURE.md)
 - [**Official Slide Deck (PPTX)**](VITV_Team-REACTOR.pptx)
-- [**Official Demo Video (MP4)**](https://github.com/0xkhush/REACTOR/blob/839e851299a26751a70c6636d220fab39dc0299b/Team-REACTOR_VIDEO.mp4)
+- [**Official Demo Video (MP4)**](Team-REACTOR_VIDEO.mp4)
 - [**Dependencies Manifest**](requirements.txt)
 - [**Kaggle Evaluation Notebook**](REACTOR_Kaggle_Evaluation.ipynb)
-- [**Latest 100-Recording Exact Evaluation**](docs/results/ACCURACY_V4.md)
+- [**Latest 100-Recording Exact Evaluation (92% Strict / 94% Semantic)**](docs/results/ACCURACY_V5.md)
 - [**Google Judge Calibration and Quota-Blocked Evaluation**](docs/results/GOOGLE_JUDGE_V2.md)
 - [**Historical Evaluation Archive**](docs/results/README.md)
 - [**Final Code Checkpoint**](docs/FINAL_CODE_CHECKPOINT.md)

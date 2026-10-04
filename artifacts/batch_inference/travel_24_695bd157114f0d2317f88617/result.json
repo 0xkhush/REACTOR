@@ -1,0 +1,40 @@
+{
+  "example_id": "travel_24",
+  "room": "reactor-batch-594aa8b34f6b",
+  "input": "scratch/test_dataset/travel_24_695bd157114f0d2317f88617/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/travel_24_695bd157114f0d2317f88617/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "date": "November 5",
+        "destination": "Vancouver"
+      },
+      "timestamp_start": 37.28,
+      "timestamp_end": 37.61
+    },
+    {
+      "function": "book_flight",
+      "args": {
+        "passenger_name": "Skyler"
+      },
+      "timestamp_start": 39.24,
+      "timestamp_end": 39.24
+    },
+    {
+      "function": "update_identity_doc",
+      "args": {
+        "doc_type": "visa",
+        "doc_number": "V44"
+      },
+      "timestamp_start": 41.04,
+      "timestamp_end": 41.05
+    }
+  ],
+  "stream_start_time": 1791105495.3231502,
+  "agent_ready_wait_seconds": 1.923,
+  "elapsed_seconds": 64.6
+}

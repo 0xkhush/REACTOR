@@ -1,0 +1,31 @@
+{
+  "example_id": "ecommerce_10",
+  "room": "reactor-batch-f1b6ffe2b4b4",
+  "input": "scratch/test_dataset/ecommerce_10_6998abd731d2ec50d067d5bd/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/ecommerce_10_6998abd731d2ec50d067d5bd/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "track_order",
+      "args": {
+        "order_id": "123ABC"
+      },
+      "timestamp_start": 30.33,
+      "timestamp_end": 30.33
+    },
+    {
+      "function": "search_products",
+      "args": {
+        "query": "winter jackets",
+        "max_price": 150
+      },
+      "timestamp_start": 30.42,
+      "timestamp_end": 30.42
+    }
+  ],
+  "stream_start_time": 1791104610.6927202,
+  "agent_ready_wait_seconds": 2.62,
+  "elapsed_seconds": 57.64
+}

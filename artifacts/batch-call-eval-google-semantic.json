@@ -1,0 +1,306 @@
+{
+  "benchmark_revision": "3e799c45a045256f47d5f1c9cda90157e2d2ec9e",
+  "mode": "captured_calls_google_mixed_semantic_exact_arguments_no_asr",
+  "official_score": false,
+  "expected": 8,
+  "captured_results": 8,
+  "missing_results": 0,
+  "full_capture_coverage": true,
+  "tool_selection_passed": 6,
+  "strict_tool_passed": 2,
+  "capture_status_counts": {
+    "completed": 8
+  },
+  "examples": [
+    {
+      "example_id": "ecommerce_07",
+      "folder": "ecommerce_07_66f59c766e7e22e1f90d08f6",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['track_order']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "track_order",
+            "passed": false,
+            "expected_args": {
+              "order_id": "FAST99"
+            },
+            "actual_args": {
+              "order_id": "AST99"
+            },
+            "explanation": "The order_id 'AST99' does not match the expected 'FAST99'."
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "ecommerce_12",
+      "folder": "ecommerce_12_6998abd731d2ec50d067d5bd",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "arguments_passed": true,
+      "semantic_arguments_passed": true,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": {
+        "passed": true,
+        "details": [
+          {
+            "function": "search_products",
+            "passed": true,
+            "expected_args": {
+              "query": "gift",
+              "category": "electronics"
+            },
+            "actual_args": {
+              "query": "electronics",
+              "max_price": null
+            },
+            "explanation": "Per rule 7, searching for the category ('electronics') directly in the query argument satisfies the requirement when the expected arguments are query='gift' and category='electronics'."
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "finance_20",
+      "folder": "finance_20_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Missing tools: ['modify_autopay']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "housing_11",
+      "folder": "housing_11_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_apartments']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_apartments",
+            "passed": false,
+            "expected_args": {
+              "city": "Austin",
+              "bedrooms": 2,
+              "max_price": 1600
+            },
+            "actual_args": {
+              "bedrooms": 2,
+              "max_price": 1600,
+              "city": null,
+              "pets_allowed": null
+            },
+            "explanation": "The 'city' argument was expected to be 'Austin' but was provided as null."
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "housing_18",
+      "folder": "housing_18_66c4f3cb14cbfc4db836bd4e",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['search_apartments']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 2,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "search_apartments",
+            "passed": false,
+            "expected_args": {
+              "city": "Portland",
+              "bedrooms": 1,
+              "max_price": 1800
+            },
+            "actual_args": {
+              "max_price": 800,
+              "city": "Portland",
+              "bedrooms": 1,
+              "pets_allowed": null
+            },
+            "explanation": "The max_price of 800 is significantly different from the expected 1800 and exceeds the 5% numeric tolerance."
+          },
+          {
+            "function": "calculate_commute",
+            "passed": true,
+            "expected_args": {
+              "origin_address": "$RESULT_0.cheapest_apartment_address",
+              "destination_address": "coffee shop on 5th",
+              "mode": "biking"
+            },
+            "actual_args": {
+              "destination_address": "coffee shop on 5th",
+              "origin_address": "APT1",
+              "mode": "biking"
+            },
+            "explanation": "All arguments match; 'APT1' is a plausible value for the dynamic reference $RESULT_0.cheapest_apartment_address."
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_02",
+      "folder": "travel_02_5e3c1fbece3a7b000a6fd95a",
+      "capture_status": "completed",
+      "num_actual_calls": 1,
+      "passed": false,
+      "failure_reason": "Wrong arguments for: ['update_identity_doc']",
+      "tool_selection_passed": true,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 1,
+      "judge_exact_fallbacks": 1,
+      "argument_judgements": {
+        "passed": false,
+        "details": [
+          {
+            "function": "update_identity_doc",
+            "passed": false,
+            "expected_args": {
+              "doc_type": "passport",
+              "doc_number": "P9-9-9-90011"
+            },
+            "actual_args": {
+              "doc_number": "P88990011",
+              "doc_type": "passport"
+            },
+            "explanation": "Mismatch 'doc_number': expected=P9-9-9-90011, got=P88990011"
+          }
+        ]
+      }
+    },
+    {
+      "example_id": "travel_20",
+      "folder": "travel_20_62a885d5b6af18b3d4579e1b",
+      "capture_status": "completed",
+      "num_actual_calls": 2,
+      "passed": false,
+      "failure_reason": "Missing tools: ['book_flight']",
+      "tool_selection_passed": false,
+      "arguments_passed": false,
+      "semantic_arguments_passed": false,
+      "judge_attempts": 0,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": null
+    },
+    {
+      "example_id": "travel_21",
+      "folder": "travel_21_65e8cf8f4c7424fa062e54a3",
+      "capture_status": "completed",
+      "num_actual_calls": 3,
+      "passed": true,
+      "failure_reason": "",
+      "tool_selection_passed": true,
+      "arguments_passed": true,
+      "semantic_arguments_passed": true,
+      "judge_attempts": 3,
+      "judge_exact_fallbacks": 0,
+      "argument_judgements": {
+        "passed": true,
+        "details": [
+          {
+            "function": "search_flights",
+            "passed": true,
+            "expected_args": {
+              "destination": "Las Vegas",
+              "date": "August 8"
+            },
+            "actual_args": {
+              "destination": "Las Vegas",
+              "date": "August 8"
+            },
+            "explanation": "Arguments match exactly."
+          },
+          {
+            "function": "book_flight",
+            "passed": true,
+            "expected_args": {
+              "passenger_name": "Quinn Davis"
+            },
+            "actual_args": {
+              "passenger_name": "Quin Davis"
+            },
+            "explanation": "Phonetic name variation 'Quin' matches 'Quinn' per rule 6."
+          },
+          {
+            "function": "update_identity_doc",
+            "passed": true,
+            "expected_args": {
+              "doc_type": "visa",
+              "doc_number": "V77"
+            },
+            "actual_args": {
+              "doc_number": "V77",
+              "doc_type": "visa"
+            },
+            "explanation": "Arguments match exactly."
+          }
+        ]
+      }
+    }
+  ],
+  "judge": {
+    "provider": "google",
+    "model": "gemma-4-31b-it",
+    "api_requests": 6,
+    "policy_version": "google-semantic-v3-voice-homophone-schema",
+    "total_tokens": 5434,
+    "returned_model_versions": [
+      "gemma-4-31b-it"
+    ],
+    "quota_blocked": false,
+    "pricing_source": "https://ai.google.dev/gemini-api/docs/pricing",
+    "attempts": 9,
+    "exact_fallbacks": 1
+  },
+  "arguments_passed": 2,
+  "semantic_arguments_passed": 2,
+  "response_quality_evaluated": false,
+  "asr_used": false,
+  "selection": {
+    "scope": "previous_exact_failures_only",
+    "population_size": 100,
+    "selected_recordings": 8,
+    "baseline_exact_passes_unrejudged": 92,
+    "baseline_report": "artifacts/batch_inference/batch-call-exact.json",
+    "baseline_sha256": "3596f5bb66567f36b8694adbbb8813aff2189e1484989d104566981cdfa0233f"
+  },
+  "mixed_population_diagnostic": {
+    "mode": "baseline_exact_plus_failed_subset_rejudged",
+    "expected": 100,
+    "passed": 94,
+    "fully_semantic": false,
+    "official_score": false
+  }
+}

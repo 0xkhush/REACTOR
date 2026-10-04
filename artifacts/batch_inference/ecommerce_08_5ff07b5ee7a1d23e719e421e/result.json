@@ -1,0 +1,23 @@
+{
+  "example_id": "ecommerce_08",
+  "room": "reactor-batch-d9d695aa103c",
+  "input": "scratch/test_dataset/ecommerce_08_5ff07b5ee7a1d23e719e421e/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/ecommerce_08_5ff07b5ee7a1d23e719e421e/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_products",
+      "args": {
+        "max_price": 200,
+        "query": "mechanical keyboards"
+      },
+      "timestamp_start": 26.27,
+      "timestamp_end": 26.27
+    }
+  ],
+  "stream_start_time": 1791104557.2934248,
+  "agent_ready_wait_seconds": 2.626,
+  "elapsed_seconds": 53.15
+}

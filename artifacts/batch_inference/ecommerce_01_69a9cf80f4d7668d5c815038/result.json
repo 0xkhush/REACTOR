@@ -1,0 +1,22 @@
+{
+  "example_id": "ecommerce_01",
+  "room": "reactor-batch-4ee19458f9a0",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/ecommerce_01_69a9cf80f4d7668d5c815038/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/ecommerce_01_69a9cf80f4d7668d5c815038/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "track_order",
+      "args": {
+        "order_id": "abc123"
+      },
+      "timestamp_start": 25.12,
+      "timestamp_end": 25.12
+    }
+  ],
+  "stream_start_time": 1791093121.343831,
+  "agent_ready_wait_seconds": 2.179,
+  "elapsed_seconds": 56.92
+}

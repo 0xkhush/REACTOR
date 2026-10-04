@@ -1,0 +1,17 @@
+{
+  "benchmark": "Full-Duplex-Bench v3 Evaluation",
+  "provider": "gemini2_5",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "modality": "Native Realtime Audio (WebSockets/WebRTC)",
+  "provider_telemetry_status": "NOT RECORDED IN RUN RESULT",
+  "explanation": "The LiveKit Google plugin (realtime_api.py) supports usage_metadata event handling, but the headless batch audio recorder script (batch_infer.py) did not persist RealtimeModelMetrics into the output result.json files. Therefore, exact provider-reported tokens were not captured for this run.",
+  "estimated_usage_from_audio_duration": {
+    "methodology": "Calculated from measured average audio durations using official Gemini native audio rate of ~32 tokens/second",
+    "average_input_audio_s": 47.2,
+    "average_output_audio_s": 3.2,
+    "estimated_input_tokens_per_recording": 1510,
+    "estimated_output_tokens_per_recording": 102,
+    "estimated_total_tokens_per_recording": 1612,
+    "estimated_total_tokens_100_recordings": 161200
+  }
+}

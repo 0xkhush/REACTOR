@@ -1,0 +1,23 @@
+{
+  "example_id": "travel_05",
+  "room": "reactor-batch-8eaa171b8bbe",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/travel_05_6998abd731d2ec50d067d5bd/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/travel_05_6998abd731d2ec50d067d5bd/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Chicago",
+        "date": "December 12"
+      },
+      "timestamp_start": 16.95,
+      "timestamp_end": 17.26
+    }
+  ],
+  "stream_start_time": 1791097859.3605802,
+  "agent_ready_wait_seconds": 1.967,
+  "elapsed_seconds": 47.26
+}

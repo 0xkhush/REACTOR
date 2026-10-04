@@ -1,0 +1,23 @@
+{
+  "example_id": "ecommerce_14",
+  "room": "reactor-batch-27e18311d1c2",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/ecommerce_14_5ff07b5ee7a1d23e719e421e/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/ecommerce_14_5ff07b5ee7a1d23e719e421e/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "add_to_cart",
+      "args": {
+        "quantity": 2,
+        "product_id": "P52"
+      },
+      "timestamp_start": 32.2,
+      "timestamp_end": 32.2
+    }
+  ],
+  "stream_start_time": 1791094032.006475,
+  "agent_ready_wait_seconds": 2.046,
+  "elapsed_seconds": 57.61
+}

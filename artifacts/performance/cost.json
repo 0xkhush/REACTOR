@@ -1,0 +1,14 @@
+{
+  "status": "ESTIMATED FROM AUDIO DURATION & OFFICIAL PRICING",
+  "pricing_basis": {
+    "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+    "audio_input_rate": "$3.00 per 1M tokens",
+    "audio_output_rate": "$12.00 per 1M tokens"
+  },
+  "per_recording_estimate": {
+    "input_cost": "$0.004530",
+    "output_cost": "$0.001224",
+    "total_cost": "$0.00575"
+  },
+  "benchmark_100_recordings_total_estimate": "$0.57"
+}

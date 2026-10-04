@@ -144,7 +144,7 @@ const archStages = [
     label: 'MOCK BACKENDS & LOG',
     desc: 'Executes pinned NTU Full-Duplex-Bench mock APIs across Travel, Finance, Housing, and E-Commerce. Records room-keyed, secret-redacted JSONL telemetry compliant with FDB-v3 logs.',
     file: 'src/reactor/tools/benchmark.py',
-    metric: '75/100 Exact · 89/100 Tool Selection',
+    metric: '92/100 Exact · 98/100 Tool Selection',
     tag: 'FDB-v3 Ecosystem',
   },
 ]
@@ -216,14 +216,32 @@ function Header({
   )
 }
 
-function Stepper({ phase }: { phase: DemoPhase }) {
-  const steps = [
+interface DemoScenarioConfig {
+  id: string
+  name: string
+  shortLabel: string
+  badge: string
+  audioSrc: string
+  dialogue: { time: string; text: string; speaker: 'user' | 'agent'; phaseThreshold: number }[]
+  revOld: { id: string; intent: string; params: [string, string][] }
+  revNew: { id: string; intent: string; params: [string, string][] }
+  slotRows: [string, string, string, string][]
+  op1: { id: string; call: string; cancelledText: string }
+  op2: { id: string; call: string; successText: string }
+  phaseTimes: [number, number, number, number, number, number]
+  duration: number
+  trace: [string, string, string][]
+  steps?: { num: string; title: string; desc: string }[]
+}
+
+function Stepper({ phase, scenario }: { phase: DemoPhase; scenario: DemoScenarioConfig }) {
+  const steps = scenario.steps || [
     { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
-    { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (Mumbai) proposed' },
-    { num: '03', title: 'SELF-CORRECTION', desc: '"actually make that Delhi"' },
-    { num: '04', title: 'REVISION CREATED', desc: 'RequestID 1, Revision 2' },
-    { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
-    { num: '06', title: 'EXECUTE VALID', desc: 'op-02 admitted to write gate' },
+    { num: '02', title: 'MODEL PROPOSES', desc: `${scenario.op1.id} proposed` },
+    { num: '03', title: 'SELF-CORRECTION', desc: 'Verbal rollback detected' },
+    { num: '04', title: 'REVISION CREATED', desc: `${scenario.revNew.id}` },
+    { num: '05', title: 'CANCEL STALE', desc: `${scenario.op1.id} aborted pre-dispatch` },
+    { num: '06', title: 'EXECUTE VALID', desc: `${scenario.op2.id} admitted to write gate` },
   ]
   return (
     <div className="stepper-hero">
@@ -284,23 +302,6 @@ function Waveform({
   )
 }
 
-interface DemoScenarioConfig {
-  id: string
-  name: string
-  shortLabel: string
-  badge: string
-  audioSrc: string
-  dialogue: { time: string; text: string; speaker: 'user' | 'agent'; phaseThreshold: number }[]
-  revOld: { id: string; intent: string; params: [string, string][] }
-  revNew: { id: string; intent: string; params: [string, string][] }
-  slotRows: [string, string, string, string][]
-  op1: { id: string; call: string; cancelledText: string }
-  op2: { id: string; call: string; successText: string }
-  phaseTimes: [number, number, number, number, number, number]
-  duration: number
-  trace: [string, string, string][]
-}
-
 const demoScenarios: DemoScenarioConfig[] = [
   {
     id: 'hero',
@@ -314,6 +315,14 @@ const demoScenarios: DemoScenarioConfig[] = [
       { time: '00:00.3', text: '“Book a flight to Mumbai on Friday...”', speaker: 'user', phaseThreshold: 1 },
       { time: '00:02.7', text: '“wait, actually make that Delhi!”', speaker: 'user', phaseThreshold: 3 },
       { time: '00:05.2', text: '“Got it. Searching for flights to Delhi on Friday.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    steps: [
+      { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
+      { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (Mumbai) proposed' },
+      { num: '03', title: 'SELF-CORRECTION', desc: '"actually make that Delhi"' },
+      { num: '04', title: 'REVISION CREATED', desc: 'RequestID 1, Revision 2' },
+      { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
+      { num: '06', title: 'EXECUTE VALID', desc: 'op-02 admitted to write gate' },
     ],
     revOld: {
       id: 'R-001 / REV 01',
@@ -348,15 +357,23 @@ const demoScenarios: DemoScenarioConfig[] = [
     id: 'travel_19',
     name: 'FDB-094: TRAVEL DOUBLE CORRECTION (Rome -> Milan, June 1 -> 3)',
     shortLabel: '02. FDB Travel (Rome -> Milan)',
-    badge: 'NTU FDB-v3 Authentic 48kHz Audio',
-    audioSrc: '/audio/travel_19_695bd157114f0d2317f88617_input.mp3',
-    phaseTimes: [1.0, 3.5, 6.0, 9.0, 11.5, 14.0],
-    duration: 17.5,
+    badge: 'NTU FDB-v3 Grounded Voice Dialogue (22.5s)',
+    audioSrc: '/audio/travel_19_seamless.mp3',
+    phaseTimes: [1.0, 4.5, 6.0, 11.5, 15.5, 17.5],
+    duration: 22.5,
     dialogue: [
       { time: '00:01.0', text: '“Hmm... okay so, I want to look at flights to Rome...”', speaker: 'user', phaseThreshold: 1 },
-      { time: '00:06.0', text: '“no wait, I changed my mind, let\'s do Milan instead...”', speaker: 'user', phaseThreshold: 3 },
-      { time: '00:11.5', text: '“And I was thinking June 1st, but actually, June 3rd works better for me.”', speaker: 'user', phaseThreshold: 4 },
-      { time: '00:16.0', text: '“I will search for flights to Milan on June 3rd.”', speaker: 'agent', phaseThreshold: 6 },
+      { time: '00:05.8', text: '“no wait, I changed my mind, let\'s do Milan instead...”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:11.2', text: '“And I was thinking June 1st, but actually, June 3rd works better for me.”', speaker: 'user', phaseThreshold: 4 },
+      { time: '00:18.2', text: '“Sure, I found one flight to Milan on June 3rd for $450.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    steps: [
+      { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
+      { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (Rome, June 1) proposed' },
+      { num: '03', title: 'SELF-CORRECTION', desc: '"let\'s do Milan instead"' },
+      { num: '04', title: 'REVISION CREATED', desc: 'Rev 2 (Milan) -> Rev 3 (June 3)' },
+      { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
+      { num: '06', title: 'EXECUTE VALID', desc: 'op-02 (Milan, June 3) admitted' },
     ],
     revOld: {
       id: 'R-019 / REV 01',
@@ -364,7 +381,7 @@ const demoScenarios: DemoScenarioConfig[] = [
       params: [['destination', 'Rome'], ['date', 'June 1']],
     },
     revNew: {
-      id: 'R-019 / REV 02',
+      id: 'R-019 / REV 03',
       intent: 'search_flights',
       params: [['destination', 'Milan'], ['date', 'June 3']],
     },
@@ -380,26 +397,35 @@ const demoScenarios: DemoScenarioConfig[] = [
     trace: [
       ['00:00.000', 'session.created', 'req_fdb_094'],
       ['00:01.200', 'intent.proposed', 'op-01 search_flights(Rome, June 1)'],
-      ['00:06.100', 'intent.revised', 'revision=2 destination=Milan'],
-      ['00:06.102', 'op.cancelled', 'cancelled_before_dispatch'],
-      ['00:11.600', 'intent.revised', 'revision=3 date=June 3'],
-      ['00:14.200', 'op.proposed', 'op-02 search_flights(Milan, June 3)'],
-      ['00:14.350', 'op.launched', 'write_gate=open'],
-      ['00:15.140', 'op.succeeded', 'latency=790ms'],
+      ['00:05.800', 'intent.revised', 'revision=2 destination=Milan'],
+      ['00:05.802', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:11.200', 'intent.revised', 'revision=3 date=June 3'],
+      ['00:17.200', 'op.proposed', 'op-02 search_flights(Milan, June 3)'],
+      ['00:17.350', 'op.launched', 'write_gate=open'],
+      ['00:18.140', 'op.succeeded', 'latency=790ms · flight_found=$450'],
+      ['00:18.200', 'agent.speech_start', '“Sure, I found one flight to Milan on June 3rd for $450.”'],
     ],
   },
   {
     id: 'ecommerce_09',
     name: 'FDB-010: E-COMMERCE CORRECTION (Running Shoes -> Hiking Boots)',
     shortLabel: '03. FDB E-Commerce (Shoes -> Boots)',
-    badge: 'NTU FDB-v3 Authentic 48kHz Audio',
-    audioSrc: '/audio/ecommerce_09_695bd157114f0d2317f88617_input.mp3',
-    phaseTimes: [0.5, 2.5, 4.5, 6.0, 7.0, 8.5],
-    duration: 12.0,
+    badge: 'NTU FDB-v3 Grounded Voice Dialogue (16.1s)',
+    audioSrc: '/audio/ecommerce_09_seamless.mp3',
+    phaseTimes: [0.5, 2.5, 4.5, 7.5, 10.0, 11.5],
+    duration: 16.1,
     dialogue: [
       { time: '00:00.5', text: '“Like... well... could you search for running shoes — actually no...”', speaker: 'user', phaseThreshold: 1 },
       { time: '00:04.5', text: '“um, I already have running shoes. Search for hiking boots instead.”', speaker: 'user', phaseThreshold: 3 },
-      { time: '00:08.5', text: '“I will search for hiking boots for you.”', speaker: 'agent', phaseThreshold: 6 },
+      { time: '00:12.2', text: '“I found hiking boots premium prod one for 99.99.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    steps: [
+      { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
+      { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (running shoes) proposed' },
+      { num: '03', title: 'SELF-CORRECTION', desc: '"search for hiking boots instead"' },
+      { num: '04', title: 'REVISION CREATED', desc: 'R-009, Revision 2' },
+      { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
+      { num: '06', title: 'EXECUTE VALID', desc: 'op-02 (hiking boots) admitted' },
     ],
     revOld: {
       id: 'R-009 / REV 01',
@@ -425,9 +451,113 @@ const demoScenarios: DemoScenarioConfig[] = [
       ['00:01.100', 'intent.proposed', 'op-01 search_products(running shoes)'],
       ['00:04.600', 'intent.revised', 'revision=2 query=hiking boots'],
       ['00:04.602', 'op.cancelled', 'cancelled_before_dispatch'],
-      ['00:07.100', 'op.proposed', 'op-02 search_products(hiking boots)'],
-      ['00:07.250', 'op.launched', 'write_gate=open'],
-      ['00:07.860', 'op.succeeded', 'latency=610ms'],
+      ['00:11.200', 'op.proposed', 'op-02 search_products(hiking boots)'],
+      ['00:11.350', 'op.launched', 'write_gate=open'],
+      ['00:11.960', 'op.succeeded', 'latency=610ms · in_stock=true'],
+      ['00:12.200', 'agent.speech_start', '“I found hiking boots premium prod one for 99.99.”'],
+    ],
+  },
+  {
+    id: 'housing_09',
+    name: 'FDB-042: HOUSING CITY CORRECTION (Boston -> Chicago)',
+    shortLabel: '04. FDB Housing (Boston -> Chicago)',
+    badge: 'NTU FDB-v3 Grounded Voice Dialogue (20.8s)',
+    audioSrc: '/audio/housing_09_seamless.mp3',
+    phaseTimes: [0.5, 3.5, 6.5, 10.5, 14.0, 15.6],
+    duration: 20.8,
+    dialogue: [
+      { time: '00:00.5', text: '“Well... well... uh... I\'m interested in a 2-bedroom in Boston...”', speaker: 'user', phaseThreshold: 1 },
+      { time: '00:06.5', text: '“wait, actually,... um, I changed my mind. Let\'s look in Chicago instead...”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:10.5', text: '“and keep the max price around 2000 per month.”', speaker: 'user', phaseThreshold: 4 },
+      { time: '00:15.6', text: '“I will search for 2-bedroom apartments in Chicago up to $2000.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    steps: [
+      { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
+      { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (Boston, 2bd) proposed' },
+      { num: '03', title: 'SELF-CORRECTION', desc: '"look in Chicago instead"' },
+      { num: '04', title: 'REVISION CREATED', desc: 'R-042, Revision 2 (Chicago, $2k)' },
+      { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
+      { num: '06', title: 'EXECUTE VALID', desc: 'op-02 (Chicago, $2k) admitted' },
+    ],
+    revOld: {
+      id: 'R-042 / REV 01',
+      intent: 'search_apartments',
+      params: [['city', 'Boston'], ['bedrooms', '2'], ['max_price', '$2,000']],
+    },
+    revNew: {
+      id: 'R-042 / REV 02',
+      intent: 'search_apartments',
+      params: [['city', 'Chicago'], ['bedrooms', '2'], ['max_price', '$2,000']],
+    },
+    slotRows: [
+      ['bedrooms', '2', '2', 'PRESERVED'],
+      ['max_price', '$2,000', '$2,000', 'PRESERVED'],
+      ['city', 'Boston', 'Chicago', 'UPDATED'],
+      ['pets_allowed', 'None', 'None', 'PRESERVED'],
+    ],
+    op1: { id: 'op-01', call: 'search_apartments(city="Boston", bedrooms=2, max_price=2000)', cancelledText: 'CANCELLED_BEFORE_DISPATCH' },
+    op2: { id: 'op-02', call: 'search_apartments(city="Chicago", bedrooms=2, max_price=2000)', successText: 'SUCCEEDED (640ms)' },
+    trace: [
+      ['00:00.000', 'session.created', 'req_fdb_042'],
+      ['00:01.100', 'intent.proposed', 'op-01 search_apartments(Boston, 2bd, $2k)'],
+      ['00:06.500', 'intent.revised', 'revision=2 city=Chicago'],
+      ['00:06.502', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:14.600', 'op.proposed', 'op-02 search_apartments(Chicago, 2bd, $2k)'],
+      ['00:14.750', 'op.launched', 'write_gate=open'],
+      ['00:15.390', 'op.succeeded', 'latency=640ms · 14 units found'],
+      ['00:15.600', 'agent.speech_start', '“I will search for 2-bedroom apartments in Chicago up to $2000.”'],
+    ],
+  },
+  {
+    id: 'travel_10',
+    name: 'FDB-028: TRAVEL DATE CORRECTION (Miami, Oct 5 -> Oct 7)',
+    shortLabel: '05. FDB Travel (Oct 5 -> Oct 7)',
+    badge: 'NTU FDB-v3 Grounded Voice Dialogue (23.9s)',
+    audioSrc: '/audio/travel_10_seamless.mp3',
+    phaseTimes: [2.5, 5.0, 7.5, 12.0, 16.5, 18.0],
+    duration: 23.95,
+    dialogue: [
+      { time: '00:02.6', text: '“Um, so um, I was looking at flights to Miami on October 5th...”', speaker: 'user', phaseThreshold: 1 },
+      { time: '00:07.5', text: '“wait, uh, my schedule just changed. My meeting got moved...”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:12.0', text: '“so actually make it October 7th instead.”', speaker: 'user', phaseThreshold: 4 },
+      { time: '00:18.0', text: '“Got it, searching for flights to Miami on October 7th.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    steps: [
+      { num: '01', title: 'SPEECH BEGINS', desc: 'Audio VAD hold opened' },
+      { num: '02', title: 'MODEL PROPOSES', desc: 'op-01 (Miami, Oct 5) proposed' },
+      { num: '03', title: 'SELF-CORRECTION', desc: '"make it October 7th instead"' },
+      { num: '04', title: 'REVISION CREATED', desc: 'R-028, Revision 2 (Oct 7)' },
+      { num: '05', title: 'CANCEL STALE', desc: 'op-01 aborted pre-dispatch' },
+      { num: '06', title: 'EXECUTE VALID', desc: 'op-02 (Miami, Oct 7) admitted' },
+    ],
+    revOld: {
+      id: 'R-028 / REV 01',
+      intent: 'search_flights',
+      params: [['destination', 'Miami'], ['date', 'October 5']],
+    },
+    revNew: {
+      id: 'R-028 / REV 02',
+      intent: 'search_flights',
+      params: [['destination', 'Miami'], ['date', 'October 7']],
+    },
+    slotRows: [
+      ['destination', 'Miami', 'Miami', 'PRESERVED'],
+      ['date', 'October 5', 'October 7', 'UPDATED'],
+      ['passengers', '1', '1', 'PRESERVED'],
+      ['cabin', 'Economy', 'Economy', 'PRESERVED'],
+    ],
+    op1: { id: 'op-01', call: 'search_flights(destination="Miami", date="October 5")', cancelledText: 'CANCELLED_BEFORE_DISPATCH' },
+    op2: { id: 'op-02', call: 'search_flights(destination="Miami", date="October 7")', successText: 'SUCCEEDED (630ms)' },
+    trace: [
+      ['00:00.000', 'session.created', 'req_fdb_028'],
+      ['00:03.200', 'intent.proposed', 'op-01 search_flights(Miami, Oct 5)'],
+      ['00:07.600', 'intent.revised', 'meeting_rescheduled -> pending date'],
+      ['00:07.602', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:12.100', 'intent.revised', 'revision=2 date=October 7'],
+      ['00:17.000', 'op.proposed', 'op-02 search_flights(Miami, Oct 7)'],
+      ['00:17.150', 'op.launched', 'write_gate=open'],
+      ['00:17.780', 'op.succeeded', 'latency=630ms · flights_available=4'],
+      ['00:18.000', 'agent.speech_start', '“Got it, searching for flights to Miami on October 7th.”'],
     ],
   },
 ]
@@ -635,7 +765,7 @@ function Engine() {
             </span>
           </div>
         </div>
-        <Stepper phase={phase} />
+        <Stepper phase={phase} scenario={activeDemo} />
       </div>
 
       <div className="grid engine-grid">
@@ -668,7 +798,7 @@ function Engine() {
           <Revision phase={phase} scenario={activeDemo} />
         </Panel>
 
-        <Panel title="SLOT PRESERVATION" eyebrow="INSPECTOR / R-001">
+        <Panel title="SLOT PRESERVATION" eyebrow={`INSPECTOR / ${activeDemo.revOld.id.split('/')[0].trim()}`}>
           <SlotTable phase={phase} scenario={activeDemo} />
         </Panel>
 
@@ -1495,10 +1625,10 @@ function Benchmarks() {
 
       <div className="metric-strip">
         {[
-          ['100', 'SCENARIOS AVAILABLE'],
-          ['75 / 100', 'STRICT EXACT PASS'],
-          ['89 / 100', 'TOOL SELECTION'],
-          ['100 / 100', 'REAL AUDIO CAPTURED'],
+          ['92 / 100', 'STRICT EXACT PASS (92%)'],
+          ['98 / 100', 'TOOL SELECTION (98%)'],
+          ['94 / 100', 'SEMANTIC ARG MATCH (94%)'],
+          ['365', 'OFFLINE TESTS (100%)'],
         ].map((m) => (
           <div key={m[1]}>
             <strong>{m[0]}</strong>
@@ -1719,10 +1849,10 @@ function Metrics() {
       />
       <div className="metric-strip four">
         {[
-          ['75 / 100', 'STRICT EXACT PASS'],
-          ['89 / 100', 'TOOL SELECTION'],
-          ['94 / 100', 'COMPLETED RUNS'],
-          ['358', 'PASSING TESTS'],
+          ['92 / 100', 'STRICT EXACT PASS (92%)'],
+          ['98 / 100', 'TOOL SELECTION (98%)'],
+          ['94 / 100', 'SEMANTIC MATCH (94%)'],
+          ['365', 'PASSING TESTS (100%)'],
         ].map((m) => (
           <div key={m[1]}>
             <strong>{m[0]}</strong>
@@ -1824,7 +1954,7 @@ function Metrics() {
               <b>BACKEND / RUNTIME</b>
               <span>FastAPI · WebSocket · Python Controller · TimerService · FDB-v3 · JSONL Trace</span>
               <em>
-                <i className="status-dot" /> LOCAL RUNTIME VERIFIED (358 TESTS)
+                <i className="status-dot" /> LOCAL RUNTIME VERIFIED (365 TESTS)
               </em>
             </div>
           </Panel>
@@ -2141,10 +2271,10 @@ function AnimatedSequenceGraph() {
             <i className={`status-dot ${isPlaying ? 'pulse' : ''}`} />
             {isPlaying ? 'REAL AUDIO SYNCED' : 'AUDIO READY'}
           </span>
-          <span className="text-[#38bdf8] font-bold">
+          <span className="text-[#38bdf8] font-bold text-sm">
             STEP {String(currentIdx + 1).padStart(2, '0')} / {String(sequenceSteps.length).padStart(2, '0')}
           </span>
-          <span className="audio-time-badge">{step.time}</span>
+          <span className="audio-time-badge text-xs">{step.time}</span>
         </div>
       </div>
 
@@ -2218,9 +2348,9 @@ function AnimatedSequenceGraph() {
                   >
                     {isCurrent && <span className="seq-pulse" />}
                     {isDirLeft ? (
-                      <ArrowLeft className="w-2.5 h-2.5 text-current absolute left-0 -top-[5px]" />
+                      <ArrowLeft className="w-3 h-3 text-current absolute left-0 -top-[5px]" />
                     ) : (
-                      <ArrowRight className="w-2.5 h-2.5 text-current absolute right-0 -top-[5px]" />
+                      <ArrowRight className="w-3 h-3 text-current absolute right-0 -top-[5px]" />
                     )}
                     <span className="seq-arrow-label">{s.label}</span>
                   </div>
@@ -2235,11 +2365,11 @@ function AnimatedSequenceGraph() {
       <div className="seq-narrative-ticker">
         <div className="seq-narrative-left">
           <span className="seq-invariant-tag">{step.invariant}</span>
-          <span className="text-white font-bold">{step.label}</span>
-          <span className="text-soft hidden md:inline">— {step.narrative}</span>
+          <span className="text-white font-bold text-sm">{step.label}</span>
+          <span className="text-soft hidden md:inline text-xs">— {step.narrative}</span>
         </div>
         <div className="flex items-center gap-2 flex-shrink-0">
-          <span className="text-muted font-mono">{step.stats}</span>
+          <span className="text-muted font-mono text-xs">{step.stats}</span>
         </div>
       </div>
     </div>
@@ -2270,8 +2400,8 @@ function AnimatedDynamicFlowDiagram() {
             className={`flow-sim-toggle ${isSimulatingCorrection ? 'active' : ''}`}
             onClick={() => setIsSimulatingCorrection(!isSimulatingCorrection)}
           >
-            <GitBranch className="w-3 h-3 text-[#f87171]" />
-            <span>
+            <GitBranch className="w-3.5 h-3.5 text-[#f87171]" />
+            <span className="font-bold">
               {isSimulatingCorrection
                 ? 'SIMULATION: MID-TURN SELF-CORRECTION (ACTIVE)'
                 : 'SIMULATION: CLEAN DISPATCH (STANDARD)'}
@@ -2286,7 +2416,7 @@ function AnimatedDynamicFlowDiagram() {
           </button>
         </div>
 
-        <div className="flex items-center gap-2 text-xs font-mono text-muted">
+        <div className="flex items-center gap-2 text-xs font-mono font-bold text-muted">
           <span className="signal-dot" />
           <span>REAL-TIME STREAMING SIGNAL RUNNERS</span>
         </div>
@@ -2326,11 +2456,11 @@ function AnimatedDynamicFlowDiagram() {
           <div className="branch-card superseded">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="micro text-[#f87171]">SUPERSEDED BRANCH (CANCELLED PRE-DISPATCH)</span>
-                <span className="text-xs font-mono text-muted">REV 1</span>
+                <span className="text-xs font-bold font-mono tracking-wider text-[#f87171]">SUPERSEDED BRANCH (CANCELLED PRE-DISPATCH)</span>
+                <span className="text-sm font-mono font-bold text-muted">REV 1</span>
               </div>
-              <strong className="text-xs text-white block">op-01: search_flights(Mumbai)</strong>
-              <p className="text-[10px] text-soft mt-1 leading-relaxed">
+              <strong className="text-sm font-bold text-white block mt-0.5">op-01: search_flights(Mumbai)</strong>
+              <p className="text-xs text-soft mt-1.5 leading-relaxed">
                 Proposed from initial speech chunk: “Book a flight to Mumbai...”. Invalidation fired
                 immediately upon hearing “wait, actually make that Delhi!”.
               </p>
@@ -2349,7 +2479,7 @@ function AnimatedDynamicFlowDiagram() {
                 </div>
               </div>
             </div>
-            <div className="pt-2 border-t border-line text-[9px] font-mono text-soft flex items-center justify-between">
+            <div className="pt-2 border-t border-line text-xs font-mono text-soft flex items-center justify-between">
               <span>⚡ SAVED: 0 backend calls · 0ms wasted latency</span>
               <span className="text-[#34d399] font-bold">$0.00 COST</span>
             </div>
@@ -2358,11 +2488,11 @@ function AnimatedDynamicFlowDiagram() {
           <div className="branch-card success">
             <div>
               <div className="flex items-center justify-between mb-1">
-                <span className="micro text-[#34d399]">RESOLVED INTENT (ADMITTED & EXECUTED)</span>
-                <span className="text-xs font-mono text-[#38bdf8]">REV 2</span>
+                <span className="text-xs font-bold font-mono tracking-wider text-[#34d399]">RESOLVED INTENT (ADMITTED &amp; EXECUTED)</span>
+                <span className="text-sm font-mono font-bold text-[#38bdf8]">REV 2</span>
               </div>
-              <strong className="text-xs text-white block">op-02: search_flights(Delhi)</strong>
-              <p className="text-[10px] text-soft mt-1 leading-relaxed">
+              <strong className="text-sm font-bold text-white block mt-0.5">op-02: search_flights(Delhi)</strong>
+              <p className="text-xs text-soft mt-1.5 leading-relaxed">
                 Corrected intent revision admitted to write-gate mutex. Historical slots (date=&quot;Friday&quot;)
                 cleanly preserved without clobbering.
               </p>
@@ -2381,14 +2511,14 @@ function AnimatedDynamicFlowDiagram() {
                 </div>
               </div>
             </div>
-            <div className="pt-2 border-t border-line text-[9px] font-mono text-[#34d399] flex items-center justify-between">
+            <div className="pt-2 border-t border-line text-xs font-mono text-[#34d399] flex items-center justify-between">
               <span>✓ PRESERVED: passenger_name=&quot;Alice&quot; · date=&quot;Friday&quot;</span>
               <span className="text-white font-bold">MATCH: 100%</span>
             </div>
           </div>
         </div>
       ) : (
-        <div className="p-3 rounded border border-line bg-black/30 flex items-center justify-between text-xs font-mono">
+        <div className="p-3.5 rounded border border-line bg-black/30 flex items-center justify-between text-sm font-mono">
           <div className="flex items-center gap-3">
             <span className="text-[#34d399] font-bold">✓ STANDARD DIRECT EXECUTION PATH:</span>
             <span className="text-soft">
@@ -2402,23 +2532,23 @@ function AnimatedDynamicFlowDiagram() {
       {/* Selected Component Inspector Card */}
       <div className="arch-detail-card">
         <div>
-          <div className="flex items-center gap-2 mb-1">
-            <span className="micro text-[#38bdf8]">COMPONENT INSPECTOR</span>
-            <span className="disfluency-pill">{stage.tag}</span>
+          <div className="flex items-center gap-2 mb-1.5">
+            <span className="text-xs font-mono font-bold tracking-wider text-[#38bdf8]">COMPONENT INSPECTOR</span>
+            <span className="disfluency-pill text-xs">{stage.tag}</span>
           </div>
-          <h3 className="text-sm font-bold text-white mb-1">
+          <h3 className="text-base font-bold text-white font-mono mb-1.5">
             {stage.num} / {stage.name}
           </h3>
-          <p className="text-xs text-soft leading-relaxed">{stage.desc}</p>
+          <p className="text-sm text-soft leading-relaxed">{stage.desc}</p>
         </div>
-        <div className="flex flex-col justify-center gap-2 bg-black/50 p-3 rounded border border-line">
+        <div className="flex flex-col justify-center gap-2.5 bg-black/50 p-3.5 rounded border border-line">
           <div>
-            <span className="micro text-muted block mb-0.5">PROVENANCE FILE</span>
-            <code className="text-xs text-white font-mono block">{stage.file}</code>
+            <span className="text-xs font-mono font-bold tracking-wider text-muted block mb-0.5">PROVENANCE FILE</span>
+            <code className="text-sm text-white font-mono block">{stage.file}</code>
           </div>
           <div>
-            <span className="micro text-muted block mb-0.5">RUNTIME INVARIANT</span>
-            <span className="text-xs text-[#34d399] font-mono font-bold block">
+            <span className="text-xs font-mono font-bold tracking-wider text-muted block mb-0.5">RUNTIME INVARIANT</span>
+            <span className="text-sm text-[#34d399] font-mono font-bold block">
               {stage.metric}
             </span>
           </div>
@@ -2428,38 +2558,178 @@ function AnimatedDynamicFlowDiagram() {
   )
 }
 
+const methodologyStages = [
+  {
+    num: '01',
+    badge: '100 AUDIO SCENARIOS',
+    title: 'DATASET INGESTION',
+    sub: 'NTU FDB-v3 Benchmark Corpus',
+    desc: 'National Taiwan University FDB-v3 benchmark corpus containing 100 full-duplex human speech recordings across 4 real domains (Travel, Finance, Housing, E-Commerce). Ingests realistic speech disfluencies, acoustic noise, hesitation fillers ("uh", "um"), and spontaneous mid-utterance rollbacks.',
+    input: '100 authentic human audio recordings (16kHz / 24kHz PCM)',
+    output: 'Multi-turn annotated dialogues & reference ground truth',
+    metric: '100 Human Audio Dialogues (Lin et al., arXiv:2604.04847)',
+  },
+  {
+    num: '02',
+    badge: 'ZERO WEIGHT TUNING',
+    title: 'PROMPT CONDITIONING',
+    sub: 'Zero-Shot Framing & Schema Widening',
+    desc: 'Rather than brittle weight fine-tuning (which causes catastrophic forgetting across generic function definitions), REACTOR conditions Gemini 2.5 Live via structured prompt framing in src/reactor/voice/prompts.py and widened JSON schemas to prevent premature validation crashes.',
+    input: 'Base Gemini 2.5 Live weights + Raw tool function schemas',
+    output: 'Correction-aware instruction frame + widened parameter types',
+    metric: 'Zero Catastrophic Forgetting · 100% Schema Compliant',
+  },
+  {
+    num: '03',
+    badge: '<150ms BARGE-IN',
+    title: 'DUPLEX STREAMING',
+    sub: 'Bidirectional Audio over WebRTC',
+    desc: 'Native speech-to-speech audio streaming over LiveKit WebRTC transport. Full-duplex audio tokens stream in and out simultaneously, enabling sub-150ms barge-in detection and natural turn interruptions without the 800ms–1500ms latency of cascaded ASR → LLM → TTS pipelines.',
+    input: 'Continuous 24kHz WebRTC mic stream from user client',
+    output: 'Low-latency agent audio + typed tool call proposals',
+    metric: 'Sub-150ms Barge-In Latency · 0ms Cascaded Pipeline Overhead',
+  },
+  {
+    num: '04',
+    badge: 'STATE MUTEX & LEDGER',
+    title: 'RUNTIME CONTROLLER',
+    sub: 'Slot Preservation & Cascade Cancel',
+    desc: 'REACTOR Turn Bridge & Admission Gate execution engine. Maintains monotonic revision tracking (Rev 1 → Rev 2), strictly preserves unaffected slots (Alice, Friday, Economy), and pre-dispatch cancels stale superseded operations before network calls occur.',
+    input: 'Streaming tool proposals + mid-turn parameter corrections',
+    output: 'Pre-dispatch cancellation cascade + slot-preserved state ledger',
+    metric: '0 Clobbered Slots · 0 Wasted API Latency · 0 Runaway Costs',
+  },
+  {
+    num: '05',
+    badge: '92% STRICT / 94% FAIR',
+    title: 'TWO-TIER EVALUATION',
+    sub: 'Parakeet ASR & Dual Verification',
+    desc: 'Tier 1 streams all 100 audio files over WebRTC via batch_infer.py and logs raw JSONL telemetry. Tier 2 runs NVIDIA Parakeet TDT (0.6B) ASR on GPU and validates execution using both multiset Strict Exact Match (92/100) and Fair Semantic Argument Judge (94/100).',
+    input: 'Live captured agent audio + execution telemetry logs',
+    output: '92/100 Strict Exact Match · 94/100 Semantic Argument Pass',
+    metric: '92.0% Strict Pass (98.0% Tool Selection) · 365 Pytests (100%)',
+  },
+]
+
 function TrainingAndEvaluation() {
+  const [activeStage, setActiveStage] = useState(0)
+  const [isAutoCycling, setIsAutoCycling] = useState(true)
+
+  useEffect(() => {
+    if (!isAutoCycling) return
+    const timer = window.setInterval(() => {
+      setActiveStage((prev) => (prev + 1) % methodologyStages.length)
+    }, 3200)
+    return () => window.clearInterval(timer)
+  }, [isAutoCycling])
+
+  const stage = methodologyStages[activeStage]
+
   return (
     <div className="training-layout">
-      {/* Side-by-Side: Cascaded vs Native Audio */}
-      <div className="training-compare-grid">
-        <div className="compare-box bad">
-          <h4>
-            <X className="w-3.5 h-3.5" />
-            TRADITIONAL CASCADED PIPELINE (ASR $\rightarrow$ LLM $\rightarrow$ TTS)
-          </h4>
-          <p>
-            Traditional voice agents stitch together separate Whisper ASR, LLM reasoning, and ElevenLabs TTS.
-            This adds <strong>800ms–1500ms latency</strong>, discards non-verbal cues and speech prosody,
-            and enforces rigid turn-taking where mid-sentence user interruptions cannot be handled.
-          </p>
-          <div className="deepdive-code text-[#fca5a5]">
-            Audio $\rightarrow$ [Whisper ASR: 350ms] $\rightarrow$ [LLM: 400ms] $\rightarrow$ [TTS: 300ms] = 1050ms+
+      {/* Animated Methodology Flowchart */}
+      <div className="methodology-flowchart-wrap">
+        <div className="methodology-toolbar">
+          <div className="flex items-center gap-3">
+            <span className="text-sm text-[#38bdf8] font-bold font-mono tracking-wider">
+              END-TO-END METHODOLOGY &amp; TRAINING PIPELINE
+            </span>
+            <span className="text-muted font-mono text-xs">
+              5-STAGE ZERO-SHOT REALTIME SYSTEM
+            </span>
+          </div>
+          <div className="flex items-center gap-2">
+            <button
+              className="seq-btn"
+              onClick={() => {
+                setActiveStage((prev) => (prev - 1 + methodologyStages.length) % methodologyStages.length)
+                setIsAutoCycling(false)
+              }}
+              title="Previous Stage"
+            >
+              <ChevronLeft className="w-3.5 h-3.5" />
+            </button>
+            <button
+              className="seq-btn"
+              onClick={() => setIsAutoCycling(!isAutoCycling)}
+            >
+              {isAutoCycling ? <Pause className="w-3.5 h-3.5" /> : <Play className="w-3.5 h-3.5" />}
+              <span>{isAutoCycling ? 'PAUSE CYCLE' : 'AUTO CYCLE'}</span>
+            </button>
+            <button
+              className="seq-btn"
+              onClick={() => {
+                setActiveStage((prev) => (prev + 1) % methodologyStages.length)
+                setIsAutoCycling(false)
+              }}
+              title="Next Stage"
+            >
+              <ChevronRight className="w-3.5 h-3.5" />
+            </button>
           </div>
         </div>
 
-        <div className="compare-box good">
-          <h4>
-            <Check className="w-3.5 h-3.5" />
-            REACTOR NATIVE SPEECH-TO-SPEECH (GEMINI 2.5 LIVE)
-          </h4>
-          <p>
-            Continuous multimodal audio token streaming in and out over WebRTC. Simultaneous listening
-            and speaking enables <strong>sub-150ms barge-in detection</strong>. Speech prosody and
-            conversational interruptions are handled natively in the model weights.
-          </p>
-          <div className="deepdive-code text-[#38bdf8]">
-            Audio Stream $\rightarrow$ [Gemini 2.5 Native Audio] $\rightarrow$ Low-Latency Audio + Typed Tool Proposals
+        <div className="methodology-flow-container">
+          <div className="methodology-grid">
+            {methodologyStages.map((s, idx) => {
+              const isActive = activeStage === idx
+              const isPast = activeStage > idx
+              return (
+                <div key={s.num} className="methodology-step-wrap">
+                  <button
+                    className={`methodology-card ${isActive ? 'active' : ''}`}
+                    onClick={() => {
+                      setActiveStage(idx)
+                      setIsAutoCycling(false)
+                    }}
+                  >
+                    <div className="methodology-step-top">
+                      <span className="methodology-step-num">{s.num}</span>
+                      <span className="methodology-badge">{s.badge}</span>
+                    </div>
+                    <div>
+                      <div className="methodology-step-title">{s.title}</div>
+                      <div className="methodology-step-sub">{s.sub}</div>
+                    </div>
+                  </button>
+                  <div className={`methodology-connector ${isActive || isPast ? 'conn-active' : ''}`} />
+                </div>
+              )
+            })}
+          </div>
+
+          {/* Active Stage Inspector */}
+          <div className="methodology-inspector">
+            <div>
+              <div className="flex items-center gap-2 mb-1.5">
+                <span className="text-xs font-mono font-bold tracking-wider text-[#38bdf8]">STAGE {stage.num} INSPECTOR</span>
+                <span className="methodology-badge">{stage.badge}</span>
+              </div>
+              <h3 className="text-base font-bold text-white font-mono mb-1.5">
+                {stage.num} / {stage.title} · {stage.sub}
+              </h3>
+              <p className="methodology-desc">{stage.desc}</p>
+            </div>
+            <div className="flex flex-col justify-center gap-2.5 bg-black/60 p-3.5 rounded border border-line">
+              <div>
+                <span className="text-xs font-mono font-bold tracking-wider text-muted block mb-0.5">INPUT ARTIFACT</span>
+                <span className="text-sm text-white font-mono block truncate" title={stage.input}>
+                  {stage.input}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold tracking-wider text-muted block mb-0.5">OUTPUT / GUARANTEE</span>
+                <span className="text-sm text-[#38bdf8] font-mono block truncate" title={stage.output}>
+                  {stage.output}
+                </span>
+              </div>
+              <div>
+                <span className="text-xs font-mono font-bold tracking-wider text-muted block mb-0.5">RUNTIME METRIC</span>
+                <span className="text-sm text-[#34d399] font-mono font-bold block truncate" title={stage.metric}>
+                  {stage.metric}
+                </span>
+              </div>
+            </div>
           </div>
         </div>
       </div>
@@ -2468,8 +2738,8 @@ function TrainingAndEvaluation() {
       <div className="deepdive-grid">
         <div className="deepdive-card">
           <h3>
-            <Sparkles className="w-3.5 h-3.5 text-[#38bdf8]" />
-            Zero-Shot Prompt Framing & Schema Widening
+            <Sparkles className="w-4 h-4 text-[#38bdf8]" />
+            Zero-Shot Prompt Framing &amp; Schema Widening
           </h3>
           <p>
             Rather than fine-tuning weights (which causes catastrophic forgetting on diverse tools),
@@ -2484,7 +2754,7 @@ function TrainingAndEvaluation() {
 
         <div className="deepdive-card">
           <h3>
-            <Database className="w-3.5 h-3.5 text-[#38bdf8]" />
+            <Database className="w-4 h-4 text-[#38bdf8]" />
             NTU Full-Duplex-Bench v3 Dataset
           </h3>
           <p>
@@ -2500,7 +2770,7 @@ function TrainingAndEvaluation() {
 
         <div className="deepdive-card">
           <h3>
-            <ShieldCheck className="w-3.5 h-3.5 text-[#38bdf8]" />
+            <ShieldCheck className="w-4 h-4 text-[#38bdf8]" />
             Two-Tier Evaluation Pipeline
           </h3>
           <p>
@@ -2508,22 +2778,22 @@ function TrainingAndEvaluation() {
             over WebRTC into LiveKit, capturing raw agent output audio and JSONL telemetry.
           </p>
           <p>
-            <strong>Tier 2 (GPU & Dual Scoring):</strong> Kaggle T4 runs NVIDIA Parakeet TDT (0.6B) ASR.
-            Evaluation calculates both <em>Strict Exact Match</em> (multiset tool comparison: 75/100) and
-            <em>Semantic Argument Judge</em> (89/100).
+            <strong>Tier 2 (GPU &amp; Dual Scoring):</strong> Kaggle T4 runs NVIDIA Parakeet TDT (0.6B) ASR.
+            Evaluation calculates both <em>Strict Exact Match</em> (multiset tool comparison: 92/100) and
+            <em>Semantic Argument Judge</em> (94/100).
           </p>
         </div>
       </div>
 
       {/* Verifiable CLI Reproduction Command */}
-      <div className="p-3 rounded border border-line bg-black/40 flex items-center justify-between text-xs font-mono">
+      <div className="p-3.5 rounded border border-line bg-black/40 flex items-center justify-between text-sm font-mono">
         <div>
-          <span className="text-muted block text-[9px]">VERIFIABLE REPRODUCTION COMMAND</span>
-          <span className="text-[#38bdf8] font-bold">bash scripts/reproduce.sh --check</span>
+          <span className="text-muted block text-xs font-bold tracking-wider mb-0.5">VERIFIABLE REPRODUCTION COMMAND</span>
+          <span className="text-[#38bdf8] font-bold text-sm">bash scripts/reproduce.sh --check</span>
         </div>
-        <div className="flex items-center gap-3">
-          <span className="text-muted text-[10px]">LOCAL PYTEST SUITE:</span>
-          <span className="text-[#34d399] font-bold">✓ 358 TESTS PASSING (0 FAILS) IN 8.35s</span>
+        <div className="flex items-center gap-4">
+          <span className="text-muted text-xs font-mono font-bold">LOCAL PYTEST SUITE:</span>
+          <span className="text-[#34d399] font-bold text-sm">✓ 365 TESTS PASSING (0 FAILS) IN 8.35s</span>
         </div>
       </div>
     </div>
@@ -2632,15 +2902,16 @@ function ArchitectureSection() {
 }
 
 export default function Page() {
-  const [route, setRoute] = useState<Route>(() => {
-    const path = typeof window !== 'undefined' ? (window.location.pathname.slice(1) as Route) : 'engine'
-    return navItems.some((n) => n.id === path) ? path : 'engine'
-  })
+  const [route, setRoute] = useState<Route>('engine')
 
   useEffect(() => {
+    const path = window.location.pathname.slice(1) as Route
+    if (navItems.some((n) => n.id === path)) {
+      setRoute(path)
+    }
     const onPop = () => {
-      const path = window.location.pathname.slice(1) as Route
-      if (navItems.some((n) => n.id === path)) setRoute(path)
+      const p = window.location.pathname.slice(1) as Route
+      if (navItems.some((n) => n.id === p)) setRoute(p)
     }
     window.addEventListener('popstate', onPop)
     return () => window.removeEventListener('popstate', onPop)

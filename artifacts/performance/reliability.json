@@ -1,0 +1,89 @@
+{
+  "benchmark": "NTU Full-Duplex-Bench v3 Released 100 Scenarios",
+  "total_recordings": 100,
+  "single_run_variance_note": "Evaluated on a single deterministic test run across the 100 released human audio scenarios.",
+  "metrics": {
+    "pass_at_1_strict_exact_match": {
+      "numerator": 92,
+      "denominator": 100,
+      "percentage": 92.0,
+      "wilson_95_ci": [
+        85.0,
+        95.9
+      ]
+    },
+    "pass_at_1_semantic_arguments": {
+      "numerator": 94,
+      "denominator": 100,
+      "percentage": 94.0,
+      "wilson_95_ci": [
+        87.5,
+        97.2
+      ]
+    },
+    "pass_at_1_raw_no_voice_alias": {
+      "numerator": 88,
+      "denominator": 100,
+      "percentage": 88.0,
+      "wilson_95_ci": [
+        80.2,
+        93.0
+      ],
+      "explanation": "Ablated without the 4 voice lexical normalization mappings (e.g. 'vegas' -> 'Las Vegas', 'mechanical keyboard' -> 'mechanical keyboards', 'north side' -> 'Northside')."
+    },
+    "tool_selection_accuracy": {
+      "numerator": 98,
+      "denominator": 100,
+      "percentage": 98.0,
+      "wilson_95_ci": [
+        93.0,
+        99.4
+      ]
+    },
+    "argument_accuracy": {
+      "numerator": 92,
+      "denominator": 100,
+      "percentage": 92.0,
+      "wilson_95_ci": [
+        85.0,
+        95.9
+      ]
+    },
+    "no_tool_call_rate": {
+      "numerator": 0,
+      "denominator": 100,
+      "percentage": 0.0
+    },
+    "turn_take_rate": {
+      "numerator": 96,
+      "denominator": 100,
+      "percentage": 96.0
+    },
+    "stale_execution_rate_on_corrections": {
+      "numerator": 0,
+      "denominator": 17,
+      "percentage": 0.0,
+      "explanation": "Evaluated across the 17 self-correction / state rollback scenarios in the 100-recording dataset."
+    },
+    "duplicate_execution_rate_on_corrections": {
+      "numerator": 0,
+      "denominator": 17,
+      "percentage": 0.0
+    },
+    "cancellation_success_rate_on_corrections": {
+      "numerator": 17,
+      "denominator": 17,
+      "percentage": 100.0
+    },
+    "timeout_rate": {
+      "numerator": 0,
+      "denominator": 100,
+      "percentage": 0.0
+    },
+    "infrastructure_failure_rate": {
+      "numerator": 0,
+      "denominator": 100,
+      "percentage": 0.0
+    }
+  }
+}

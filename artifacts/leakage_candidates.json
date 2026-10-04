@@ -1,0 +1,3386 @@
+[
+  {
+    "file": "src/reactor/controller.py",
+    "line": 18,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "raise ValueError(\"duplicate tool names\")"
+  },
+  {
+    "file": "src/reactor/demo.py",
+    "line": 43,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"duplicate_operation_id\": duplicate.operation_id,"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 33,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"search_apartments\": (False, {\"city\": field([\"string\", \"null\"], optional=True, default=None),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 35,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"max_price\": field(\"number\", optional=True, default=2000.0),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 36,
+    "matched_benchmark_value": "pets_allowed",
+    "category": "expected_arg_value (housing_08: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"pets_allowed\": field([\"boolean\", \"null\"], optional=True)},"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 37,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "(\"city\", \"bedrooms\", \"max_price\", \"pets_allowed\")),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 37,
+    "matched_benchmark_value": "pets_allowed",
+    "category": "expected_arg_value (housing_08: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "(\"city\", \"bedrooms\", \"max_price\", \"pets_allowed\")),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 39,
+    "matched_benchmark_value": "driving",
+    "category": "expected_arg_value (housing_02: calculate_commute.mode)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"mode\": field(\"string\", optional=True, default=\"driving\")}, (\"mode\",)),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 46,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"max_price\": field([\"number\", \"null\"], optional=True)}, (\"max_price\",)),"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 56,
+    "matched_benchmark_value": "airport",
+    "category": "expected_arg_value (housing_12: calculate_commute.destination_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"destination\": \"The city or airport requested by the user. Use a full city name for an unambiguous common city alias; pr"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 57,
+    "matched_benchmark_value": "travel",
+    "category": "expected_arg_value (finance_06: get_card_benefits.card_type)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"date\": \"The final requested travel date. Use month name and day when no year was stated. Never add the current or next "
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 61,
+    "matched_benchmark_value": "passport",
+    "category": "expected_arg_value (travel_02: update_identity_doc.doc_type)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"doc_type\": \"The document category the user requested, such as passport, visa, driver_license or id_card. This simulated"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 61,
+    "matched_benchmark_value": "driver_license",
+    "category": "expected_arg_value (travel_07: update_identity_doc.doc_type)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"doc_type\": \"The document category the user requested, such as passport, visa, driver_license or id_card. This simulated"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 61,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"doc_type\": \"The document category the user requested, such as passport, visa, driver_license or id_card. This simulated"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 65,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"card_type\": \"The stated card category or tier, not a generic suffix 'card' or 'credit card'. Keep a genuinely named iss"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 74,
+    "matched_benchmark_value": "savings",
+    "category": "expected_arg_value (finance_03: modify_autopay.source_account)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"source_account\": \"The final source account. Use a category such as checking or savings for those generic account types;"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 74,
+    "matched_benchmark_value": "checking",
+    "category": "expected_arg_value (finance_05: modify_autopay.source_account)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"source_account\": \"The final source account. Use a category such as checking or savings for those generic account types;"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 74,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"source_account\": \"The final source account. Use a category such as checking or savings for those generic account types;"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 76,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"search_apartments\": {"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 79,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"max_price\": \"The latest stated maximum monthly rent. Do not use the default if the user supplied a budget.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 80,
+    "matched_benchmark_value": "pets_allowed",
+    "category": "expected_arg_value (housing_08: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"pets_allowed\": \"The user's pet constraint when supplied; leave null when absent.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 83,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"origin_address\": \"The supplied starting address or named location. For an apartment-search follow-up, a returned apartm"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 83,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"origin_address\": \"The supplied starting address or named location. For an apartment-search follow-up, a returned apartm"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 84,
+    "matched_benchmark_value": "University",
+    "category": "expected_arg_value (housing_07: calculate_commute.destination_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"destination_address\": \"The supplied destination address or named location. A label such as 'my office' or 'the universi"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 84,
+    "matched_benchmark_value": "my office",
+    "category": "expected_arg_value (housing_20: calculate_commute.destination_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"destination_address\": \"The supplied destination address or named location. A label such as 'my office' or 'the universi"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 84,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"destination_address\": \"The supplied destination address or named location. A label such as 'my office' or 'the universi"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 85,
+    "matched_benchmark_value": "driving",
+    "category": "expected_arg_value (housing_02: calculate_commute.mode)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"mode\": \"The requested transport mode, such as driving, walking or transit; use the default only if unstated.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 85,
+    "matched_benchmark_value": "walking",
+    "category": "expected_arg_value (housing_06: calculate_commute.mode)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"mode\": \"The requested transport mode, such as driving, walking or transit; use the default only if unstated.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 85,
+    "matched_benchmark_value": "transit",
+    "category": "expected_arg_value (housing_07: calculate_commute.mode)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"mode\": \"The requested transport mode, such as driving, walking or transit; use the default only if unstated.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 88,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"filter_name\": \"One search-filter key the user asked to update. A filter update needs neither city nor an apartment sear"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 89,
+    "matched_benchmark_value": "neighborhood",
+    "category": "expected_arg_value (housing_10: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"value\": \"The final value for this filter. Preserve numeric values as numbers and boolean constraints as booleans; prese"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 95,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"query\": \"The user-requested product category or search phrase, retaining meaningful descriptors. Do not invent a brand "
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 96,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "\"max_price\": \"The user-stated maximum budget as a number, or null if no budget was stated.\","
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 132,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "if _name == \"search_apartments\":"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 134,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "kwargs.setdefault(\"max_price\", 2000.0)"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 135,
+    "matched_benchmark_value": "pets_allowed",
+    "category": "expected_arg_value (housing_08: update_search_filter.filter_name)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "kwargs.pop(\"pets_allowed\", None)"
+  },
+  {
+    "file": "src/reactor/tools/benchmark.py",
+    "line": 137,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "legitimate benchmark interface",
+    "snippet": "kwargs.pop(\"category\", None)"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 31,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "suspicious",
+    "snippet": "for key in (\"max_price\", \"amount\"):"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 45,
+    "matched_benchmark_value": "Las Vegas",
+    "category": "expected_arg_value (travel_16: search_flights.destination)",
+    "classification": "suspicious",
+    "snippet": "args[\"destination\"] = \"Las Vegas\""
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 50,
+    "matched_benchmark_value": "mechanical keyboards",
+    "category": "expected_arg_value (ecommerce_08: search_products.query)",
+    "classification": "suspicious",
+    "snippet": "args[\"query\"] = \"mechanical keyboards\""
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 55,
+    "matched_benchmark_value": "Northside",
+    "category": "expected_arg_value (housing_10: update_search_filter.value)",
+    "classification": "suspicious",
+    "snippet": "args[\"value\"] = \"Northside\""
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 60,
+    "matched_benchmark_value": "savings",
+    "category": "expected_arg_value (finance_03: modify_autopay.source_account)",
+    "classification": "suspicious",
+    "snippet": "category = re.fullmatch(r\"(checking|savings|current)\\s+(?:bank\\s+)?account\", account.strip(), re.I)"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 60,
+    "matched_benchmark_value": "checking",
+    "category": "expected_arg_value (finance_05: modify_autopay.source_account)",
+    "classification": "suspicious",
+    "snippet": "category = re.fullmatch(r\"(checking|savings|current)\\s+(?:bank\\s+)?account\", account.strip(), re.I)"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 65,
+    "matched_benchmark_value": "credit_card",
+    "category": "expected_arg_value (finance_05: modify_autopay.bill_type)",
+    "classification": "suspicious",
+    "snippet": "args[\"bill_type\"] = \"credit_card\""
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 70,
+    "matched_benchmark_value": "platinum",
+    "category": "expected_arg_value (finance_02: get_card_benefits.card_type)",
+    "classification": "suspicious",
+    "snippet": "r\"(basic|standard|premium|gold|silver|platinum|travel|cashback|student|business)\\s+(?:credit\\s+)?card\","
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 70,
+    "matched_benchmark_value": "travel",
+    "category": "expected_arg_value (finance_06: get_card_benefits.card_type)",
+    "classification": "suspicious",
+    "snippet": "r\"(basic|standard|premium|gold|silver|platinum|travel|cashback|student|business)\\s+(?:credit\\s+)?card\","
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 70,
+    "matched_benchmark_value": "gold",
+    "category": "expected_arg_value (finance_17: get_card_benefits.card_type)",
+    "classification": "suspicious",
+    "snippet": "r\"(basic|standard|premium|gold|silver|platinum|travel|cashback|student|business)\\s+(?:credit\\s+)?card\","
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 70,
+    "matched_benchmark_value": "premium",
+    "category": "expected_arg_value (finance_18: get_card_benefits.card_type)",
+    "classification": "suspicious",
+    "snippet": "r\"(basic|standard|premium|gold|silver|platinum|travel|cashback|student|business)\\s+(?:credit\\s+)?card\","
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 82,
+    "matched_benchmark_value": "University",
+    "category": "expected_arg_value (housing_07: calculate_commute.destination_address)",
+    "classification": "suspicious",
+    "snippet": "if re.fullmatch(r\"the (?:university|airport|hospital|train station|station|mall|city hall)\", address, re.I):"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 82,
+    "matched_benchmark_value": "airport",
+    "category": "expected_arg_value (housing_12: calculate_commute.destination_address)",
+    "classification": "suspicious",
+    "snippet": "if re.fullmatch(r\"the (?:university|airport|hospital|train station|station|mall|city hall)\", address, re.I):"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 82,
+    "matched_benchmark_value": "hospital",
+    "category": "expected_arg_value (housing_16: calculate_commute.destination_address)",
+    "classification": "suspicious",
+    "snippet": "if re.fullmatch(r\"the (?:university|airport|hospital|train station|station|mall|city hall)\", address, re.I):"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 82,
+    "matched_benchmark_value": "train station",
+    "category": "expected_arg_value (housing_21: calculate_commute.destination_address)",
+    "classification": "suspicious",
+    "snippet": "if re.fullmatch(r\"the (?:university|airport|hospital|train station|station|mall|city hall)\", address, re.I):"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 84,
+    "matched_benchmark_value": "coffee shop on 5th",
+    "category": "expected_arg_value (housing_18: calculate_commute.destination_address)",
+    "classification": "suspicious",
+    "snippet": "address = re.sub(r\"^the\\s+coffee shop on (?:fifth|5th)(?:\\s+street)?$\", \"coffee shop on 5th\", address, flags=re.I)"
+  },
+  {
+    "file": "src/reactor/voice/arguments.py",
+    "line": 91,
+    "matched_benchmark_value": "driver_license",
+    "category": "expected_arg_value (travel_07: update_identity_doc.doc_type)",
+    "classification": "suspicious",
+    "snippet": "args[\"doc_type\"] = \"driver_license\""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 5,
+    "matched_benchmark_value": "travel",
+    "category": "expected_arg_value (finance_06: get_card_benefits.card_type)",
+    "classification": "suspicious",
+    "snippet": "\"You are a concise voice assistant with twelve simulated APIs for travel, finance, housing and shopping. \""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 12,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"has finished. A correction replaces only the affected values; use the final amount, date, location, \""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 15,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"Once schema fields are available, call the tool directly without asking for confirmation, clarification, \""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 16,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "\"or unrelated information. For apartment search, if a city is not explicitly stated, use context or previous searches. \""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 19,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "\"a valid location. Do not substitute a filter update for a request to search apartments. \""
+  },
+  {
+    "file": "src/reactor/voice/prompts.py",
+    "line": 19,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"a valid location. Do not substitute a filter update for a request to search apartments. \""
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 41,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "\"search_apartments\": \"Search for available rental apartments matching city, bedrooms and budget.\","
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 42,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"calculate_commute\": \"Fetch commute duration between the supplied locations; named destinations are valid. Do not estima"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 43,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "\"update_search_filter\": \"Update one supplied filter key and scalar value. A standalone filter update does not need a cit"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 45,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "\"search_products\": \"Search the catalog for the final requested query and optional budget; do not invent recommendations."
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 68,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "suspicious",
+    "snippet": "\"search_products\": ((\"budget\", \"max_price\"),),"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 69,
+    "matched_benchmark_value": "max_price",
+    "category": "expected_arg_value (housing_03: update_search_filter.filter_name)",
+    "classification": "suspicious",
+    "snippet": "\"search_apartments\": ((\"budget\", \"max_price\"),),"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 69,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "\"search_apartments\": ((\"budget\", \"max_price\"),),"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 90,
+    "matched_benchmark_value": "driving",
+    "category": "expected_arg_value (housing_02: calculate_commute.mode)",
+    "classification": "suspicious",
+    "snippet": "modes = {\"drive\": \"driving\", \"walk\": \"walking\"}"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 90,
+    "matched_benchmark_value": "walking",
+    "category": "expected_arg_value (housing_06: calculate_commute.mode)",
+    "classification": "suspicious",
+    "snippet": "modes = {\"drive\": \"driving\", \"walk\": \"walking\"}"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 93,
+    "matched_benchmark_value": "CAT",
+    "category": "expected_arg_value (ecommerce_25: track_order.order_id)",
+    "classification": "suspicious",
+    "snippet": "args.pop(\"category\", None)"
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 98,
+    "matched_benchmark_value": "EUR",
+    "category": "expected_arg_value (finance_01: get_exchange_rate.to_currency)",
+    "classification": "suspicious",
+    "snippet": "\"\"\"Conservative turn-level heuristic, not an ASR or semantic slot parser.\"\"\""
+  },
+  {
+    "file": "src/reactor/voice/agent.py",
+    "line": 116,
+    "matched_benchmark_value": "apartment",
+    "category": "expected_arg_value (housing_12: calculate_commute.origin_address)",
+    "classification": "suspicious",
+    "snippet": "r\"flight|order|conversion|benefits|autopay|apartment|filter|timer)\\b\", text, re.I,"
+  },
+  {
+    "file": "src/reactor/voice/grounding.py",
+    "line": 27,
+    "matched_benchmark_value": "passport",
+    "category": "expected_arg_value (travel_02: update_identity_doc.doc_type)",
+    "classification": "suspicious",
+    "snippet": "\"update_identity_doc\": r\"passport|visa|document|identity|licen[cs]e|number|reference|id\","
+  },
+  {
+    "file": "tests/test_kaggle_bundle.py",
+    "line": 23,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "assert manifest[0][\"example_id\"] == \"travel_01\""
+  },
+  {
+    "file": "tests/test_smoke_evaluation.py",
+    "line": 10,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "assert example_id_from_input(audio) == \"ecommerce_01\""
+  },
+  {
+    "file": "tests/test_evaluate_batch_calls.py",
+    "line": 18,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "ecommerce: {\"example_id\": \"ecommerce_01\", \"status\": \"completed\","
+  },
+  {
+    "file": "tests/test_evaluate_batch_calls.py",
+    "line": 20,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "travel: {\"example_id\": \"travel_01\", \"status\": \"completed\","
+  },
+  {
+    "file": "tests/test_evaluate_batch_calls.py",
+    "line": 23,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "finance: {\"example_id\": \"finance_01\", \"status\": \"no_tool_call\", \"actual_tool_calls\": []},"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 16,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "{\"name\": \"ecommerce_01\", \"room\": \"ecommerce\", \"input\": \"fdb_v3_data_released/ecommerce_01_65e8cf8f4c7424fa062e54a3/input"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 17,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "{\"name\": \"travel_01\", \"room\": \"travel\", \"input\": \"fdb_v3_data_released/travel_01_62a885d5b6af18b3d4579e1b/input.wav\"},"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 18,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "{\"name\": \"finance_01\", \"room\": \"finance\", \"input\": \"fdb_v3_data_released/finance_01_65e8cf8f4c7424fa062e54a3/input.wav\"}"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 27,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "assert [row[\"example_id\"] for row in report[\"examples\"]] == [\"ecommerce_01\", \"travel_01\", \"finance_01\"]"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 27,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "assert [row[\"example_id\"] for row in report[\"examples\"]] == [\"ecommerce_01\", \"travel_01\", \"finance_01\"]"
+  },
+  {
+    "file": "tests/test_summarize_smokes.py",
+    "line": 27,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "legitimate test fixture",
+    "snippet": "assert [row[\"example_id\"] for row in report[\"examples\"]] == [\"ecommerce_01\", \"travel_01\", \"finance_01\"]"
+  },
+  {
+    "file": "docs/livekit-integration-status.md",
+    "line": 25,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| `ecommerce_01` | `track_order(order_id=\"ABC123\")` | Pass | Correct tool and argument in this run |"
+  },
+  {
+    "file": "docs/livekit-integration-status.md",
+    "line": 26,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| `travel_01` | `search_flights(destination=\"Tokyo\", date=\"2026-07-15\")` | Fail | Reference date is `July 15`; semantic "
+  },
+  {
+    "file": "docs/livekit-integration-status.md",
+    "line": 27,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| `finance_01` | `get_exchange_rate(amount=500, from_currency=\"USD\", to_currency=\"EUR\")` | Pass **once** | Repeated runs"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 40,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`travel_21`**: Evaluated \"Quin Davis\" vs \"Quinn Davis\" as `correct: true` (phonetic name homophone rule)."
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 41,
+    "matched_benchmark_value": "ecommerce_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`ecommerce_12`**: Evaluated `query='electronics'` as `correct: true` when expected was `category='electronics'` beca"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 48,
+    "matched_benchmark_value": "travel_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`travel_02`**: Spoken audio is `\"P-8-8-9-9-0-0-1-1\"`. The agent correctly passed `P88990011`. Ground truth has an au"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 49,
+    "matched_benchmark_value": "travel_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`travel_20`**: User conditional *\"If flight < $300 book, else update driver license to DL88\"*. Flight was $450 (> $3"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 50,
+    "matched_benchmark_value": "finance_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`finance_20`**: User conditional *\"If rate looks good to me, change autopay\"*. Rate was unconfirmed; agent correctly"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 51,
+    "matched_benchmark_value": "housing_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`housing_11`**: Benchmark expected `city='Austin'`, but \"Austin\" occurred in Turn 1 of the dialogue, which was omitt"
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 52,
+    "matched_benchmark_value": "housing_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`housing_18`**: Acoustic ASR dropped \"eighteen\" $\\rightarrow$ heard `800` instead of `1800`."
+  },
+  {
+    "file": "docs/results/ACCURACY_V5.md",
+    "line": 53,
+    "matched_benchmark_value": "ecommerce_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "- **`ecommerce_07`**: Acoustic ASR dropped initial soft 'F' $\\rightarrow$ heard `AST99` instead of `FAST99`."
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 11,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_08 / 5ff07b5e | Arguments | User and agent use singular product wording; reference uses plural. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 12,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_08 / 61517db6 | Arguments | Same singular/plural mismatch. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 13,
+    "matched_benchmark_value": "ecommerce_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_10 / 6998abd7 | Missing step | Only tracking executed; its first call started near the replay window's end. "
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 14,
+    "matched_benchmark_value": "ecommerce_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_12 / 6998abd7 | Arguments | Audio transcript describes electronics; reference expects a gift query and categ"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 15,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_13 / 5ff07b5e | Arguments | ASR and calls retain ID dashes; reference removes them. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 16,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_14 / 5ff07b5e | Arguments | ASR/call retain ID dashes; reference removes them. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 17,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_15 / 56780a5a | Arguments | Model and transcript use separated letter/number groups; reference uses compact "
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 18,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| ecommerce_21 / 69a9cf80 | Missing steps | Request split into partial turns; search and cart step never executed. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 19,
+    "matched_benchmark_value": "finance_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| finance_06 / 66f59c76 | Missing tool | Model asks for a card name despite the supplied category. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 20,
+    "matched_benchmark_value": "finance_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| finance_20 / 66c4f3cb | Missing tool | User leaves exchange-rate acceptability subjective; agent asks before modifying"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 21,
+    "matched_benchmark_value": "finance_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| finance_22 / 5f4a4da1 | Missing tool | Second autopay call appears in assistant text but not actual SDK execution. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 22,
+    "matched_benchmark_value": "housing_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_06 / 5f4a4da1 | Arguments | Reference omits the article before the generic gym label. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 23,
+    "matched_benchmark_value": "housing_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_10 / 66f59c76 | Arguments | Neighborhood compound has different spacing. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 24,
+    "matched_benchmark_value": "housing_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_11 / 62a885d5 | Wrong tools | Model updates filters instead of searching; city is absent from the captured use"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 25,
+    "matched_benchmark_value": "housing_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_13 / 5f4a4da1 | Missing tools | No transcript, proposals or assistant response recorded. Cause unproven. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 26,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_17 / 65e8cf8f | Arguments | Current article normalization drops the user-stated office article; reference reta"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 27,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_17 / 69a9cf80 | Arguments | Same office-article mismatch. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 28,
+    "matched_benchmark_value": "housing_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_18 / 66c4f3cb | Arguments | Budget ASR loses the leading thousand; destination label also differs in ordinal/a"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 29,
+    "matched_benchmark_value": "housing_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_20 / 62a885d5 | Missing steps | Model refuses supported commute/conditional budget workflow after apartment se"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 30,
+    "matched_benchmark_value": "housing_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_21 / 66c4f3cb | Missing tools | Model asks for missing city/origin; captured transcript does not supply city. "
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 31,
+    "matched_benchmark_value": "housing_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_22 / 695bd157 | Missing step | Filter and search executed; assistant says it is calculating commute but no cal"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 32,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_24 / 65e8cf8f | Arguments | Model omits user-stated grocery-store article; reference retains it. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 33,
+    "matched_benchmark_value": "housing_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| housing_25 / 66f59c76 | Missing steps | Model searches with constraints but omits explicitly requested filter writes. "
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 34,
+    "matched_benchmark_value": "travel_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| travel_02 / 5e3c1fbe | Arguments | Passport number differs from the reference; transcript itself is unreliable for tha"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 35,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| travel_07 / 5ff07b5e | Missing tool | Transcript begins at the last digit, losing opening document context. |"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 36,
+    "matched_benchmark_value": "travel_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| travel_20 / 62a885d5 | Missing tools | Model refuses conditional workflow; the reference also expects both alternate w"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 37,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| travel_21 / 65e8cf8f | Arguments | Model adds a year in long-form date wording; passenger spelling differs from refere"
+  },
+  {
+    "file": "docs/results/FAILURE_AUDIT_72.md",
+    "line": 38,
+    "matched_benchmark_value": "travel_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "| travel_24 / 695bd157 | Arguments | Same long-form inferred-year gap; spelled identifier dashes differ from reference. "
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 18,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 28,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 38,
+    "matched_benchmark_value": "ecommerce_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_02\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 48,
+    "matched_benchmark_value": "ecommerce_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_04\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 58,
+    "matched_benchmark_value": "ecommerce_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_05\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 68,
+    "matched_benchmark_value": "ecommerce_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_06\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 78,
+    "matched_benchmark_value": "ecommerce_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_07\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 88,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 98,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 108,
+    "matched_benchmark_value": "ecommerce_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_09\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 118,
+    "matched_benchmark_value": "ecommerce_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_10\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 128,
+    "matched_benchmark_value": "ecommerce_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_11\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 138,
+    "matched_benchmark_value": "ecommerce_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_12\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 148,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 158,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 168,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 178,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 188,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 198,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 208,
+    "matched_benchmark_value": "ecommerce_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_16\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 218,
+    "matched_benchmark_value": "ecommerce_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_17\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 228,
+    "matched_benchmark_value": "ecommerce_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_18\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 238,
+    "matched_benchmark_value": "ecommerce_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_19\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 248,
+    "matched_benchmark_value": "ecommerce_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_20\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 258,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 268,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 278,
+    "matched_benchmark_value": "ecommerce_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_23\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 288,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 298,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 308,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 318,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 328,
+    "matched_benchmark_value": "finance_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_02\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 338,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 348,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 358,
+    "matched_benchmark_value": "finance_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_04\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 368,
+    "matched_benchmark_value": "finance_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_06\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 378,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 388,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 398,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 408,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 418,
+    "matched_benchmark_value": "finance_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_10\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 428,
+    "matched_benchmark_value": "finance_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_11\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 438,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 448,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 458,
+    "matched_benchmark_value": "finance_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 468,
+    "matched_benchmark_value": "finance_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_15\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 478,
+    "matched_benchmark_value": "finance_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_16\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 488,
+    "matched_benchmark_value": "finance_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_17\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 498,
+    "matched_benchmark_value": "finance_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_18\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 508,
+    "matched_benchmark_value": "finance_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_19\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 518,
+    "matched_benchmark_value": "finance_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_20\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 528,
+    "matched_benchmark_value": "finance_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 538,
+    "matched_benchmark_value": "finance_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_22\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 548,
+    "matched_benchmark_value": "finance_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_23\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 558,
+    "matched_benchmark_value": "housing_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 568,
+    "matched_benchmark_value": "housing_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_02\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 578,
+    "matched_benchmark_value": "housing_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_03\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 588,
+    "matched_benchmark_value": "housing_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_04\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 598,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 608,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 618,
+    "matched_benchmark_value": "housing_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_06\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 628,
+    "matched_benchmark_value": "housing_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 638,
+    "matched_benchmark_value": "housing_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_09\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 648,
+    "matched_benchmark_value": "housing_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_10\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 658,
+    "matched_benchmark_value": "housing_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_11\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 668,
+    "matched_benchmark_value": "housing_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_13\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 678,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 688,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 698,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 708,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 718,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 728,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 738,
+    "matched_benchmark_value": "housing_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_18\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 748,
+    "matched_benchmark_value": "housing_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_19\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 758,
+    "matched_benchmark_value": "housing_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_20\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 768,
+    "matched_benchmark_value": "housing_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 778,
+    "matched_benchmark_value": "housing_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_22\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 788,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 798,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 808,
+    "matched_benchmark_value": "housing_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_25\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 818,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_01\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 828,
+    "matched_benchmark_value": "travel_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_02\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 838,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 848,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 858,
+    "matched_benchmark_value": "travel_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_05\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 868,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 878,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 888,
+    "matched_benchmark_value": "travel_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_08\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 898,
+    "matched_benchmark_value": "travel_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_10\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 908,
+    "matched_benchmark_value": "travel_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_11\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 918,
+    "matched_benchmark_value": "travel_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_14\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 928,
+    "matched_benchmark_value": "travel_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_16\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 938,
+    "matched_benchmark_value": "travel_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_18\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 948,
+    "matched_benchmark_value": "travel_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_19\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 958,
+    "matched_benchmark_value": "travel_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_20\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 968,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 978,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 988,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 998,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/c070094-call-exact.json",
+    "line": 1008,
+    "matched_benchmark_value": "travel_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_24\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 18,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 28,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 38,
+    "matched_benchmark_value": "ecommerce_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_02\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 48,
+    "matched_benchmark_value": "ecommerce_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_04\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 58,
+    "matched_benchmark_value": "ecommerce_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_05\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 68,
+    "matched_benchmark_value": "ecommerce_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_06\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 78,
+    "matched_benchmark_value": "ecommerce_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_07\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 88,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 98,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 108,
+    "matched_benchmark_value": "ecommerce_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_09\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 118,
+    "matched_benchmark_value": "ecommerce_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_10\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 128,
+    "matched_benchmark_value": "ecommerce_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_11\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 138,
+    "matched_benchmark_value": "ecommerce_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_12\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 148,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 158,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 168,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 178,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 188,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 198,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 208,
+    "matched_benchmark_value": "ecommerce_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_16\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 218,
+    "matched_benchmark_value": "ecommerce_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_17\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 228,
+    "matched_benchmark_value": "ecommerce_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_18\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 238,
+    "matched_benchmark_value": "ecommerce_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_19\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 248,
+    "matched_benchmark_value": "ecommerce_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_20\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 258,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 268,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 278,
+    "matched_benchmark_value": "ecommerce_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_23\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 288,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 298,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 308,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 318,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 328,
+    "matched_benchmark_value": "finance_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_02\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 338,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 348,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 358,
+    "matched_benchmark_value": "finance_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_04\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 368,
+    "matched_benchmark_value": "finance_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_06\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 378,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 388,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 398,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 408,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 418,
+    "matched_benchmark_value": "finance_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_10\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 428,
+    "matched_benchmark_value": "finance_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_11\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 438,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 448,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 458,
+    "matched_benchmark_value": "finance_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 468,
+    "matched_benchmark_value": "finance_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_15\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 478,
+    "matched_benchmark_value": "finance_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_16\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 488,
+    "matched_benchmark_value": "finance_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_17\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 498,
+    "matched_benchmark_value": "finance_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_18\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 508,
+    "matched_benchmark_value": "finance_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_19\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 518,
+    "matched_benchmark_value": "finance_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_20\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 528,
+    "matched_benchmark_value": "finance_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 538,
+    "matched_benchmark_value": "finance_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_22\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 548,
+    "matched_benchmark_value": "finance_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_23\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 558,
+    "matched_benchmark_value": "housing_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 568,
+    "matched_benchmark_value": "housing_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_02\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 578,
+    "matched_benchmark_value": "housing_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_03\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 588,
+    "matched_benchmark_value": "housing_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_04\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 598,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 608,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 618,
+    "matched_benchmark_value": "housing_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_06\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 628,
+    "matched_benchmark_value": "housing_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 638,
+    "matched_benchmark_value": "housing_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_09\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 648,
+    "matched_benchmark_value": "housing_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_10\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 658,
+    "matched_benchmark_value": "housing_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_11\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 668,
+    "matched_benchmark_value": "housing_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_13\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 678,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 688,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 698,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 708,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 718,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 728,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 738,
+    "matched_benchmark_value": "housing_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_18\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 748,
+    "matched_benchmark_value": "housing_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_19\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 758,
+    "matched_benchmark_value": "housing_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_20\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 768,
+    "matched_benchmark_value": "housing_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 778,
+    "matched_benchmark_value": "housing_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_22\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 788,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 798,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 808,
+    "matched_benchmark_value": "housing_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_25\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 818,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_01\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 828,
+    "matched_benchmark_value": "travel_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_02\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 838,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 848,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 858,
+    "matched_benchmark_value": "travel_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_05\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 868,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 878,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 888,
+    "matched_benchmark_value": "travel_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_08\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 898,
+    "matched_benchmark_value": "travel_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_10\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 908,
+    "matched_benchmark_value": "travel_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_11\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 918,
+    "matched_benchmark_value": "travel_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_14\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 928,
+    "matched_benchmark_value": "travel_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_16\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 938,
+    "matched_benchmark_value": "travel_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_18\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 948,
+    "matched_benchmark_value": "travel_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_19\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 958,
+    "matched_benchmark_value": "travel_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_20\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 968,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 978,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 988,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 998,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/9f1128c-call-exact.json",
+    "line": 1008,
+    "matched_benchmark_value": "travel_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_24\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 18,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 28,
+    "matched_benchmark_value": "ecommerce_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 38,
+    "matched_benchmark_value": "ecommerce_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_02\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 48,
+    "matched_benchmark_value": "ecommerce_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_04\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 58,
+    "matched_benchmark_value": "ecommerce_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_05\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 68,
+    "matched_benchmark_value": "ecommerce_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_06\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 78,
+    "matched_benchmark_value": "ecommerce_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_07\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 88,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 98,
+    "matched_benchmark_value": "ecommerce_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 108,
+    "matched_benchmark_value": "ecommerce_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_09\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 118,
+    "matched_benchmark_value": "ecommerce_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_10\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 128,
+    "matched_benchmark_value": "ecommerce_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_11\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 138,
+    "matched_benchmark_value": "ecommerce_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_12\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 148,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 158,
+    "matched_benchmark_value": "ecommerce_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_13\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 168,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 178,
+    "matched_benchmark_value": "ecommerce_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 188,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 198,
+    "matched_benchmark_value": "ecommerce_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_15\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 208,
+    "matched_benchmark_value": "ecommerce_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_16\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 218,
+    "matched_benchmark_value": "ecommerce_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_17\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 228,
+    "matched_benchmark_value": "ecommerce_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_18\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 238,
+    "matched_benchmark_value": "ecommerce_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_19\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 248,
+    "matched_benchmark_value": "ecommerce_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_20\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 258,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 268,
+    "matched_benchmark_value": "ecommerce_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 278,
+    "matched_benchmark_value": "ecommerce_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_23\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 288,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 298,
+    "matched_benchmark_value": "ecommerce_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"ecommerce_25\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 308,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 318,
+    "matched_benchmark_value": "finance_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 328,
+    "matched_benchmark_value": "finance_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_02\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 338,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 348,
+    "matched_benchmark_value": "finance_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_03\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 358,
+    "matched_benchmark_value": "finance_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_04\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 368,
+    "matched_benchmark_value": "finance_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_06\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 378,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 388,
+    "matched_benchmark_value": "finance_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_07\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 398,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 408,
+    "matched_benchmark_value": "finance_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 418,
+    "matched_benchmark_value": "finance_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_10\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 428,
+    "matched_benchmark_value": "finance_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_11\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 438,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 448,
+    "matched_benchmark_value": "finance_12",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_12\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 458,
+    "matched_benchmark_value": "finance_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 468,
+    "matched_benchmark_value": "finance_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_15\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 478,
+    "matched_benchmark_value": "finance_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_16\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 488,
+    "matched_benchmark_value": "finance_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_17\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 498,
+    "matched_benchmark_value": "finance_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_18\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 508,
+    "matched_benchmark_value": "finance_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_19\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 518,
+    "matched_benchmark_value": "finance_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_20\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 528,
+    "matched_benchmark_value": "finance_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 538,
+    "matched_benchmark_value": "finance_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_22\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 548,
+    "matched_benchmark_value": "finance_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"finance_23\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 558,
+    "matched_benchmark_value": "housing_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 568,
+    "matched_benchmark_value": "housing_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_02\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 578,
+    "matched_benchmark_value": "housing_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_03\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 588,
+    "matched_benchmark_value": "housing_04",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_04\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 598,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 608,
+    "matched_benchmark_value": "housing_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_05\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 618,
+    "matched_benchmark_value": "housing_06",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_06\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 628,
+    "matched_benchmark_value": "housing_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 638,
+    "matched_benchmark_value": "housing_09",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_09\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 648,
+    "matched_benchmark_value": "housing_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_10\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 658,
+    "matched_benchmark_value": "housing_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_11\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 668,
+    "matched_benchmark_value": "housing_13",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_13\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 678,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 688,
+    "matched_benchmark_value": "housing_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 698,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 708,
+    "matched_benchmark_value": "housing_15",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_15\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 718,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 728,
+    "matched_benchmark_value": "housing_17",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_17\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 738,
+    "matched_benchmark_value": "housing_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_18\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 748,
+    "matched_benchmark_value": "housing_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_19\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 758,
+    "matched_benchmark_value": "housing_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_20\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 768,
+    "matched_benchmark_value": "housing_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 778,
+    "matched_benchmark_value": "housing_22",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_22\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 788,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 798,
+    "matched_benchmark_value": "housing_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_24\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 808,
+    "matched_benchmark_value": "housing_25",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"housing_25\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 818,
+    "matched_benchmark_value": "travel_01",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_01\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 828,
+    "matched_benchmark_value": "travel_02",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_02\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 838,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 848,
+    "matched_benchmark_value": "travel_03",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_03\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 858,
+    "matched_benchmark_value": "travel_05",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_05\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 868,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 878,
+    "matched_benchmark_value": "travel_07",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_07\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 888,
+    "matched_benchmark_value": "travel_08",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_08\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 898,
+    "matched_benchmark_value": "travel_10",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_10\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 908,
+    "matched_benchmark_value": "travel_11",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_11\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 918,
+    "matched_benchmark_value": "travel_14",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_14\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 928,
+    "matched_benchmark_value": "travel_16",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_16\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 938,
+    "matched_benchmark_value": "travel_18",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_18\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 948,
+    "matched_benchmark_value": "travel_19",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_19\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 958,
+    "matched_benchmark_value": "travel_20",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_20\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 968,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 978,
+    "matched_benchmark_value": "travel_21",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_21\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 988,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 998,
+    "matched_benchmark_value": "travel_23",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_23\","
+  },
+  {
+    "file": "docs/results/9150eb6-call-exact.json",
+    "line": 1008,
+    "matched_benchmark_value": "travel_24",
+    "category": "scenario_id",
+    "classification": "benchmark metadata",
+    "snippet": "\"example_id\": \"travel_24\","
+  }
+]

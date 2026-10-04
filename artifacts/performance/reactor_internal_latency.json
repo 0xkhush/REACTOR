@@ -1,0 +1,85 @@
+{
+  "benchmark": "REACTOR Internal Architecture Microbenchmark",
+  "timer": "time.perf_counter_ns()",
+  "units": "microseconds (us)",
+  "iterations": 100,
+  "stages": {
+    "turn_bridge": {
+      "N": 100,
+      "mean_us": 24.25,
+      "median_us": 23.46,
+      "p50_us": 23.46,
+      "p90_us": 26.75,
+      "p95_us": 30.36,
+      "p99_us": 35.08,
+      "max_us": 51.46,
+      "std_us": 3.73
+    },
+    "state_update": {
+      "N": 100,
+      "mean_us": 13.5,
+      "median_us": 12.71,
+      "p50_us": 12.71,
+      "p90_us": 13.88,
+      "p95_us": 14.64,
+      "p99_us": 33.41,
+      "max_us": 37.08,
+      "std_us": 3.85
+    },
+    "controller_scheduling": {
+      "N": 100,
+      "mean_us": 128.65,
+      "median_us": 101.67,
+      "p50_us": 101.67,
+      "p90_us": 124.76,
+      "p95_us": 131.96,
+      "p99_us": 209.51,
+      "max_us": 2710.29,
+      "std_us": 261.43
+    },
+    "write_gate": {
+      "N": 100,
+      "mean_us": 290.01,
+      "median_us": 250.77,
+      "p50_us": 250.77,
+      "p90_us": 265.69,
+      "p95_us": 271.8,
+      "p99_us": 337.11,
+      "max_us": 3941.04,
+      "std_us": 368.91
+    },
+    "tool_dispatch": {
+      "N": 100,
+      "mean_us": 130.15,
+      "median_us": 97.5,
+      "p50_us": 97.5,
+      "p90_us": 110.33,
+      "p95_us": 123.77,
+      "p99_us": 192.15,
+      "max_us": 3440.5,
+      "std_us": 334.7
+    },
+    "cancellation": {
+      "N": 100,
+      "mean_us": 20.26,
+      "median_us": 18.44,
+      "p50_us": 18.44,
+      "p90_us": 24.88,
+      "p95_us": 28.18,
+      "p99_us": 39.48,
+      "max_us": 41.67,
+      "std_us": 4.84
+    },
+    "cascade_cancellation": {
+      "N": 100,
+      "mean_us": 28.37,
+      "median_us": 25.96,
+      "p50_us": 25.96,
+      "p90_us": 34.72,
+      "p95_us": 38.77,
+      "p99_us": 44.27,
+      "max_us": 45.92,
+      "std_us": 5.07
+    }
+  }
+}

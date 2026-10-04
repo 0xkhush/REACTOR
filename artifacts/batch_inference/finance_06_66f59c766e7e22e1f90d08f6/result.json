@@ -1,0 +1,22 @@
+{
+  "example_id": "finance_06",
+  "room": "reactor-batch-6ffbcb427f0b",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/finance_06_66f59c766e7e22e1f90d08f6/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/finance_06_66f59c766e7e22e1f90d08f6/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "get_card_benefits",
+      "args": {
+        "card_type": "travel"
+      },
+      "timestamp_start": 22.08,
+      "timestamp_end": 22.08
+    }
+  ],
+  "stream_start_time": 1791095141.6936178,
+  "agent_ready_wait_seconds": 1.303,
+  "elapsed_seconds": 51.7
+}

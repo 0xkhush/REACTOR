@@ -1,0 +1,44 @@
+{
+  "example_id": "housing_24",
+  "room": "reactor-batch-9f7eac7e83b5",
+  "input": "scratch/test_dataset/housing_24_69a9cf80f4d7668d5c815038/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/housing_24_69a9cf80f4d7668d5c815038/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_search_filter",
+      "args": {
+        "filter_name": "max_price",
+        "value": 1500
+      },
+      "timestamp_start": 57.75,
+      "timestamp_end": 57.9
+    },
+    {
+      "function": "search_apartments",
+      "args": {
+        "city": "Dallas",
+        "max_price": 1500,
+        "bedrooms": 1,
+        "pets_allowed": null
+      },
+      "timestamp_start": 59.66,
+      "timestamp_end": 60.05
+    },
+    {
+      "function": "calculate_commute",
+      "args": {
+        "origin_address": "APT1",
+        "mode": "walking",
+        "destination_address": "the grocery store"
+      },
+      "timestamp_start": 61.68,
+      "timestamp_end": 61.99
+    }
+  ],
+  "stream_start_time": 1791105428.310091,
+  "agent_ready_wait_seconds": 1.934,
+  "elapsed_seconds": 66.36
+}

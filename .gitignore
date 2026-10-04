@@ -8,7 +8,8 @@ __pycache__/
 .env.*
 !.env.example
 /fdb_v3_data_released
-/artifacts/
+artifacts/**/*.wav
+artifacts/*.wav
 /vendor
 /.superpowers/
 build/
@@ -17,3 +18,5 @@ Reactor Kaggle Results/
 scratch/
 *.tsbuildinfo
 reactor-frontend-design
+node_modules/
+.next/

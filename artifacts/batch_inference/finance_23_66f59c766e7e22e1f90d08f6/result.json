@@ -1,0 +1,23 @@
+{
+  "example_id": "finance_23",
+  "room": "reactor-batch-f616a7bc8687",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/finance_23_66f59c766e7e22e1f90d08f6/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/finance_23_66f59c766e7e22e1f90d08f6/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "modify_autopay",
+      "args": {
+        "bill_type": "mortgage",
+        "source_account": "savings"
+      },
+      "timestamp_start": 25.91,
+      "timestamp_end": 25.91
+    }
+  ],
+  "stream_start_time": 1791096152.525751,
+  "agent_ready_wait_seconds": 4.1,
+  "elapsed_seconds": 59.82
+}

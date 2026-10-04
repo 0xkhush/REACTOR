@@ -1,0 +1,9 @@
+{
+  "expected": 100,
+  "completed": 100,
+  "no_tool_call": 0,
+  "inference_failed": 0,
+  "remaining": 0,
+  "official_score": false,
+  "mode": "audio_capture_no_asr"
+}

@@ -1,0 +1,23 @@
+{
+  "example_id": "travel_02",
+  "room": "reactor-batch-9f47175606a0",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/travel_02_5e3c1fbece3a7b000a6fd95a/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/travel_02_5e3c1fbece3a7b000a6fd95a/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_identity_doc",
+      "args": {
+        "doc_number": "P88990011",
+        "doc_type": "passport"
+      },
+      "timestamp_start": 20.47,
+      "timestamp_end": 20.47
+    }
+  ],
+  "stream_start_time": 1791097708.178383,
+  "agent_ready_wait_seconds": 1.939,
+  "elapsed_seconds": 51.28
+}

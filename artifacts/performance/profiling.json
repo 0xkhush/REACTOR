@@ -1,0 +1,16 @@
+{
+  "profiling_methodology": "Dual-mode: Observational instrumentation (perf_counter_ns, psutil, tracemalloc) + Independent synthetic benchmarks",
+  "startup_latencies": {
+    "cold_start_ms": 320.5,
+    "warm_start_ms": 1.2,
+    "reactor_readiness_ms": 4.5,
+    "livekit_connection_ms": 84.0,
+    "gemini_session_init_ms": 210.0
+  },
+  "queue_and_tasks": {
+    "active_tasks_peak": 64,
+    "orphaned_tasks": 0,
+    "unhandled_exceptions": 0,
+    "max_queue_depth": 64
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "example_id": "housing_19",
+  "room": "reactor-batch-7ca008a0acd1",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/housing_19_62a885d5b6af18b3d4579e1b/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/housing_19_62a885d5b6af18b3d4579e1b/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "calculate_commute",
+      "args": {
+        "destination_address": "the gym",
+        "mode": "driving",
+        "origin_address": "my house"
+      },
+      "timestamp_start": 22.75,
+      "timestamp_end": 23.21
+    }
+  ],
+  "stream_start_time": 1791097259.594806,
+  "agent_ready_wait_seconds": 1.947,
+  "elapsed_seconds": 50.2
+}

@@ -1,0 +1,23 @@
+{
+  "example_id": "travel_19",
+  "room": "reactor-batch-6f122c28c3c5",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/travel_19_695bd157114f0d2317f88617/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/travel_19_695bd157114f0d2317f88617/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_flights",
+      "args": {
+        "destination": "Milan",
+        "date": "June 3"
+      },
+      "timestamp_start": 25.64,
+      "timestamp_end": 26.19
+    }
+  ],
+  "stream_start_time": 1791098319.5024,
+  "agent_ready_wait_seconds": 1.998,
+  "elapsed_seconds": 55.94
+}

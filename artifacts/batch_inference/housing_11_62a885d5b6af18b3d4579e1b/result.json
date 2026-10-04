@@ -1,0 +1,25 @@
+{
+  "example_id": "housing_11",
+  "room": "reactor-batch-edb9c5e093ec",
+  "input": "scratch/test_dataset/housing_11_62a885d5b6af18b3d4579e1b/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/housing_11_62a885d5b6af18b3d4579e1b/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_apartments",
+      "args": {
+        "bedrooms": 2,
+        "max_price": 1600,
+        "city": null,
+        "pets_allowed": null
+      },
+      "timestamp_start": 19.21,
+      "timestamp_end": 19.42
+    }
+  ],
+  "stream_start_time": 1791105120.3856692,
+  "agent_ready_wait_seconds": 1.99,
+  "elapsed_seconds": 48.15
+}

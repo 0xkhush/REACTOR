@@ -1,0 +1,78 @@
+{
+  "memory": {
+    "cold_start_rss_mb": 213.06,
+    "cold_start_vms_mb": 425976.3,
+    "milestone_10_rss_mb": 213.09,
+    "milestone_50_rss_mb": 213.12,
+    "milestone_100_rss_mb": 213.14,
+    "post_benchmark_rss_mb": 213.14,
+    "peak_rss_mb": 213.14,
+    "memory_growth_mb": 0.08,
+    "memory_growth_percent": 0.04,
+    "memory_evaluation_conclusion": "no material growth (+0.08 MB RSS / +0.07 MB heap over 100 runs)",
+    "tracemalloc_current_mb": 0.071,
+    "tracemalloc_peak_mb": 0.104,
+    "timeline": [
+      {
+        "iteration": 10,
+        "rss_mb": 213.09
+      },
+      {
+        "iteration": 20,
+        "rss_mb": 213.09
+      },
+      {
+        "iteration": 30,
+        "rss_mb": 213.11
+      },
+      {
+        "iteration": 40,
+        "rss_mb": 213.12
+      },
+      {
+        "iteration": 50,
+        "rss_mb": 213.12
+      },
+      {
+        "iteration": 60,
+        "rss_mb": 213.12
+      },
+      {
+        "iteration": 70,
+        "rss_mb": 213.12
+      },
+      {
+        "iteration": 80,
+        "rss_mb": 213.14
+      },
+      {
+        "iteration": 90,
+        "rss_mb": 213.14
+      },
+      {
+        "iteration": 100,
+        "rss_mb": 213.14
+      }
+    ]
+  },
+  "cpu": {
+    "idle_cpu_pct": 0.0,
+    "audio_streaming_simulated_pct": 4.2,
+    "tool_execution_pct": 8.7,
+    "correction_cascade_pct": 11.4,
+    "peak_cpu_pct": 14.8,
+    "normalization": "Normalized to single core capacity (100% = 1 core, 1000% = 10 cores total M4 capacity)",
+    "mean_cpu_pct": 7.3,
+    "p50_cpu_pct": 6.8,
+    "p95_cpu_pct": 12.1,
+    "p99_cpu_pct": 14.5,
+    "max_cpu_pct": 14.8
+  },
+  "local_gpu": {
+    "architecture": "Apple M4 Unified Memory Architecture",
+    "gpu_vram_allocated_mb": 0.0,
+    "gpu_vram_peak_mb": 0.0,
+    "gpu_utilization_pct": 0.0,
+    "explanation": "Gemini 2.5 Live Realtime model inference is hosted remote server-side by Google GenAI. Local GPU allocates 0 MB VRAM."
+  }
+}

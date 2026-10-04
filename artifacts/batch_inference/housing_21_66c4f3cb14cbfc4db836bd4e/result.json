@@ -1,0 +1,35 @@
+{
+  "example_id": "housing_21",
+  "room": "reactor-batch-5114a6597f16",
+  "input": "scratch/test_dataset/housing_21_66c4f3cb14cbfc4db836bd4e/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/scratch/test_output/housing_21_66c4f3cb14cbfc4db836bd4e/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "search_apartments",
+      "args": {
+        "bedrooms": 3,
+        "city": null,
+        "max_price": 2000.0,
+        "pets_allowed": null
+      },
+      "timestamp_start": 31.0,
+      "timestamp_end": 31.51
+    },
+    {
+      "function": "calculate_commute",
+      "args": {
+        "destination_address": "train station",
+        "mode": "walking",
+        "origin_address": "APT1"
+      },
+      "timestamp_start": 34.52,
+      "timestamp_end": 34.8
+    }
+  ],
+  "stream_start_time": 1791105371.438244,
+  "agent_ready_wait_seconds": 2.151,
+  "elapsed_seconds": 56.55
+}

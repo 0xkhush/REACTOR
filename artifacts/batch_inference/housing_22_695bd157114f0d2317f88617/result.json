@@ -1,0 +1,44 @@
+{
+  "example_id": "housing_22",
+  "room": "reactor-batch-e6deae3e8909",
+  "input": "/Users/atharvamendhulkar/Desktop/REACTOR/fdb_v3_data_released/housing_22_695bd157114f0d2317f88617/input.wav",
+  "output": "/Users/atharvamendhulkar/Desktop/REACTOR/artifacts/batch_inference/housing_22_695bd157114f0d2317f88617/output.wav",
+  "model": "gemini-2.5-flash-native-audio-preview-12-2025",
+  "provider": "gemini2_5",
+  "status": "completed",
+  "actual_tool_calls": [
+    {
+      "function": "update_search_filter",
+      "args": {
+        "value": true,
+        "filter_name": "pets_allowed"
+      },
+      "timestamp_start": 41.08,
+      "timestamp_end": 41.19
+    },
+    {
+      "function": "search_apartments",
+      "args": {
+        "city": "Seattle",
+        "bedrooms": 1,
+        "max_price": 2000.0,
+        "pets_allowed": null
+      },
+      "timestamp_start": 43.09,
+      "timestamp_end": 43.8
+    },
+    {
+      "function": "calculate_commute",
+      "args": {
+        "mode": "transit",
+        "origin_address": "APT1",
+        "destination_address": "the stadium"
+      },
+      "timestamp_start": 46.02,
+      "timestamp_end": 46.69
+    }
+  ],
+  "stream_start_time": 1791097421.27532,
+  "agent_ready_wait_seconds": 2.043,
+  "elapsed_seconds": 56.72
+}
