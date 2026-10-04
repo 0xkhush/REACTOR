@@ -4,7 +4,7 @@
 <br />
 <div align="center">
   <a href="https://github.com/0xkhush/REACTOR">
-    <img src="logo.png" alt="REACTOR logo" width="240" />
+    <img src="logo.png" alt="REACTOR logo" width="280" />
   </a>
 
   <h1 align="center">REACTOR</h1>
@@ -12,34 +12,56 @@
   <p align="center">
     <strong>Correction-Aware Execution Engine for Interruptible Voice Agents</strong>
     <br />
-    LiveKit Agents Framework &middot; Gemini Live Realtime API &middot; Versioned Intent Controller &middot; NTU Full-Duplex-Bench v3 &middot; 12 Mock Tools
-    <br />
-    <br />
+    LiveKit Agents &middot; Google Gemini Live &middot; Versioned Intent Controller &middot; NTU Full-Duplex-Bench v3 &middot; 12 Mock Tools
+  </p>
+
+  <p align="center">
+    <a href="https://colab.research.google.com/github/0xkhush/REACTOR/blob/main/REACTOR_Colab_Evaluation.ipynb" target="_blank">
+      <img src="https://colab.research.google.com/assets/colab-badge.svg" alt="Open In Colab" />
+    </a>
+    &nbsp;
+    <a href="REACTOR_Kaggle_Evaluation.ipynb">
+      <img src="https://img.shields.io/badge/Kaggle-GPU_T4_x2-20BEFF?logo=kaggle&logoColor=white" alt="Kaggle Notebook" />
+    </a>
+    &nbsp;
+    <a href="https://youtu.be/j5UBhm0QRCk" target="_blank">
+      <img src="https://img.shields.io/badge/YouTube-Official_Demo-FF0000?logo=youtube&logoColor=white" alt="YouTube Demo" />
+    </a>
+    &nbsp;
+    <img src="https://img.shields.io/badge/Tests-365%2F365%20Passing-brightgreen" alt="Tests" />
+    &nbsp;
+    <img src="https://img.shields.io/badge/FDB--v3-92%25%20Exact%20%7C%2094%25%20Semantic-blue" alt="Accuracy" />
+  </p>
+
+  <p align="center">
     <a href="#checklist-for-github"><strong>Submission Checklist &rarr;</strong></a>
-      &middot;
-    <a href="#quick-overview"><strong>Overview &rarr;</strong></a>
+    &middot;
+    <a href="#video-walkthrough"><strong>Video Walkthrough &rarr;</strong></a>
+    &middot;
+    <a href="#current-benchmark-results"><strong>Benchmark (92% / 94%) &rarr;</strong></a>
+    &middot;
+    <a href="#cloud-evaluation"><strong>Colab & Kaggle Notebooks &rarr;</strong></a>
     &middot;
     <a href="#architecture"><strong>Architecture &rarr;</strong></a>
     &middot;
     <a href="#getting-started"><strong>Getting Started &rarr;</strong></a>
     &middot;
-    <a href="#kaggle-evaluation"><strong>Kaggle T4 Evaluation &rarr;</strong></a>
-    &middot;
-    <a href="#benchmark"><strong>Benchmark &rarr;</strong></a>
-    &middot;
-    <a href="#reproduction"><strong>Reproduction &rarr;</strong></a>
-    &middot;
-    <a href="#test-matrix"><strong>Test Matrix (365/365) &rarr;</strong></a>
+    <a href="#reproduction"><strong>Reproduction (365/365) &rarr;</strong></a>
   </p>
 
   <br />
 
+  <a id="video-walkthrough"></a>
   <p align="center">
-    <a href="Team-REACTOR_VIDEO.mp4" title="Click to Watch Official Demo Video (4m 24s)">
-      <img src="docs/assets/demo_video_card.png" alt="REACTOR Official Demo Video (4m 24s)" width="100%" />
+    <a href="https://youtu.be/j5UBhm0QRCk" target="_blank" title="Watch Official Demonstration Video on YouTube">
+      <img src="docs/assets/youtube_video_card.png" alt="REACTOR Official Demo Video (YouTube)" width="100%" />
     </a>
     <br />
-    <small><em>Click to watch the full 1080p demonstration recording with audio narration (4m 24s)</em></small>
+    <small>
+      <a href="https://youtu.be/j5UBhm0QRCk" target="_blank"><strong>▶ Watch on YouTube (4m 24s &middot; 1080p 60fps with full voiceover)</strong></a>
+      &nbsp;&middot;&nbsp;
+      <a href="Team-REACTOR_VIDEO.mp4">Local MP4 file: <code>Team-REACTOR_VIDEO.mp4</code></a>
+    </small>
   </p>
 </div>
 
@@ -82,7 +104,8 @@ Evaluated across all 100 released human audio recordings from the NTU Full-Duple
 |:---|:---:|:---|
 | **Source Code** | **Available** | Execution engine in [`src/reactor/`](src/reactor), interactive visualizer in [`frontend/`](frontend), 365 passing offline tests in [`tests/`](tests), evaluation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root), editable generator [`scripts/build_submission_deck.py`](scripts/build_submission_deck.py), and companion outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
-| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](Team-REACTOR_VIDEO.mp4) (official submission recording).<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
+| **Video** | **Complete** | **Official Demo:** [**YouTube Video (1080p)**](https://youtu.be/j5UBhm0QRCk) &middot; Repository recording: [`Team-REACTOR_VIDEO.mp4`](Team-REACTOR_VIDEO.mp4).<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
+| **Cloud Notebooks** | **Verified** | **1-Click Google Colab (T4 GPU):** [`REACTOR_Colab_Evaluation.ipynb`](REACTOR_Colab_Evaluation.ipynb) ([Open in Colab](https://colab.research.google.com/github/0xkhush/REACTOR/blob/main/REACTOR_Colab_Evaluation.ipynb))<br>**Kaggle GPU (Dual Tesla T4 x2):** [`REACTOR_Kaggle_Evaluation.ipynb`](REACTOR_Kaggle_Evaluation.ipynb) |
 | **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
 | **README & Audit** | **Updated** | Architecture, setup, readiness-aware capture, 92%/94% benchmark evaluation ([`ACCURACY_V5.md`](docs/results/ACCURACY_V5.md)), [Theme 05 Compliance Audit](docs/THEME05_COMPLIANCE_AUDIT.md), frontend visualizer, and the 365-test matrix. |
 | **Reproduction** | **Verified** | One-command reproduction script: [`reproduce.sh`](reproduce.sh) / [`scripts/reproduce.py`](scripts/reproduce.py) running end-to-end against pinned FDB-v3. |
@@ -196,12 +219,15 @@ REACTOR/
 ├── VITV_Team-REACTOR.pptx            # Official hackathon presentation slide deck
 ├── LangAI3.0_AI_Disclosure.docx      # Official AI disclosure form (Word format)
 ├── AI_DISCLOSURE.md                  # Filled AI usage disclosure (Markdown format)
+├── REACTOR_Colab_Evaluation.ipynb    # 1-Click Google Colab notebook (T4 GPU)
 ├── REACTOR_Kaggle_Evaluation.ipynb   # Complete Kaggle evaluation notebook (GPU T4 x2)
+├── Team-REACTOR_VIDEO.mp4            # Official 1080p demo recording (also on YouTube)
+├── logo.png                          # Official project logo asset
+├── reproduce.sh                      # One-command full reproduction script
 ├── requirements.txt                  # Full pinned project dependencies
 ├── requirements-dev.lock             # Exact frozen development dependencies
 ├── pyproject.toml                    # Build metadata, pinned dependencies, tool configs
 ├── Dockerfile                        # Multi-stage container definition
-├── logo.png                          # Project logo asset
 ├── .env.example                      # Template for required environment variables
 │
 ├── dist/                             # Distributable Python SDK packages
@@ -377,39 +403,46 @@ pnpm dev       # runs locally at http://localhost:3000
 
 ---
 
+<a id="cloud-evaluation"></a>
 <a id="kaggle-evaluation"></a>
 
-## Kaggle GPU T4 x2 Evaluation
+## Cloud GPU Evaluation Notebooks (Colab & Kaggle)
 
-We provide a self-contained, automated notebook: [**`REACTOR_Kaggle_Evaluation.ipynb`**](REACTOR_Kaggle_Evaluation.ipynb).
+We provide self-contained, automated cloud notebooks to independently reproduce the full 100-recording evaluation using NVIDIA CUDA-accelerated Parakeet ASR and Gemini Live:
 
-### Hardware Requirements
+### 1. Google Colab (Recommended — 1-Click T4 GPU)
+
+[![Open In Colab](https://colab.research.google.com/assets/colab-badge.svg)](https://colab.research.google.com/github/0xkhush/REACTOR/blob/main/REACTOR_Colab_Evaluation.ipynb)
+
+Direct link: [**`REACTOR_Colab_Evaluation.ipynb`**](REACTOR_Colab_Evaluation.ipynb)
+
+- **Accelerator:** Select **T4 GPU** (`Runtime` → `Change runtime type` → `T4 GPU`).
+  - *CUDA Acceleration:* Accelerates NVIDIA NeMo Parakeet ASR (`nvidia/parakeet-tdt-0.6b-v2`) via CUDA.
+- **Colab Secrets Setup:** In the Colab sidebar under **Secrets (🔑)**, toggle **Notebook access** ON and add:
+  - `LIVEKIT_URL`: Your LiveKit Cloud WebSocket URL (`wss://<project>.livekit.cloud`)
+  - `LIVEKIT_API_KEY`: Your LiveKit API Key
+  - `LIVEKIT_API_SECRET`: Your LiveKit API Secret
+  - `GOOGLE_API_KEY`: Your Google Gemini API Key
+  - *(Optional)* `OPENAI_API_KEY`: Only if running with `--use-llm` for the alternative semantic LLM judge.
+- **Automated Workflow:** One click installs all system packages (`ffmpeg`, `espeak-ng`), pulls the pinned FDB-v3 dataset, runs preflight verification (365 tests), streams all 100 audio scenarios, and computes exact-match and semantic accuracy.
+
+---
+
+### 2. Kaggle GPU (Dual Tesla T4 x2)
+
+Direct link: [**`REACTOR_Kaggle_Evaluation.ipynb`**](REACTOR_Kaggle_Evaluation.ipynb)
+
 - **Accelerator:** Select **GPU T4 x2** (`Notebook Options` → `Accelerator` → `GPU T4 x2`).
   - *Why not TPU v5e-8?* Full-Duplex-Bench uses NVIDIA NeMo Parakeet ASR (`nvidia/parakeet-tdt-0.6b-v2`), which compiles CUDA C++ extensions. It cannot run on TPU.
 - **Internet:** Toggle **ON** (`Settings` → `Internet` → `On`).
-
-### Kaggle Secrets Setup
-In the notebook top menu (**Add-ons → Secrets**), add:
-- `LIVEKIT_URL`
-- `LIVEKIT_API_KEY`
-- `LIVEKIT_API_SECRET`
-- `GOOGLE_API_KEY`
-- *(Optional)* `OPENAI_API_KEY` (only if evaluating with `--use-llm` for the semantic judge).
-
-### Dataset Upload: Not Needed
-The notebook runs `scripts/setup_fdb.py --with-data` to download and extract the 100 benchmark audio recordings from Google Drive.
-
-### Notebook Workflow
-1. **CUDA Verification:** Confirms Dual Tesla T4 GPUs with ~15 GB VRAM each.
-2. **System Dependencies:** Installs `ffmpeg`, `libsndfile1`, and `espeak-ng`.
-3. **Workspace Setup:** Copies repository from read-only `/kaggle/input` into writable `/kaggle/working/REACTOR`.
-4. **Pip Dependencies:** Installs LiveKit, Google GenAI plugin, and NeMo Parakeet ASR.
-5. **Credentials Generation:** Writes masked `.env.local` with `0600` permissions.
-6. **Dataset & Benchmark Fetch:** Pulls upstream pinned FDB commit (`3e799c45`) and extracts 100 audio files.
-7. **Preflight & Unit Tests:** Runs `pytest -q` and `scripts/reproduce.py --check`. This branch has 365 tests when all test SDKs are installed.
-8. **Live Duplex Benchmark:** Streams all 100 recordings, executes tools via Gemini Live, and runs Parakeet ASR.
-9. **Metrics Display:** Displays tool selection accuracy, argument accuracy, and binary pass rates.
-10. **Archive Package:** Packages results and worker logs into `/kaggle/working/REACTOR_Kaggle_Results.zip`.
+- **Kaggle Secrets Setup:** Top menu (**Add-ons → Secrets**):
+  - `LIVEKIT_URL`
+  - `LIVEKIT_API_KEY`
+  - `LIVEKIT_API_SECRET`
+  - `GOOGLE_API_KEY`
+  - *(Optional)* `OPENAI_API_KEY` (only if evaluating with `--use-llm` for the semantic judge).
+- **Dataset Upload:** Not needed; automatically downloads and extracts the 100 benchmark audio recordings from Google Drive via `scripts/setup_fdb.py --with-data`.
+- **Outputs:** Archives full results and worker logs into `/kaggle/working/REACTOR_Kaggle_Results.zip`.
 
 Set the notebook's `GOOGLE_LIVE_MODEL` to `gemini-2.5-flash-native-audio-preview-12-2025` before live capture. The latest 75/100 result comes from local readiness-aware capture and saved-call scoring, not a new run of this notebook. Clean-Linux combined CUDA reproduction and current-capture spoken-response/ASR evaluation remain unverified. See [Kaggle setup](docs/submission/KAGGLE_SETUP.md) for the audio-evaluation workflow.
 
@@ -622,10 +655,12 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 - [**Submission Checklist**](#checklist-for-github)
 - [**AI Usage Disclosure Form**](AI_DISCLOSURE.md)
 - [**Official Slide Deck (PPTX)**](VITV_Team-REACTOR.pptx)
-- [**Official Demo Video (MP4)**](Team-REACTOR_VIDEO.mp4)
+- [**Official Demo Video (YouTube)**](https://youtu.be/j5UBhm0QRCk) &middot; [Local MP4 Recording](Team-REACTOR_VIDEO.mp4)
+- [**Google Colab 1-Click Evaluation Notebook**](https://colab.research.google.com/github/0xkhush/REACTOR/blob/main/REACTOR_Colab_Evaluation.ipynb)
+- [**Kaggle GPU Evaluation Notebook**](REACTOR_Kaggle_Evaluation.ipynb)
 - [**Dependencies Manifest**](requirements.txt)
-- [**Kaggle Evaluation Notebook**](REACTOR_Kaggle_Evaluation.ipynb)
 - [**Latest 100-Recording Exact Evaluation (92% Strict / 94% Semantic)**](docs/results/ACCURACY_V5.md)
+- [**Theme 05 Compliance Audit**](docs/THEME05_COMPLIANCE_AUDIT.md)
 - [**Google Judge Calibration and Quota-Blocked Evaluation**](docs/results/GOOGLE_JUDGE_V2.md)
 - [**Historical Evaluation Archive**](docs/results/README.md)
 - [**Final Code Checkpoint**](docs/FINAL_CODE_CHECKPOINT.md)
