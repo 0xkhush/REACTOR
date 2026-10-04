@@ -34,9 +34,13 @@
 
   <br />
 
-  <video src="Team-REACTOR_VIDEO.mp4" controls="controls" width="100%">
-    <a href="Team-REACTOR_VIDEO.mp4">Watch Team-REACTOR_VIDEO.mp4</a>
-  </video>
+  <p align="center">
+    <a href="Team-REACTOR_VIDEO.mp4" title="Click to Watch Official Demo Video (4m 24s)">
+      <img src="docs/assets/demo_video_card.png" alt="REACTOR Official Demo Video (4m 24s)" width="100%" />
+    </a>
+    <br />
+    <small><em>Click to watch the full 1080p demonstration recording with audio narration (4m 24s)</em></small>
+  </p>
 </div>
 
 ---
