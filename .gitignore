@@ -7,11 +7,13 @@ __pycache__/
 .env
 .env.*
 !.env.example
-/fdb_v3_data_released/
+/fdb_v3_data_released
 /artifacts/
-/vendor/
+/vendor
 /.superpowers/
 build/
-/Reactor Kaggle Results/
-/REACTOR_Colab_Results/
-*.zip
+REACTOR_Colab_Results/
+Reactor Kaggle Results/
+scratch/
+*.tsbuildinfo
+reactor-frontend-design

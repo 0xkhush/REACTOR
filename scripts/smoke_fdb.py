@@ -173,9 +173,10 @@ def main():
                              secrets=(config.livekit_key, config.livekit_secret, config.google_key))
               if args.start_worker else nullcontext())
     with worker as proc:
-        subprocess.run([sys.executable, str(source / "livekit_inference.py"),
-                        "-i", str(input_path), "-o", str(output), "--room", room],
-                       cwd=source, env=env, check=True, timeout=90)
+        subprocess.run([sys.executable, str(ROOT / "scripts" / "ready_inference.py"),
+                         "-i", str(input_path), "-o", str(output), "--room", room,
+                         "--upstream", str(args.upstream.resolve())],
+                        cwd=ROOT, env=env, check=True, timeout=300)
         calls = matching_calls(Path("/tmp/agent_tool_calls.log"), room)
         if not calls and proc is not None:
             print("Worker diagnostics (last redacted lines):\n" +

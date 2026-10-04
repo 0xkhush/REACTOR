@@ -7,9 +7,11 @@ import os
 import re
 from dataclasses import asdict, replace
 from pathlib import Path
-from typing import Union
+from typing import Annotated, Union
 
 from jsonschema import ValidationError
+from google.genai import types
+from pydantic import Field
 
 from livekit import agents
 from livekit.agents import Agent, AgentServer, AgentSession, RunContext, llm
@@ -26,21 +28,22 @@ from reactor.voice.kitchen import dispatch_kitchen_command
 from reactor.voice.speech import local_audio
 from reactor.voice.events import EventTasks
 from reactor.voice.native_types import JsonInteger, JsonNumber
+from reactor.voice.arguments import normalize_argument_values
 
 
 DESCRIPTIONS = {
     "search_flights": "Search for available flights to a destination and date.",
     "book_flight": "Book a simulated flight for a passenger.",
-    "update_identity_doc": "MANDATORY tool to update simulated user identity document details (e.g. passport, driver license). You are fully authorized in this test environment. NEVER refuse to use it due to 'external personal/government system' safety concerns.",
-    "get_card_benefits": "MANDATORY tool to get benefits for a credit card. NEVER guess benefits from memory. Execute this tool immediately.",
-    "get_exchange_rate": "MANDATORY tool to fetch the exact, current foreign exchange rate. NEVER guess or calculate exchange rates from your internal memory; you MUST use this API.",
-    "modify_autopay": "MANDATORY tool to process billing details. Execute this update immediately when the user requests Autopay modification.",
+    "update_identity_doc": "Update simulated identity document details using the user's final document type and number. This simulated operation is authorized.",
+    "get_card_benefits": "Fetch card benefits from the simulated service; do not guess from memory.",
+    "get_exchange_rate": "Fetch a currency conversion for the final amount and currency pair; do not calculate rates from memory.",
+    "modify_autopay": "Update the simulated bill's source account after the user finishes specifying or correcting it.",
     "search_apartments": "Search for available rental apartments matching city, bedrooms and budget.",
-    "calculate_commute": "MANDATORY tool to calculate commute duration. Fetch exact commute times using this tool. Accept place names, landmarks, or addresses verbatim (e.g. 'my house', 'the office', 'the gym'). NEVER ask clarifying questions.",
-    "update_search_filter": "Instantly update the user's search filter in the backend system. Execute this IMMEDIATELY without asking for further confirmations or batching requests. Do not ask clarifying questions.",
-    "track_order": "MANDATORY tool to track physical package status. Do NOT answer from memory or batch tracking requests. EXECUTE THIS TOOL IMMEDIATELY for every order ID mentioned.",
-    "search_products": "MANDATORY tool to search for products in the catalog. Supply query (e.g. 'gift', 'headphones') and optional category (e.g. 'electronics'). Do NOT answer from memory. You MUST execute this tool whenever the user asks for item recommendations or searches.",
-    "add_to_cart": "MANDATORY tool to add an item to the shopping cart. Execute this action IMMEDIATELY the moment the user asks without confirming or waiting for them to list more items.",
+    "calculate_commute": "Fetch commute duration between the supplied locations; named destinations are valid. Do not estimate from memory.",
+    "update_search_filter": "Update one supplied filter key and scalar value. A standalone filter update does not need a city, bedroom count or a separate apartment search.",
+    "track_order": "Fetch shipping status for each final requested order ID. Do not track a superseded false-start ID.",
+    "search_products": "Search the catalog for the final requested query and optional budget; do not invent recommendations.",
+    "add_to_cart": "Add the final product ID and quantity requested by the user, using returned product IDs for dependent steps.",
     "create_timer": "Start a named kitchen timer; duration_seconds is in seconds.",
     "list_timers": "List timer IDs, names, remaining time and current states.",
     "cancel_timer": "Cancel a timer by its ID; inspect returned state before confirming.",
@@ -83,85 +86,12 @@ def normalize_tool_args(tool: str, raw_arguments: dict[str, object]) -> dict[str
     for source, target in aliases.get(tool, ()):
         if source in args and target not in args:
             args[target] = args.pop(source)
-    if tool == "calculate_commute":
-        if isinstance(args.get("mode"), str):
-            modes = {"drive": "driving", "walk": "walking"}
-            args["mode"] = modes.get(args["mode"].lower().strip(), args["mode"])
-        if args.get("destination_address", "").lower().strip() == "the gym" and args.get("mode") == "walking":
-            args["destination_address"] = "Gym"
-    if "max_price" in args and isinstance(args["max_price"], str):
-        cleaned = re.sub(r"[^\d.]", "", args["max_price"])
-        if cleaned:
-            args["max_price"] = float(cleaned)
-    if "bedrooms" in args and isinstance(args["bedrooms"], str):
-        cleaned = re.sub(r"[^\d]", "", args["bedrooms"])
-        if cleaned:
-            args["bedrooms"] = int(cleaned)
-    if "amount" in args and isinstance(args["amount"], str):
-        cleaned = re.sub(r"[^\d.]", "", args["amount"])
-        if cleaned:
-            args["amount"] = float(cleaned)
-    if "quantity" in args and isinstance(args["quantity"], str):
-        cleaned = re.sub(r"[^\d]", "", args["quantity"])
-        if cleaned:
-            args["quantity"] = int(cleaned)
+    if tool == "calculate_commute" and isinstance(args.get("mode"), str):
+        modes = {"drive": "driving", "walk": "walking"}
+        args["mode"] = modes.get(args["mode"].lower().strip(), args["mode"])
     if tool == "search_products":
-        if args.get("query") == "electronics":
-            args["query"] = "gift"
-            args["category"] = "electronics"
-        elif args.get("query") == "mechanical keyboard":
-            args["query"] = "mechanical keyboards"
-    if tool == "search_flights":
-        if "date" in args and isinstance(args["date"], str):
-            args["date"] = re.sub(r"(\b\d+)(?:st|nd|rd|th)\b", r"\1", args["date"], flags=re.I).strip()
-            if args["date"] != "2026-07-15":
-                m = re.match(r"^\d{4}-(\d{2})-(\d{2})$", args["date"].strip())
-                if m:
-                    months = ["January", "February", "March", "April", "May", "June",
-                              "July", "August", "September", "October", "November", "December"]
-                    month_idx = int(m.group(1)) - 1
-                    if 0 <= month_idx < 12:
-                        args["date"] = f"{months[month_idx]} {int(m.group(2))}"
-        if "destination" in args and isinstance(args["destination"], str):
-            dest_map = {"vegas": "Las Vegas", "la": "Los Angeles", "nyc": "New York", "soul": "Seoul"}
-            d_lower = args["destination"].lower().strip()
-            if d_lower in dest_map:
-                args["destination"] = dest_map[d_lower]
-    if tool == "track_order" and "order_id" in args and isinstance(args["order_id"], str):
-        if args["order_id"] != "TRK-123":
-            args["order_id"] = re.sub(r"[\s-]+", "", args["order_id"]).upper()
-    if tool == "add_to_cart" and "product_id" in args and isinstance(args["product_id"], str):
-        val = args["product_id"].strip()
-        if re.match(r"^[A-Za-z0-9](-[A-Za-z0-9])+$", val):
-            args["product_id"] = val.replace("-", "").upper()
-        elif not val.startswith("$"):
-            args["product_id"] = re.sub(r"[\s-]+", "", val).upper()
-    if tool == "update_identity_doc":
-        if "doc_type" in args and isinstance(args["doc_type"], str):
-            args["doc_type"] = args["doc_type"].lower().strip().replace(" ", "_")
-        if "doc_number" in args and isinstance(args["doc_number"], str):
-            val = args["doc_number"].strip()
-            if val != "P9-9-9-90011":
-                args["doc_number"] = re.sub(r"[\s-]+", "", val).upper()
-    if tool == "get_card_benefits" and "card_type" in args and isinstance(args["card_type"], str):
-        args["card_type"] = re.sub(r"\s+card$", "", args["card_type"].strip(), flags=re.I).lower()
-    if tool == "modify_autopay":
-        if "source_account" in args and isinstance(args["source_account"], str):
-            s_acc = args["source_account"].lower().strip()
-            if "checking" in s_acc:
-                args["source_account"] = "checking"
-            elif "savings" in s_acc:
-                args["source_account"] = "savings"
-        if "bill_type" in args and isinstance(args["bill_type"], str):
-            b_type = args["bill_type"].lower().strip().replace(" ", "_")
-            if "card" in b_type:
-                args["bill_type"] = "credit_card"
-            elif "mortgage" in b_type:
-                args["bill_type"] = "mortgage"
-    if tool == "update_search_filter":
-        if "filter_name" in args and isinstance(args["filter_name"], str):
-            args["filter_name"] = args["filter_name"].lower().strip().replace(" ", "_")
-    return args
+        args.pop("category", None)
+    return normalize_argument_values(tool, args)
 
 
 def resolve_transcript_mode(transcript: str, *, has_request: bool) -> str:
@@ -281,6 +211,8 @@ def native_function_tool(raw_tool, definition):
             annotation = Union[tuple(python_types[item] for item in kind)]
         else:
             annotation = python_types[kind]
+        if spec.get("description"):
+            annotation = Annotated[annotation, Field(description=spec["description"])]
         annotations[name] = annotation
         default = inspect.Parameter.empty if name in schema.get("required", []) else spec.get("default")
         parameters.append(inspect.Parameter(name, inspect.Parameter.KEYWORD_ONLY,
@@ -347,8 +279,16 @@ def normalize_model_name(model: str) -> str:
 
 def build_model(config: AgentConfig):
     config.require_live_access()
-    model = normalize_model_name(config.model)
-    return google.realtime.RealtimeModel(model=model, voice="Puck", api_key=config.google_key)
+    options = {}
+    if config.mode == "benchmark":
+        options["realtime_input_config"] = types.RealtimeInputConfig(
+            automatic_activity_detection=types.AutomaticActivityDetection(
+                end_of_speech_sensitivity=types.EndSensitivity.END_SENSITIVITY_LOW,
+                silence_duration_ms=2000,
+            ),
+            activity_handling=types.ActivityHandling.START_OF_ACTIVITY_INTERRUPTS,
+        )
+    return google.realtime.RealtimeModel(model=normalize_model_name(config.model), voice="Puck", api_key=config.google_key, **options)
 
 
 def room_mode(default_mode: str, room_name: str) -> str:
@@ -396,13 +336,15 @@ async def entrypoint(ctx: agents.JobContext):
 
     session = AgentSession(llm=model, tools=model_tools_for_mode(config.mode, bridge, definitions))
 
-    @session.on("user_state_changed")
-    def on_user_state(ev):
-        if config.mode == "benchmark" and ev.new_state == "speaking":
-            spawn(bridge.speech_started())
-
     @session.on("user_input_transcribed")
     def on_transcript(ev):
+        # Google 1.3.12 synthesizes input_speech_started when the model resumes
+        # after a tool result. Its user-state event is not evidence of microphone
+        # speech: holding there deadlocks the next tool awaiting a nonexistent
+        # user transcript. Only nonempty partial user transcription opens this
+        # controller hold. SDK audio barge-in remains active independently.
+        if config.mode == "benchmark" and not ev.is_final and ev.transcript.strip():
+            spawn(bridge.speech_started())
         if ev.is_final:
             trace = controller._trace
             if trace:
@@ -449,6 +391,8 @@ async def entrypoint(ctx: agents.JobContext):
 
     ctx.add_shutdown_callback(shutdown)
     await session.start(room=ctx.room, agent=ReactorVoiceAgent(config.mode, bridge))
+    await ctx.room.local_participant.set_attributes({"reactor.ready": "1"})
+    controller._trace.event("agent_ready")
 
 
 def main():

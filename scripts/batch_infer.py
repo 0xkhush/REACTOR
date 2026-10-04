@@ -27,15 +27,17 @@ def pending_inputs(source: Path, output: Path, *, retry_failed: bool = False) ->
             pending.append(audio)
             continue
         try:
-            status = json.loads(result_file.read_text()).get("status")
+            existing = json.loads(result_file.read_text())
+            status = existing.get("status")
         except (ValueError, OSError):
             status = None
+            existing = {}
         if status == "completed" or status == "no_tool_call":
             continue
         if retry_failed and status == "inference_failed":
             # Retry only if the inference client did not leave an output WAV;
             # a present/partial recording may correspond to a live model request.
-            if not (result_file.parent / "output.wav").exists():
+            if existing.get("stream_start_time") is None and not (result_file.parent / "output.wav").exists():
                 pending.append(audio)
             continue
         # Existing failures remain recorded rather than silently replayed.
@@ -84,6 +86,7 @@ def main():
     parser.add_argument("--retry-failed", action="store_true",
                         help="Retry pre-output connection failures; completed/no-tool runs stay fixed")
     args = parser.parse_args()
+    args.output = args.output.resolve()
     if args.limit is not None and args.limit < 1:
         parser.error("--limit must be positive")
     config = load_config(ROOT / ".env.local")
@@ -125,21 +128,29 @@ def main():
             start = time.monotonic()
             try:
                 completed = subprocess.run([
-                    sys.executable, str(source / "livekit_inference.py"),
+                    sys.executable, str(ROOT / "scripts" / "ready_inference.py"),
                     "-i", str(audio), "-o", str(output), "--room", room,
-                ], cwd=source, env=env, capture_output=True, text=True, timeout=110)
+                ], cwd=ROOT, env=env, capture_output=True, text=True, timeout=300)
+                stream_start = next((float(line.split(": ", 1)[1]) for line in completed.stdout.splitlines()
+                                     if line.startswith("STREAM_START_TIME: ")), None)
+                result["stream_start_time"] = stream_start
                 if completed.returncode:
                     result["error"] = scrub("\n".join(completed.stderr.splitlines()[-5:]), secret_values)[:700]
                 else:
-                    stream_start = next((float(line.split(": ", 1)[1]) for line in completed.stdout.splitlines()
-                                         if line.startswith("STREAM_START_TIME: ")), None)
-                    result["stream_start_time"] = stream_start
+                    ready_wait = next((float(line.split(": ", 1)[1]) for line in completed.stdout.splitlines()
+                                       if line.startswith("AGENT_READY_WAIT_SECONDS: ")), None)
+                    result["agent_ready_wait_seconds"] = ready_wait
                     result["actual_tool_calls"] = relative_calls(
                         actual_calls_for_room(Path("/tmp/agent_tool_calls.log"), room), stream_start
                     )
                     result["status"] = "completed" if result["actual_tool_calls"] else "no_tool_call"
-            except subprocess.TimeoutExpired:
-                result["error"] = "FDB audio replay exceeded 110 seconds"
+            except subprocess.TimeoutExpired as expired:
+                output_text = expired.stdout or ""
+                if isinstance(output_text, bytes):
+                    output_text = output_text.decode("utf-8", errors="replace")
+                result["stream_start_time"] = next((float(line.split(": ", 1)[1]) for line in output_text.splitlines()
+                                                    if line.startswith("STREAM_START_TIME: ")), None)
+                result["error"] = "Ready-agent audio replay exceeded 300 seconds"
             result["elapsed_seconds"] = round(time.monotonic() - start, 2)
             write_json(folder / "result.json", result)
             terminal[audio.parent.name] = result["status"]

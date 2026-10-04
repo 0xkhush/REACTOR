@@ -46,6 +46,17 @@ def test_progress_includes_failed_or_unrun_examples_in_denominator():
     }
 
 
+def test_receiver_failure_after_audio_started_is_not_retried_even_without_wav(tmp_path):
+    source, output = tmp_path / "audio", tmp_path / "results"
+    (source / "a").mkdir(parents=True)
+    (source / "a" / "input.wav").write_bytes(b"RIFF")
+    (output / "a").mkdir(parents=True)
+    (output / "a" / "result.json").write_text(json.dumps({
+        "status": "inference_failed", "stream_start_time": 123.0,
+    }))
+    assert pending_inputs(source, output, retry_failed=True) == []
+
+
 def test_batch_call_timestamps_are_relative_to_audio_stream_start():
     actual = [{"function": "track_order", "args": {"order_id": "ABC"},
                "timestamp_start": 110.5, "timestamp_end": 111.0}]

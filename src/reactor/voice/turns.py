@@ -7,31 +7,11 @@ that "actually" changes a particular slot or prove interruption timing.
 import asyncio
 import json
 import re
-from datetime import datetime
 
 from reactor.controller import Controller
 from reactor.state import Proposal, RequestToken, copy_json
-
-
-def calendar_day(value):
-    """Parse supported user date formats without assigning a missing year."""
-    if not isinstance(value, str):
-        return None
-    text = re.sub(r"(?<=\d)(st|nd|rd|th)\b", "", value.strip(), flags=re.I)
-    for fmt in ("%Y-%m-%d", "%m/%d/%Y", "%B %d %Y", "%b %d %Y", "%B %d, %Y"):
-        try:
-            date = datetime.strptime(text, fmt)
-            return date.month, date.day, date.year
-        except ValueError:
-            pass
-    for fmt in ("%m/%d", "%B %d", "%b %d"):
-        try:
-            # Leap year validates February 29 without implying a user-requested year.
-            date = datetime.strptime(text + " 2000", fmt + " %Y")
-            return date.month, date.day, None
-        except ValueError:
-            pass
-    return None
+from reactor.voice.dates import calendar_day
+from reactor.voice.grounding import ground_request_arguments
 
 
 class TurnBridge:
@@ -50,6 +30,8 @@ class TurnBridge:
         self._provider_requests: dict[str, RequestToken] = {}
         self._provider_actions: dict[str, str] = {}
         self._origin_requests: dict[str, RequestToken] = {}
+        self._request_transcripts: dict[RequestToken, str] = {}
+        self._request_action_text: dict[RequestToken, str] = {}
 
     @property
     def has_request(self) -> bool:
@@ -82,6 +64,15 @@ class TurnBridge:
                 self._input_revision = await self.controller.begin_input()
             revision = self._input_revision
             token = await self.controller.resolve_input(revision, mode=mode, changes=changes)
+            prior_text = self._request_transcripts.get(self._request, "")
+            if mode == "correction":
+                self._request_transcripts[token] = f"{prior_text}\n{transcript}"
+            elif mode == "new":
+                self._request_transcripts[token] = transcript
+            if mode != "resume":
+                # Historical text grounds retained slots, but superseded repeat
+                # permission must not authorize another state-changing action.
+                self._request_action_text[token] = transcript
             self._request = token
             if event_id is not None:
                 self._seen_events.add(event_id)
@@ -108,18 +99,20 @@ class TurnBridge:
             if request is None:
                 await self._ready.wait()
         args = copy_json(args)
-        fingerprint = json.dumps(args, sort_keys=True, allow_nan=False, separators=(",", ":"))
-        key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
         async with self._lock:
             if self._closed:
                 raise RuntimeError("turn bridge closed")
             if origin_id is not None:
                 request = self._origin_requests.setdefault(origin_id, request)
             request = self._provider_requests.setdefault(call_id, request)
+            request_text = self._request_transcripts.get(request, "")
+            args = ground_request_arguments(tool, args, request_text,
+                                            identifier_transcript=self._request_action_text.get(request, ""))
+            fingerprint = json.dumps(args, sort_keys=True, allow_nan=False, separators=(",", ":"))
             key = (request.request_id, request.intent_revision, tool, fingerprint, tuple(depends_on))
             intentional_repeat = bool(re.search(
                 r"\b(?:twice|again|another|two identical|two separate|second identical)\b",
-                self._last_transcript or "", re.I,
+                self._request_action_text.get(request, ""), re.I,
             ))
             if call_id in self._provider_actions:
                 action_id = self._provider_actions[call_id]
@@ -129,7 +122,7 @@ class TurnBridge:
                 action_id = self._semantic_actions.setdefault(key, call_id)
             day = calendar_day(args.get("date")) if tool == "search_flights" else None
             if day is not None and not intentional_repeat:
-                explicit_user_year = bool(re.search(r"\b(?:19|20)\d{2}\b", self._last_transcript or ""))
+                explicit_user_year = bool(re.search(r"\b\d{4}\b", request_text))
                 for previous in self._flight_actions:
                     if (previous["request"] != request or previous["depends_on"] != tuple(depends_on)
                             or previous["args"].get("destination") != args.get("destination")):

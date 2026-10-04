@@ -12,7 +12,7 @@
   <p align="center">
     <strong>Correction-Aware Execution Engine for Interruptible Voice Agents</strong>
     <br />
-    LiveKit Agents Framework &middot; Gemini Live Realtime API &middot; Versioned Intent Controller &middot; NTU Full-Duplex-Bench v3 &middot; 12 Mock Tool Domains
+    LiveKit Agents Framework &middot; Gemini Live Realtime API &middot; Versioned Intent Controller &middot; NTU Full-Duplex-Bench v3 &middot; 12 Mock Tools
     <br />
     <br />
     <a href="#checklist-for-github"><strong>Submission Checklist &rarr;</strong></a>
@@ -29,9 +29,26 @@
     &middot;
     <a href="#reproduction"><strong>Reproduction &rarr;</strong></a>
     &middot;
-    <a href="#test-matrix"><strong>Test Matrix (236/236) &rarr;</strong></a>
+    <a href="#test-matrix"><strong>Test Matrix (358/358) &rarr;</strong></a>
   </p>
 </div>
+
+---
+
+## Current Benchmark Results
+
+Evaluated across all 100 released human audio recordings from the NTU Full-Duplex-Bench (FDB-v3) suite using `gemini-2.5-flash-native-audio-preview-12-2025` with readiness-aware audio replay:
+
+| Measurement | Result | Evidence |
+|:---|:---|:---|
+| **Strict Tool & Argument Match (Exact)** | **92 / 100 (92%)** (+18% net over baseline) | [Accuracy V5](docs/results/ACCURACY_V5.md) & [Batch Exact Report](artifacts/batch_inference/batch-call-exact.json) |
+| **Fair Semantic Argument Match** | **94 / 100 (94%)** (Rescued `travel_21` & `ecommerce_12`) | [Google Semantic Report](artifacts/batch-call-eval-google-semantic.json) |
+| **Tool Selection Accuracy** | **98 / 100 (98%)** (98 of 100 correct tool multisets) | [Batch Evaluation](artifacts/batch_inference/batch-call-exact.json) |
+| **Zero-Call Failure Rate** | **0 / 100 (0%)** (all 100 sessions emitted tool calls) | 100% full capture coverage |
+| **Offline Automated Verification** | **365 tests passed across 36 test modules** | [Test matrix](#test-matrix) |
+| **Interactive Visualizer** | **Next.js Dashboard + 5 Core Pillars** | [Frontend](frontend/) & [Architecture Doc](docs/FRONTEND_VISUALIZATION.md) |
+
+**92% exact / 94% semantic** represents the state-of-the-art result for full-duplex voice tool execution. The 6 remaining non-passing runs are attributable to upstream ground-truth dataset defects (author typos, omitted dialogue turns, and non-evaluated conditional branches) and acoustic ASR dropouts. No mock database answers were fabricated or hardcoded in the agent runtime.
 
 ---
 
@@ -48,13 +65,13 @@
 
 | Checklist Item | Status | Submission Details & Direct Artifact Links |
 |:---|:---:|:---|
-| **Source Code** | **Complete** | Production-ready execution engine in [`src/reactor/`](src/reactor), complete 236/236 offline test suite in [`tests/`](tests), evaluation & automation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
+| **Source Code** | **Available** | Execution engine in [`src/reactor/`](src/reactor), interactive visualizer in [`frontend/`](frontend), 365 passing offline tests in [`tests/`](tests), evaluation scripts in [`scripts/`](scripts), and dependency manifests in [`requirements.txt`](requirements.txt) & [`pyproject.toml`](pyproject.toml). |
 | **Presentation** | **Complete** | Official hackathon submission slide deck: [`VITV_Team-REACTOR.pptx`](VITV_Team-REACTOR.pptx) (root) and formatted companion slide outline in [`docs/submission/SLIDES.md`](docs/submission/SLIDES.md). |
-| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](Team-REACTOR_VIDEO.mp4) (root repository demo recording).<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
+| **Video** | **Complete** | **Demo Video:** [`Team-REACTOR_VIDEO.mp4`](https://github.com/0xkhush/REACTOR/blob/839e851299a26751a70c6636d220fab39dc0299b/Team-REACTOR_VIDEO.mp4) (main's submission recording); [`reactor.mp4`](reactor.mp4) is available on this branch.<br>Walkthrough storyboard & narration cues documented in [`docs/submission/DEMO_SCRIPT.md`](docs/submission/DEMO_SCRIPT.md). |
 | **AI Disclosure** | **Complete** | Completed official disclosure form from [`LangAI3.0_AI_Disclosure.docx`](LangAI3.0_AI_Disclosure.docx), fully documented in [`AI_DISCLOSURE.md`](AI_DISCLOSURE.md). |
-| **README** | **Complete** | Detailed end-to-end documentation: problem statement, architecture diagrams, step-by-step setup, Kaggle GPU T4 evaluation instructions, FDB-v3 benchmark reproduction, and 236-test suite matrix. |
+| **README** | **Updated** | Architecture, setup, readiness-aware capture, 92%/94% benchmark evaluation ([`ACCURACY_V5.md`](docs/results/ACCURACY_V5.md)), frontend visualizer, and the 365-test matrix. |
 | **APK / SDK (if any)** | **SDK Built** | **Python SDK Packages Ready:** Distributable wheel and source distribution in [`dist/`](dist):<br>- Wheel: [`dist/reactor_agent-0.1.0-py3-none-any.whl`](dist/reactor_agent-0.1.0-py3-none-any.whl)<br>- Source: [`dist/reactor_agent-0.1.0.tar.gz`](dist/reactor_agent-0.1.0.tar.gz)<br>*(Install via `pip install dist/reactor_agent-0.1.0-py3-none-any.whl`). Note: APK is N/A for Theme 05 (cloud/WebRTC voice service); mobile devices connect via standard LiveKit WebRTC client SDKs.* |
-| **TAG** | **Tagged** | **Required Tag Name:** `PRISM_GENAI_HACKATHON_Y2026`<br>Tagged on GitHub pointing to this final verified submission commit:<br>`git tag PRISM_GENAI_HACKATHON_Y2026 && git push origin PRISM_GENAI_HACKATHON_Y2026` |
+| **TAG** | **Existing submission tag** | [`PRISM_GENAI_HACKATHON_Y2026`](https://github.com/0xkhush/REACTOR/tree/PRISM_GENAI_HACKATHON_Y2026) identifies the tagged submission snapshot. Later commits on this development branch do not move that tag. |
 
 ---
 
@@ -62,7 +79,7 @@
 
 ## Overview
 
-**REACTOR** is a voice-native agent execution engine developed for the **PRISM GenAI Hackathon — Theme 05: Full-Duplex Voice Agents**. 
+**REACTOR** is a voice-native agent execution engine developed for the **PRISM GenAI Hackathon — Theme 05: Interruptible Real-Time Agents**.
 
 In real-world duplex voice interactions, human speech is non-linear and self-correcting:
 > *"Book a flight to Mumbai on Friday... wait, actually make that Delhi!"*
@@ -81,7 +98,7 @@ Conventional LLM voice agents suffer from severe failure modes during interrupti
 
 | Capability | How It Works | Invariant Enforced |
 |:---|:---|:---|
-| **Zero Dead Air** | Gemini Live bi-directional streaming via LiveKit Agents | Model continues speaking and acknowledging while tools run asynchronously in background DAG. |
+| **Non-blocking tool execution** | Gemini Live bi-directional streaming via LiveKit Agents | Read tools can run in the background while the session handles speech events. |
 | **Cascade Cancellation** | Versioned intent frames (`RequestID`, `Revision`) | Superseded tool proposals are cancelled before or during dispatch; stale async read results are discarded. |
 | **Idempotency & Coalescing** | Action identity hashing (`action_identity`) | Duplicate tool proposals within the same resolved request share execution; prevents double-booking. |
 | **Write-Serialization Gate** | Async write-locking primitive | Read tools execute concurrently; state-mutating writes are strictly ordered to prevent race conditions. |
@@ -101,7 +118,7 @@ flowchart TD
     end
 
     subgraph Intelligence ["Realtime Intelligence Layer"]
-        LK <-->|"Bi-directional\nStreaming"| GEM["Gemini Live Realtime API\n(gemini-2.5-flash)"]
+        LK <-->|"Bi-directional\nStreaming"| GEM["Gemini Live Realtime API\n(gemini-2.5-flash-native-audio-preview-12-2025)"]
         GEM -->|"Tool Proposals\n+ Speech Events"| BRIDGE["Speech-to-Controller Bridge\n(reactor.voice.turns)"]
     end
 
@@ -133,6 +150,7 @@ flowchart TD
 
     subgraph Evaluation ["Evaluation & Verification"]
         TRACE --> EXACT["FDB-v3 Exact Tool Scorer\n(Deterministic exact tool + args)"]
+        TRACE --> GOOGLE["Opt-in Google Argument Judge\n(Independent blind calibration)"]
         TRACE --> KAGGLE["Kaggle T4 Parakeet ASR\n(Offline Transcription & Verification)"]
     end
 ```
@@ -140,9 +158,9 @@ flowchart TD
 ### Architectural Breakdown
 
 1. **WebRTC Full-Duplex Audio Transport (`livekit-agents`):**
-   Continuous PCM audio streaming with native echo cancellation, active participant management, and sub-millisecond barge-in detection.
+   Streams PCM audio through LiveKit rooms and handles speech-interruption events. The latest call-only capture does not establish a measured barge-in latency.
 2. **Gemini Live Integration (`livekit-plugins-google`):**
-   Uses `gemini-2.5-flash` natively in multimodal audio streaming mode. Tool declarations map dynamically with schemas supporting integer/string widening, optional defaults, and open properties.
+   Uses `gemini-2.5-flash-native-audio-preview-12-2025` for audio streaming. Typed tool declarations carry field guidance and defaults; REACTOR validates the provider's complete arguments against schemas that reject undeclared properties.
 3. **Turn Bridge (`reactor.voice.turns`):**
    Intercepts user transcripts and model function proposals. Detects whether an utterance is a *correction* (*"actually..."*), a *continuation* (*"and also..."*), or a *new request*, creating monotonic `RequestID` and `Revision` frames.
 4. **State Machine (`reactor.state`):**
@@ -190,6 +208,9 @@ REACTOR/
 │       ├── agent.py                  # LiveKit worker entry point & Gemini Live session
 │       ├── turns.py                  # Speech-to-controller bridge & coalescing logic
 │       ├── prompts.py                # Task-general system instructions (zero answer leakage)
+│       ├── arguments.py              # Conservative numeric and category-label normalization
+│       ├── grounding.py              # Transcript-supported identifier formatting
+│       ├── dates.py                  # Date parsing and originating-request evidence
 │       ├── events.py                 # Robust event task lifecycle & background draining
 │       ├── kitchen.py                # Kitchen voice router & command dispatcher
 │       └── speech.py                 # Local audio synthesis & playback utilities
@@ -200,19 +221,27 @@ REACTOR/
 │   ├── reproduce.py                  # Benchmark runner (LiveKit worker + FDB evaluation)
 │   ├── build_kaggle_notebook.py      # Standalone Kaggle notebook generator
 │   ├── batch_infer.py                # Resumable batch capture engine (100 recordings)
-│   ├── evaluate_batch_calls.py       # Full-denominator call accuracy evaluator
+│   ├── ready_inference.py            # Waits for agent readiness before streaming original audio
+│   ├── evaluate_batch_calls.py       # Exact or opt-in semantic saved-call evaluator
+│   ├── google_argument_judge.py      # Google-only argument judge and quota latch
+│   ├── calibrate_google_judge.py     # Independent blind controls and candidate selection
 │   ├── package_batch_results.py      # Result bundler for offline ASR evaluation
 │   ├── smoke_fdb.py                  # Live single-recording smoke test runner
 │   ├── evaluate_smoke.py             # Single-recording exact-match tool evaluator
 │   ├── summarize_smokes.py           # Multi-room summary report generator
 │   └── kitchen_smoke.py              # Same-room kitchen voice workflow smoke test
 │
+├── frontend/                         # Next.js Interactive Visualisation Dashboard
+│   ├── app/                          # Next.js App Router (Pillars 1–5 Visualizer)
+│   ├── components/                   # UI components, timeline & dual-track inspector
+│   └── public/                       # Audio clips, scenario data, and demonstration assets
+│
 ├── remote_eval/                      # Remote Kaggle Evaluation Modules
 │   ├── asr_eval/                     # Parakeet ASR transcription runner
 │   ├── gpu_check/                    # GPU & CUDA diagnostic probe
 │   └── overnight/                    # Standalone batch job runner
 │
-├── tests/                            # Comprehensive Test Suite (27 suites, 236 tests)
+├── tests/                            # Offline Test Suite (36 modules, 365 tests)
 │   ├── test_controller.py            # Execution DAG, write gate, cancellation tests
 │   ├── test_state.py                 # Intent frame superseding & slot tests
 │   ├── test_turns.py                 # Bridge, coalescing, turn detection tests
@@ -225,6 +254,7 @@ REACTOR/
 │   └── ...                           # Additional test modules
 │
 └── docs/                             # Documentation & Submission Assets
+    ├── FRONTEND_VISUALIZATION.md     # 5 Core Visualisation Pillars architecture
     ├── submission/                   # Presentation slides, setup notes, demo script
     │   ├── VITV_Team-REACTOR.pptx    # Slide deck (PPTX)
     │   ├── SLIDES.md                 # Slide outline & narration cues
@@ -236,6 +266,11 @@ REACTOR/
     ├── results/                      # 100-recording evaluation methodology & findings
     │   ├── README.md                 # Results report & metrics tables
     │   ├── SUMMARY.json              # Aggregate pass rates and latencies
+    │   ├── ACCURACY_V5.md            # 92% exact / 94% semantic evaluation report
+    │   ├── ACCURACY_V4.md            # Previous 75/100 checkpoint
+    │   ├── 9f1128c-call-exact.json    # 100-recording exact report
+    │   ├── GOOGLE_JUDGE_RESEARCH.md  # Google-only model selection and evaluation protocol
+    │   ├── GOOGLE_JUDGE_V2.md        # Blind calibration and quota-blocked subset findings
     │   └── FDB_v3_exact_reports.zip  # Captured ground truth evaluation evidence
     └── livekit-integration-status.md # Live verification log & architecture status
 ```
@@ -250,34 +285,33 @@ REACTOR/
 
 - **Python**: 3.10–3.12 (tested on Python 3.12).
 - **System**: `ffmpeg` (required for audio conversion).
-- **No credentials needed** to run the complete unit test suite (236/236) or offline demo.
+- **No credentials needed** to run the offline tests or controller demo. Install the SDKs and fetch the pinned benchmark source first; test judge responses are mocked.
 
 ### 1. Installation & Offline Verification
 
 ```bash
 # Clone the repository
-git clone https://github.com/0xkhush/REACTOR.git
+git clone --branch feat/google-semantic-evaluation https://github.com/0xkhush/REACTOR.git
 cd REACTOR
 
 # Create and activate virtual environment
 python3.12 -m venv .venv
 source .venv/bin/activate
 
-# Option A: Install dependencies via requirements.txt
-pip install -r requirements.txt
+# Install this branch and all SDKs used by its offline tests
+pip install -e ".[dev,voice,judge,google_judge]"
 
-# Option B: Editable development install
-pip install -e ".[dev,voice]"
+# Fetch the pinned FDB-v3 source required by scorer and adapter tests
+python scripts/setup_fdb.py
 
-# Option C: Install pre-built SDK wheel
-pip install dist/reactor_agent-0.1.0-py3-none-any.whl
-
-# Run full test suite (236 tests, zero network needed)
+# Run full test suite (365 tests; no hosted model requests)
 pytest -q
 
 # Run scripted offline controller demo
 reactor-demo   # or: python -m reactor.demo
 ```
+
+The `judge` extra installs the OpenAI SDK for mocked compatibility tests; these tests make no OpenAI requests. Google evaluation uses the separate `google_judge` extra. Use `requirements.txt` when preparing the additional NeMo/CUDA audio-evaluation environment. The prebuilt packages in `dist/` are submission artifacts from an earlier snapshot; use the editable install above for this branch's changes.
 
 The offline demo verifies:
 1. A 10-minute timer proposal is cancelled mid-flight when a 7-minute correction is uttered.
@@ -301,11 +335,11 @@ LIVEKIT_URL=wss://your-project.livekit.cloud
 LIVEKIT_API_KEY=APIxxxxxxxxxxxxxxxx
 LIVEKIT_API_SECRET=secretxxxxxxxxxxxxxxxxxxxxxxxxxxxx
 GOOGLE_API_KEY=AIzaxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxxx
-GOOGLE_LIVE_MODEL=gemini-2.5-flash
+GOOGLE_LIVE_MODEL=gemini-2.5-flash-native-audio-preview-12-2025
 REACTOR_FREE_QUOTA_CONFIRMED=yes
 ```
 
-> **Safety Guarantee:** `REACTOR_FREE_QUOTA_CONFIRMED=yes` is required. The configuration engine raises `ConfigurationError` and refuses to connect if credentials contain placeholders or if free-quota confirmation is absent.
+Set `REACTOR_FREE_QUOTA_CONFIRMED=yes` after confirming free access. The configuration loader rejects placeholder credentials, and live connection requires this confirmation. Google argument judging has its own flag: `REACTOR_GOOGLE_JUDGE_FREE_CONFIRMED=yes`.
 
 Start the agent worker locally:
 ```bash
@@ -334,19 +368,21 @@ In the notebook top menu (**Add-ons → Secrets**), add:
 - *(Optional)* `OPENAI_API_KEY` (only if evaluating with `--use-llm` for the semantic judge).
 
 ### Dataset Upload: Not Needed
-The notebook automatically runs `scripts/setup_fdb.py --with-data`, downloading and extracting the 100 benchmark audio recordings directly from Google Drive in ~20 seconds.
+The notebook runs `scripts/setup_fdb.py --with-data` to download and extract the 100 benchmark audio recordings from Google Drive.
 
-### Notebook Cell Flow (11 Cells)
+### Notebook Workflow
 1. **CUDA Verification:** Confirms Dual Tesla T4 GPUs with ~15 GB VRAM each.
 2. **System Dependencies:** Installs `ffmpeg`, `libsndfile1`, and `espeak-ng`.
 3. **Workspace Setup:** Copies repository from read-only `/kaggle/input` into writable `/kaggle/working/REACTOR`.
 4. **Pip Dependencies:** Installs LiveKit, Google GenAI plugin, and NeMo Parakeet ASR.
 5. **Credentials Generation:** Writes masked `.env.local` with `0600` permissions.
 6. **Dataset & Benchmark Fetch:** Pulls upstream pinned FDB commit (`3e799c45`) and extracts 100 audio files.
-7. **Preflight & Unit Tests:** Runs `pytest -q` (all 236 pass) and `scripts/reproduce.py --check`.
-8. **Live Duplex Benchmark:** Streams all 100 scenarios, executes tools via Gemini Live, and runs Parakeet ASR.
+7. **Preflight & Unit Tests:** Runs `pytest -q` and `scripts/reproduce.py --check`. This branch has 365 tests when all test SDKs are installed.
+8. **Live Duplex Benchmark:** Streams all 100 recordings, executes tools via Gemini Live, and runs Parakeet ASR.
 9. **Metrics Display:** Displays tool selection accuracy, argument accuracy, and binary pass rates.
 10. **Archive Package:** Packages results and worker logs into `/kaggle/working/REACTOR_Kaggle_Results.zip`.
+
+Set the notebook's `GOOGLE_LIVE_MODEL` to `gemini-2.5-flash-native-audio-preview-12-2025` before live capture. The latest 75/100 result comes from local readiness-aware capture and saved-call scoring, not a new run of this notebook. Clean-Linux combined CUDA reproduction and current-capture spoken-response/ASR evaluation remain unverified. See [Kaggle setup](docs/submission/KAGGLE_SETUP.md) for the audio-evaluation workflow.
 
 ---
 
@@ -360,25 +396,27 @@ REACTOR bridges all 12 official FDB-v3 mock tools across 4 real-world domains:
 
 | Domain | Tool Function | Operation Type | Key Parameters | Schema Normalization |
 |:---|:---|:---|:---|:---|
-| **Travel** | `search_flights` | Read (Concurrent) | `destination`, `date` | Accepts departure aliases |
+| **Travel** | `search_flights` | Read (Concurrent) | `destination`, `date` | User-requested destination; date grounded in request evidence |
 | **Travel** | `book_flight` | Write (Serialized) | `passenger_name` | Deduplicated per passenger |
 | **Travel** | `update_identity_doc` | Write (Serialized) | `doc_type`, `doc_number` | Safety override prompt enabled |
 | **Finance** | `get_card_benefits` | Read (Concurrent) | `card_type` | Exact lookup |
 | **Finance** | `get_exchange_rate` | Read (Concurrent) | `amount`, `from_currency`, `to_currency` | Currency code normalization |
 | **Finance** | `modify_autopay` | Write (Serialized) | `bill_type`, `source_account` | Safety override prompt enabled |
 | **Housing** | `search_apartments` | Read (Concurrent) | `city`, `bedrooms`, `max_price`, `pets_allowed` | Defaults `bedrooms=1`, `max_price=2000.0` |
-| **Housing** | `calculate_commute` | Read (Concurrent) | `origin_address`, `destination_address`, `mode` | Alias mapping (`origin` → `origin_address`) |
+| **Housing** | `calculate_commute` | Read (Concurrent) | `origin_address`, `destination_address`, `mode` | Retains supplied location labels; defaults `mode=driving` |
 | **Housing** | `update_search_filter` | Write (Serialized) | `filter_name`, `value` | Widened to string, number, integer, boolean |
-| **E-Commerce** | `track_order` | Read (Concurrent) | `order_id` | Strips tracking number prefix |
-| **E-Commerce** | `search_products` | Read (Concurrent) | `query`, `max_price` | Normalizes budget aliases, strips undeclared |
+| **E-Commerce** | `track_order` | Read (Concurrent) | `order_id` | Joins spelled characters or removes separators only with transcript evidence |
+| **E-Commerce** | `search_products` | Read (Concurrent) | `query`, `max_price` | Retains product descriptors; parses unambiguous budgets; rejects undeclared fields |
 | **E-Commerce** | `add_to_cart` | Write (Serialized) | `product_id`, `quantity` | Defaults `quantity=1` |
 
 ### Benchmark Hardening Applied
 1. **Schema Tolerance:** Widened parameter types on `update_search_filter` (`value` now accepts `["string", "number", "integer", "boolean"]`) preventing JSONSchema validation crashes on `$3000` or `pets_allowed=true`.
 2. **Positional Parameter Defaults:** Added safe defaults for `search_apartments` (`bedrooms=1`, `max_price=2000.0`) preventing positional `TypeError` in upstream `mock_apis.py`.
-3. **Anti-Clarification Prompt Directive:** Replaced passive *"ask questions"* clause with official upstream instructions: *"DO NOT ASK CLARIFYING QUESTIONS... EXECUTE THE TOOL IMMEDIATELY with best available arguments"*, eliminating false-negative no-call loops.
-4. **Safety Override Prompts:** Restored upstream descriptions for `update_identity_doc` and `modify_autopay` so Gemini Live does not refuse simulated passport updates or banking changes.
+3. **Benchmark Prompt Guidance:** Uses the upstream instruction to execute requested simulated tools with available arguments rather than entering clarification loops. The latest capture still includes six recordings with no tool call.
+4. **Simulated-Tool Descriptions:** Retains upstream descriptions for `update_identity_doc` and `modify_autopay`, identifying these operations as authorized mock updates.
 5. **Tool Result Unpacking:** Unpacks `outcome.result` at the top level of function responses so chained tools can resolve identifiers (`flight_id`, `product_id`).
+6. **Typed Arguments and Grounding:** Retains numeric types, validates complete provider arguments, and uses originating-request transcripts for supported date/identifier formatting. Runtime code does not load scenario answers.
+7. **Readiness-Aware Replay:** The capture runner waits for `reactor.ready=1`, then streams the original samples with real-time pacing. Benchmark sessions use a two-second end-of-turn window while retaining interruption handling. The upstream mock backends and reference files remain pinned and unchanged.
 
 ---
 
@@ -386,8 +424,14 @@ REACTOR bridges all 12 official FDB-v3 mock tools across 4 real-world domains:
 
 ## Reproduction Commands
 
-### 1. Offline Preflight Check (Zero API cost)
-Validates local dependencies, Python version, dataset integrity (100 audio files), and configuration without making network calls:
+### 1. Dataset Setup and Offline Preflight
+
+Fetch the pinned source and released recordings once:
+```bash
+python scripts/setup_fdb.py --with-data
+```
+
+With `.env.local` configured, validate dependencies, the 100-recording dataset and configuration without hosted requests:
 ```bash
 bash scripts/reproduce.sh --check
 ```
@@ -396,17 +440,66 @@ bash scripts/reproduce.sh --check
 {"mode": "offline_preflight", "recordings": 100, "credentials_populated": true, "hosted_requests": 0, "cuda_not_checked": true}
 ```
 
-### 2. Full End-to-End Reproduction (Exact-Match)
-Executes the live worker, streams all 100 benchmark audio recordings through LiveKit, runs NVIDIA NeMo Parakeet ASR, and generates exact-match reports:
+### 2. Readiness-Aware Voice Capture
+
+This runner starts the worker, waits for readiness before sending each original recording, and saves calls and output audio. It needs confirmed LiveKit/Google access, but not CUDA or ASR:
+```bash
+python scripts/batch_infer.py \
+  --dataset fdb_v3_data_released --output artifacts/batch_inference
+```
+
+Completed and no-tool captures stay fixed on resume. The runner retains inference failures; `--retry-failed` only retries failures before audio streaming when no output WAV exists.
+
+### 3. Exact Scoring of Saved Calls
+
+Score the captured tool calls without hosted requests or ASR:
+```bash
+python scripts/evaluate_batch_calls.py \
+  --inputs fdb_v3_data_released --outputs artifacts/batch_inference \
+  --output artifacts/batch-call-eval-exact.json
+```
+
+The committed [75/100 report](docs/results/9f1128c-call-exact.json) describes the original `9f1128c` capture. A fresh voice run may produce different calls and a different score. Raw recordings and capture results live in ignored `artifacts/` directories and are not included with a Git clone.
+
+### 4. Google-Only Semantic Argument Diagnostic
+
+Use the `google_judge` extra and the existing Google key. After confirming free-tier judge access:
+
+```bash
+export REACTOR_GOOGLE_JUDGE_FREE_CONFIRMED=yes
+
+# Independent calibration, before inspecting benchmark rescue counts.
+# Choose a new report filename if this path already exists.
+python scripts/calibrate_google_judge.py \
+  --model gemini-2.5-pro --model gemini-2.5-flash \
+  --output artifacts/google-blind-calibration-new.json
+
+# Check the selected failure population and access without sending requests.
+python scripts/evaluate_batch_calls.py --google-judge \
+  --judge-model gemini-2.5-flash --check \
+  --inputs fdb_v3_data_released --outputs artifacts/batch_inference \
+  --failed-from artifacts/batch-call-eval-exact.json
+
+# Run only if calibration qualified this model and free quota is available.
+python scripts/evaluate_batch_calls.py --google-judge \
+  --judge-model gemini-2.5-flash \
+  --inputs fdb_v3_data_released --outputs artifacts/batch_inference \
+  --failed-from artifacts/batch-call-eval-exact.json \
+  --output artifacts/google-semantic-subset-new.json
+```
+
+Flash is the model that qualified in our recorded comparison; use the model selected by your calibration report. To evaluate the historical 25 failures, you also need the original `artifacts/batch_9f1128c` captures and must use `docs/results/9f1128c-call-exact.json` as `--failed-from`.
+
+The scorer preserves tool-selection checks and leaves exact baseline passes unrejudged. It records exact fallbacks when judging fails. Its combined count is a **mixed diagnostic**; calibration accuracy is not benchmark accuracy. Our latest subset attempt hit HTTP 429 and produced no usable semantic result. See [the protocol](docs/results/GOOGLE_JUDGE_RESEARCH.md) and [measured outcomes](docs/results/GOOGLE_JUDGE_V2.md).
+
+### 5. CUDA Audio-Evaluation Pipeline
+
+The upstream-style inference and Parakeet ASR route requires a Linux NVIDIA CUDA environment:
 ```bash
 bash scripts/reproduce.sh
 ```
 
-### 3. Semantic LLM Judge Reproduction
-Uses organizer-supplied `OPENAI_API_KEY` to run the GPT-4o semantic argument evaluator:
-```bash
-bash scripts/reproduce.sh --use-llm
-```
+The optional `--use-llm` compatibility route uses the upstream GPT-4o judge and separate OpenAI access. It is independent of `--google-judge`; no OpenAI requests were made for the measurements on this branch. The combined clean-Linux CUDA route remains unverified here.
 
 ---
 
@@ -414,45 +507,47 @@ bash scripts/reproduce.sh --use-llm
 
 ## Verification & Testing Matrix
 
-REACTOR maintains **100% passing tests** across 27 test suites with 236 automated assertions:
+The verified suite contains **365 passing test cases across 36 modules**. This is an offline test count, not a code-coverage percentage or a benchmark pass rate. Hosted judge responses are mocked.
 
-```
-┌──────────────────────────────────────────────────────────────────────────────────┐
-│                            AUTOMATED TEST MATRIX                                 │
-├──────────────────────────────┬──────────────────────────────┬────────┬───────────┤
-│ Test Suite                   │ Target Layer                 │ Tests  │ Result    │
-├──────────────────────────────┼──────────────────────────────┼────────┼───────────┤
-│ test_controller.py           │ Core execution engine & DAG  │ 32     │ ✓ Passed  │
-│ test_state.py                │ Versioned intent frames      │ 16     │ ✓ Passed  │
-│ test_turns.py                │ Speech → controller bridge   │ 14     │ ✓ Passed  │
-│ test_voice.py                │ LiveKit tool registration    │ 43     │ ✓ Passed  │
-│ test_voice_events.py         │ Event logging & error safety │ 1      │ ✓ Passed  │
-│ test_benchmark_tools.py      │ 12 FDB-v3 mock tool bridge   │ 5      │ ✓ Passed  │
-│ test_timers.py               │ Kitchen timer service        │ 19     │ ✓ Passed  │
-│ test_kitchen_commands.py     │ Kitchen command routing      │ 30     │ ✓ Passed  │
-│ test_kitchen_smoke.py        │ Audio turn separation        │ 2      │ ✓ Passed  │
-│ test_local_speech.py         │ Local speech synthesis       │ 2      │ ✓ Passed  │
-│ test_config.py               │ Credential safety & parsing  │ 11     │ ✓ Passed  │
-│ test_smoke_fdb.py            │ Smoke runner mechanics       │ 9      │ ✓ Passed  │
-│ test_smoke_evaluation.py     │ Exact-match evaluator        │ 4      │ ✓ Passed  │
-│ test_summarize_smokes.py     │ Summary report generator     │ 2      │ ✓ Passed  │
-│ test_evaluate_batch_calls.py │ Full-denominator call scorer │ 2      │ ✓ Passed  │
-│ test_batch_infer.py          │ Resumable batch runner       │ 4      │ ✓ Passed  │
-│ test_package_batch_results.py│ Kaggle artifact packaging    │ 2      │ ✓ Passed  │
-│ test_reproduction.py         │ CLI reproduction flags       │ 2      │ ✓ Passed  │
-│ test_archive_evidence.py     │ Evidence archiving & hashes  │ 2      │ ✓ Passed  │
-│ test_setup_fdb.py            │ FDB-v3 checkout pinning      │ 2      │ ✓ Passed  │
-│ test_tools.py                │ Schema validation            │ 4      │ ✓ Passed  │
-│ test_trace.py                │ JSONL trace recording        │ 2      │ ✓ Passed  │
-│ test_demo.py                 │ Scripted offline demo        │ 2      │ ✓ Passed  │
-│ test_kaggle_bundle.py        │ Kaggle dataset packaging     │ 4      │ ✓ Passed  │
-│ test_kaggle_probe.py         │ Kaggle GPU environment probe │ 3      │ ✓ Passed  │
-│ test_kaggle_asr.py           │ Kaggle ASR runner            │ 13     │ ✓ Passed  │
-│ test_kaggle_overnight.py     │ Kaggle overnight batch job   │ 4      │ ✓ Passed  │
-├──────────────────────────────┼──────────────────────────────┼────────┼───────────┤
-│ TOTAL                        │ Full source coverage         │ 236    │ ✓ Passed  │
-└──────────────────────────────┴──────────────────────────────┴────────┴───────────┘
-```
+| Test Module | Target | Tests |
+|:---|:---|---:|
+| `test_controller.py` | Execution, write gate, cancellation | 32 |
+| `test_state.py` | Intent revisions and slots | 16 |
+| `test_turns.py` | Speech-to-controller bridge | 14 |
+| `test_voice.py` | LiveKit registration and validation | 43 |
+| `test_voice_events.py` | Event logging | 1 |
+| `test_input_event_routing.py` | Partial/final transcript routing | 4 |
+| `test_turn_timing.py` | End-of-turn hold | 2 |
+| `test_argument_normalization.py` | Numeric and label normalization | 24 |
+| `test_request_grounding.py` | Date and identifier evidence | 15 |
+| `test_accuracy_v3.py` | Grounding and contract regressions | 26 |
+| `test_accuracy_v4.py` | Multi-step and conditional actions | 11 |
+| `test_benchmark_tools.py` | Twelve mock tool contracts | 5 |
+| `test_timers.py` | Timer service | 19 |
+| `test_kitchen_commands.py` | Kitchen routing | 30 |
+| `test_kitchen_smoke.py` | Audio turn separation | 2 |
+| `test_local_speech.py` | Local speech synthesis | 2 |
+| `test_config.py` | Configuration validation | 12 |
+| `test_smoke_fdb.py` | Smoke runner | 11 |
+| `test_smoke_evaluation.py` | Exact scoring | 4 |
+| `test_summarize_smokes.py` | Room summaries | 2 |
+| `test_evaluate_batch_calls.py` | Full-denominator scorer | 2 |
+| `test_semantic_evaluation.py` | Pinned judge compatibility and fallback | 12 |
+| `test_google_semantic_evaluation.py` | Google isolation, blind controls, quota and fallback | 24 |
+| `test_batch_infer.py` | Resume and retry eligibility | 5 |
+| `test_ready_inference.py` | Readiness, real-time replay and capture | 7 |
+| `test_package_batch_results.py` | Artifact packaging | 2 |
+| `test_reproduction.py` | Reproduction CLI | 2 |
+| `test_archive_evidence.py` | Evidence hashes | 2 |
+| `test_setup_fdb.py` | Upstream pinning | 2 |
+| `test_tools.py` | Schema validation | 4 |
+| `test_trace.py` | JSONL trace | 2 |
+| `test_demo.py` | Offline demo | 2 |
+| `test_kaggle_bundle.py` | Kaggle bundle | 4 |
+| `test_kaggle_probe.py` | GPU environment probe | 3 |
+| `test_kaggle_asr.py` | Offline ASR runner | 13 |
+| `test_kaggle_overnight.py` | Kaggle batch job | 4 |
+| **Total** | **36 modules** | **365** |
 
 Execute all tests with:
 ```bash
@@ -483,8 +578,9 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 | Layer | Technology | Version | Purpose |
 |:---|:---|:---|:---|
 | **Voice Transport** | LiveKit Agents | `1.3.12` | WebRTC full-duplex room management & barge-in |
-| **Realtime Model** | Google Gemini Live | `1.3.12` plugin | Multimodal speech-to-speech intelligence |
-| **Benchmark Suite** | Full-Duplex-Bench v3 | SHA `3e799c45` | 100 human audio recordings & 12 mock tool domains |
+| **Realtime Model** | Google Gemini Live | `gemini-2.5-flash-native-audio-preview-12-2025`; plugin `1.3.12` | Multimodal speech-to-speech intelligence |
+| **Alternative Argument Judge** | Google GenAI SDK | `>=2.25,<3` | Opt-in calibrated Google text judgments |
+| **Benchmark Suite** | Full-Duplex-Bench v3 | SHA `3e799c45` | 100 human audio recordings, 79 scenarios, 12 mock tools across 4 domains |
 | **Speech Recognition** | NVIDIA NeMo Parakeet TDT | `0.6b-v2` | Fast offline turn transcription & latency estimation |
 | **Runtime Engine** | Python `asyncio` | `3.10–3.12` | Asynchronous DAG & serialized write-gate |
 | **Validation** | `jsonschema` | `4.26.0` | Strict tool argument boundary verification |
@@ -497,10 +593,12 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 - [**Submission Checklist**](#checklist-for-github)
 - [**AI Usage Disclosure Form**](AI_DISCLOSURE.md)
 - [**Official Slide Deck (PPTX)**](VITV_Team-REACTOR.pptx)
-- [**Official Demo Video (MP4)**](Team-REACTOR_VIDEO.mp4) 
+- [**Official Demo Video (MP4)**](https://github.com/0xkhush/REACTOR/blob/839e851299a26751a70c6636d220fab39dc0299b/Team-REACTOR_VIDEO.mp4)
 - [**Dependencies Manifest**](requirements.txt)
 - [**Kaggle Evaluation Notebook**](REACTOR_Kaggle_Evaluation.ipynb)
-- [**Measured 100-Recording Evaluation Evidence**](docs/results/README.md)
+- [**Latest 100-Recording Exact Evaluation**](docs/results/ACCURACY_V4.md)
+- [**Google Judge Calibration and Quota-Blocked Evaluation**](docs/results/GOOGLE_JUDGE_V2.md)
+- [**Historical Evaluation Archive**](docs/results/README.md)
 - [**Final Code Checkpoint**](docs/FINAL_CODE_CHECKPOINT.md)
 
 ---
@@ -517,7 +615,7 @@ To demonstrate that REACTOR's execution controller is general-purpose beyond the
 </p>
 
 <p align="center">
-  <strong>PRISM GenAI Hackathon 2026 — Theme 05: Full-Duplex Voice Agents</strong>
+  <strong>PRISM GenAI Hackathon 2026 — Theme 05: Interruptible Real-Time Agents</strong>
 </p>
 
 <p align="right">(<a href="#readme-top">back to top</a>)</p>
