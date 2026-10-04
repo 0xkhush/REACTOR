@@ -12,3 +12,8 @@ __pycache__/
 /vendor
 /.superpowers/
 build/
+REACTOR_Colab_Results/
+Reactor Kaggle Results/
+scratch/
+*.tsbuildinfo
+reactor-frontend-design

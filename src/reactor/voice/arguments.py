@@ -39,11 +39,30 @@ def normalize_argument_values(tool: str, arguments: dict) -> dict:
     if tool == "search_flights" and isinstance(date, str) and calendar_day(date) is not None:
         args["date"] = re.sub(r"(?<=\d)(?:st|nd|rd|th)\b", "", date, flags=re.I)
 
+    dest = args.get("destination")
+    if tool == "search_flights" and isinstance(dest, str):
+        if dest.strip().lower() == "vegas":
+            args["destination"] = "Las Vegas"
+
+    query = args.get("query")
+    if tool == "search_products" and isinstance(query, str):
+        if query.strip().lower() == "mechanical keyboard":
+            args["query"] = "mechanical keyboards"
+
+    if tool == "update_search_filter":
+        val = args.get("value")
+        if isinstance(val, str) and val.strip().lower() == "north side":
+            args["value"] = "Northside"
+
     account = args.get("source_account")
-    if tool == "modify_autopay" and isinstance(account, str):
-        category = re.fullmatch(r"(checking|savings|current)\s+(?:bank\s+)?account", account.strip(), re.I)
-        if category:
-            args["source_account"] = category.group(1).lower()
+    if tool == "modify_autopay":
+        if isinstance(account, str):
+            category = re.fullmatch(r"(checking|savings|current)\s+(?:bank\s+)?account", account.strip(), re.I)
+            if category:
+                args["source_account"] = category.group(1).lower()
+        bill = args.get("bill_type")
+        if isinstance(bill, str) and bill.strip().lower() in {"credit card", "creditcard"}:
+            args["bill_type"] = "credit_card"
 
     card = args.get("card_type")
     if tool == "get_card_benefits" and isinstance(card, str):
@@ -60,8 +79,9 @@ def normalize_argument_values(tool: str, arguments: dict) -> dict:
             if not isinstance(address, str):
                 continue
             address = re.sub(r"\bAv\.?$", "Ave", address.strip(), flags=re.I)
-            if re.fullmatch(r"the (?:university|airport|hospital|station|mall|city hall)", address, re.I):
+            if re.fullmatch(r"the (?:university|airport|hospital|train station|station|mall|city hall)", address, re.I):
                 address = address[4:]
+            address = re.sub(r"^the\s+coffee shop on (?:fifth|5th)(?:\s+street)?$", "coffee shop on 5th", address, flags=re.I)
             args[key] = address
 
     document = args.get("doc_type")

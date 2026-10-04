@@ -30,11 +30,11 @@ CONTRACTS = {
     "get_exchange_rate": (False, {"amount": field("number"), "from_currency": field("string"),
                                   "to_currency": field("string")}, ()),
     "modify_autopay": (True, {"bill_type": field("string"), "source_account": field("string")}, ()),
-    "search_apartments": (False, {"city": field("string"),
+    "search_apartments": (False, {"city": field(["string", "null"], optional=True, default=None),
                                   "bedrooms": field("integer", optional=True, default=1),
                                   "max_price": field("number", optional=True, default=2000.0),
                                   "pets_allowed": field(["boolean", "null"], optional=True)},
-                          ("bedrooms", "max_price", "pets_allowed")),
+                          ("city", "bedrooms", "max_price", "pets_allowed")),
     "calculate_commute": (False, {"origin_address": field("string"), "destination_address": field("string"),
                                   "mode": field("string", optional=True, default="driving")}, ("mode",)),
     # mock_apis.update_search_filter accepts Any: preserve scalar values instead

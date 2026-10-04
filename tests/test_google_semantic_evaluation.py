@@ -184,7 +184,7 @@ def test_stable_pro_is_explicitly_supported_without_provider_fallback(google_jud
     with CallEvaluator(use_llm=True, judge_provider="google", judge_model="gemini-2.5-pro") as scorer:
         assert scorer.evaluate(SCENARIO, CALLS)["passed"] is True
         assert scorer.judge_stats["returned_model_versions"] == ["test-model-version"]
-        assert scorer.judge_stats["policy_version"] == "google-semantic-v2-category-query"
+        assert scorer.judge_stats["policy_version"] == "google-semantic-v3-voice-homophone-schema"
     assert google_judge["requests"][0]["model"] == "gemini-2.5-pro"
     assert len(google_judge["requests"]) == 1
 

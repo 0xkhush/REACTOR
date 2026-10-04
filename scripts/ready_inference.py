@@ -137,7 +137,7 @@ async def run(input_wav: Path, output_wav: Path, room_name: str, *, ready_timeou
         # Keep the audio samples unchanged and pace them against a monotonic
         # clock rather than accumulating an additional sleep after each frame.
         total_chunks = (len(pcm) + chunk_bytes - 1) // chunk_bytes
-        silence_chunks = 75  # same 1.5-second trailing silence as upstream
+        silence_chunks = 175  # 3.5-second trailing silence allowing multi-step chains to complete
         for index in range(total_chunks + silence_chunks):
             if index < total_chunks:
                 chunk = pcm[index * chunk_bytes:(index + 1) * chunk_bytes]

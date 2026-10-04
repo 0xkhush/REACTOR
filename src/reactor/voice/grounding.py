@@ -21,26 +21,37 @@ def _identifier_format(tool, identifier, transcript):
         return re.sub(r"[\s,]+", "", value)
     if not re.fullmatch(r"[A-Za-z0-9]+(?:[\s,-]+[A-Za-z0-9]+)+", value):
         return identifier
-    # If the user supplied this punctuated identifier, do not reinterpret it
-    # based on another compact identifier elsewhere in the same request.
-    if re.search(r"(?<![A-Za-z0-9_-])" + re.escape(value) + r"(?![A-Za-z0-9_-])", transcript, re.I):
-        return identifier
+
     contexts = {
-        "track_order": r"order(?:\s+(?:id|number|code))?|tracking(?:\s+(?:id|number|code))?|track|number|reference",
-        "update_identity_doc": r"passport|visa|document|identity|licen[cs]e|number|reference",
-        "add_to_cart": r"product(?:\s+(?:id|number|code))?|item|number|reference",
+        "track_order": r"order(?:\s+(?:id|number|code))?|tracking(?:\s+(?:id|number|code))?|track|number|reference|id",
+        "update_identity_doc": r"passport|visa|document|identity|licen[cs]e|number|reference|id",
+        "add_to_cart": r"product(?:\s+(?:id|number|code))?|item|number|reference|id",
     }
-    compact = re.sub(r"[\s,-]+", "", value)
-    spelling = r"[\s,]*".join(re.escape(character) for character in compact) + r"(?![A-Za-z0-9_-])"
+
+    is_spelled = (
+        re.fullmatch(r"[A-Za-z0-9](?:-[A-Za-z0-9])+", value) is not None
+        and not re.search(r"\bdash\b|\s-\s", transcript, re.I)
+    )
+
+    if re.search(r"(?<![A-Za-z0-9_-])" + re.escape(value) + r"(?![A-Za-z0-9_-])", transcript, re.I):
+        if not is_spelled:
+            return identifier
+
+    compact = re.sub(r"[\s,-]+", "", value).upper()
+    spelling = r"[\s,-]*".join(re.escape(character) for character in compact) + r"(?![A-Za-z0-9_-])"
     prefix = r"\b(?:" + contexts[tool] + r")\b(?:\s+(?:number|id|is|was|to|as)\b)*[\s:]*"
     for context in re.finditer(prefix, transcript, re.I):
         following = transcript[context.end():]
         match = re.match(spelling, following, re.I)
         if match:
+            if re.search(r"\bdash\b|\s-\s", following[:match.end()], re.I):
+                return identifier
             next_token = re.match(r"[\s,]+([A-Za-z0-9_-]+)", following[match.end():])
             if next_token and (len(next_token.group(1)) == 1 or re.search(r"[0-9_-]", next_token.group(1))):
                 continue  # a longer spelling, not a complete identifier match
             return compact
+    if is_spelled and re.search(r"(?<![A-Za-z0-9_-])" + re.escape(value) + r"(?![A-Za-z0-9_-])", transcript, re.I):
+        return compact
     return identifier
 
 

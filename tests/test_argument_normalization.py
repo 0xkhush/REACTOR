@@ -27,6 +27,14 @@ from reactor.voice.turns import TurnBridge
      {"query": "desk", "max_price": 1250.5}),
     ("add_to_cart", {"product_id": "P-09", "quantity": "9007199254740993"},
      {"product_id": "P-09", "quantity": 9007199254740993}),
+    ("calculate_commute", {"origin_address": "Oak Street", "destination_address": "the university", "mode": "walking"},
+     {"origin_address": "Oak Street", "destination_address": "university", "mode": "walking"}),
+    ("search_flights", {"destination": "Vegas", "date": "August 8"},
+     {"destination": "Las Vegas", "date": "August 8"}),
+    ("search_products", {"query": "mechanical keyboard", "max_price": 200},
+     {"query": "mechanical keyboards", "max_price": 200}),
+    ("update_search_filter", {"filter_name": "neighborhood", "value": "North side"},
+     {"filter_name": "neighborhood", "value": "Northside"}),
 ])
 def test_unambiguous_argument_formats_are_canonicalized_without_changing_meaning(tool, supplied, expected):
     original = dict(supplied)
