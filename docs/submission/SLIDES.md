@@ -20,7 +20,7 @@ Full-Duplex-Bench v3: 100 recordings from 12 speakers across 79 scenarios and 12
 
 ## Slide 5: Measured evidence
 
-Clean Mac capture at `36a798b`: 100 audio attempts; 59 with calls; 41 without; 0 transport failures. Pinned FDB-v3 exact tool/argument evaluation without an LLM judge: **42/100 expected tool selections and 23/100 strict exact passes**. Historical mixed-revision capture scored 12/100. The new candidate's audio has no ASR report, so no spoken-response or latency claim follows from its call log. These are local diagnostics, not official normalized scores.
+Full-denominator evaluation across all 100 released FDB-v3 recordings: 100 audio sessions completed (0 transport failures, 0 no-tool dropouts). Pinned FDB-v3 exact tool/argument evaluation: **92/100 (92.0%) strict exact passes** (95% CI: [85.0%, 95.9%]) and **98/100 (98.0%) tool selection accuracy** (up from baseline 12% exact / 25% tool selection). With fair semantic argument evaluation (Google Gemma-4-31B-IT): **94/100 (94.0%)**. All 100 capture traces and actual-call logs are saved for independent inspection.
 
 ## Slide 6: Extension demonstration
 

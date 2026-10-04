@@ -51,6 +51,8 @@ const scenarios: Scenario[] = scenariosRaw as Scenario[]
 const featuredFolders = [
   'ecommerce_09_695bd157114f0d2317f88617',
   'travel_01_62a885d5b6af18b3d4579e1b',
+  'travel_10_5f4a4da1575d605c43bef871',
+  'travel_19_695bd157114f0d2317f88617',
   'finance_12_65e8cf8f4c7424fa062e54a3',
   'housing_09_695bd157114f0d2317f88617',
   'ecommerce_19_66f59c766e7e22e1f90d08f6',
@@ -253,37 +255,333 @@ function Stepper({ phase }: { phase: DemoPhase }) {
   )
 }
 
-function Waveform({ active }: { active: boolean }) {
+function Waveform({
+  active,
+  frequencies = [],
+}: {
+  active: boolean
+  frequencies?: number[]
+}) {
   return (
     <div className={`waveform ${active ? 'wave-active' : ''}`} aria-label="Voice waveform">
-      {Array.from({ length: 42 }).map((_, i) => (
-        <i
-          key={i}
-          style={{
-            height: `${12 + ((i * 17) % 30)}%`,
-            animationDelay: `${i * 18}ms`,
-          }}
-        />
-      ))}
+      {Array.from({ length: 42 }).map((_, i) => {
+        const freqVal = frequencies.length > 0 ? (frequencies[i % frequencies.length] / 255) * 85 : 0
+        const staticBase = 12 + ((i * 17) % 32)
+        const height = active && frequencies.length > 0 ? Math.min(100, Math.max(14, freqVal)) : staticBase
+        return (
+          <i
+            key={i}
+            style={{
+              height: `${height}%`,
+              transition: 'height 0.06s ease, background 0.15s ease',
+              background: active ? (freqVal > 30 ? '#38bdf8' : '#34d399') : undefined,
+              boxShadow: active && freqVal > 40 ? '0 0 6px rgba(56,189,248,0.5)' : undefined,
+            }}
+          />
+        )
+      })}
     </div>
   )
 }
 
+interface DemoScenarioConfig {
+  id: string
+  name: string
+  shortLabel: string
+  badge: string
+  audioSrc: string
+  dialogue: { time: string; text: string; speaker: 'user' | 'agent'; phaseThreshold: number }[]
+  revOld: { id: string; intent: string; params: [string, string][] }
+  revNew: { id: string; intent: string; params: [string, string][] }
+  slotRows: [string, string, string, string][]
+  op1: { id: string; call: string; cancelledText: string }
+  op2: { id: string; call: string; successText: string }
+  phaseTimes: [number, number, number, number, number, number]
+  duration: number
+  trace: [string, string, string][]
+}
+
+const demoScenarios: DemoScenarioConfig[] = [
+  {
+    id: 'hero',
+    name: 'HERO: FLIGHT SELF-CORRECTION (Mumbai -> Delhi)',
+    shortLabel: '01. Hero Flight Demo (Mumbai -> Delhi)',
+    badge: 'Real-Time Voice Demo (8.3s)',
+    audioSrc: '/audio/demo_engine.mp3',
+    phaseTimes: [0.2, 1.2, 2.7, 4.2, 4.9, 5.3],
+    duration: 8.32,
+    dialogue: [
+      { time: '00:00.3', text: '“Book a flight to Mumbai on Friday...”', speaker: 'user', phaseThreshold: 1 },
+      { time: '00:02.7', text: '“wait, actually make that Delhi!”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:05.2', text: '“Got it. Searching for flights to Delhi on Friday.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    revOld: {
+      id: 'R-001 / REV 01',
+      intent: 'search_flights',
+      params: [['destination', 'Mumbai'], ['date', 'Friday'], ['passenger_name', 'Alice'], ['travel_class', 'Economy']],
+    },
+    revNew: {
+      id: 'R-001 / REV 02',
+      intent: 'search_flights',
+      params: [['destination', 'Delhi'], ['date', 'Friday'], ['passenger_name', 'Alice'], ['travel_class', 'Economy']],
+    },
+    slotRows: [
+      ['passenger_name', 'Alice', 'Alice', 'PRESERVED'],
+      ['departure_date', 'Friday', 'Friday', 'PRESERVED'],
+      ['destination', 'Mumbai', 'Delhi', 'UPDATED'],
+      ['travel_class', 'Economy', 'Economy', 'PRESERVED'],
+      ['return_date', '--', '--', '--'],
+    ],
+    op1: { id: 'op-01', call: 'search_flights(Mumbai)', cancelledText: 'CANCELLED_BEFORE_DISPATCH' },
+    op2: { id: 'op-02', call: 'search_flights(Delhi)', successText: 'SUCCEEDED (820ms)' },
+    trace: [
+      ['00:00.000', 'session.created', 'req_001'],
+      ['00:01.120', 'intent.proposed', 'op-01 search_flights(Mumbai)'],
+      ['00:02.321', 'intent.revised', 'revision=2 destination=Delhi'],
+      ['00:02.322', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:02.450', 'op.proposed', 'op-02 search_flights(Delhi)'],
+      ['00:02.781', 'op.launched', 'write_gate=open'],
+      ['00:03.601', 'op.succeeded', 'latency=820ms'],
+    ],
+  },
+  {
+    id: 'travel_19',
+    name: 'FDB-094: TRAVEL DOUBLE CORRECTION (Rome -> Milan, June 1 -> 3)',
+    shortLabel: '02. FDB Travel (Rome -> Milan)',
+    badge: 'NTU FDB-v3 Authentic 48kHz Audio',
+    audioSrc: '/audio/travel_19_695bd157114f0d2317f88617_input.mp3',
+    phaseTimes: [1.0, 3.5, 6.0, 9.0, 11.5, 14.0],
+    duration: 17.5,
+    dialogue: [
+      { time: '00:01.0', text: '“Hmm... okay so, I want to look at flights to Rome...”', speaker: 'user', phaseThreshold: 1 },
+      { time: '00:06.0', text: '“no wait, I changed my mind, let\'s do Milan instead...”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:11.5', text: '“And I was thinking June 1st, but actually, June 3rd works better for me.”', speaker: 'user', phaseThreshold: 4 },
+      { time: '00:16.0', text: '“I will search for flights to Milan on June 3rd.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    revOld: {
+      id: 'R-019 / REV 01',
+      intent: 'search_flights',
+      params: [['destination', 'Rome'], ['date', 'June 1']],
+    },
+    revNew: {
+      id: 'R-019 / REV 02',
+      intent: 'search_flights',
+      params: [['destination', 'Milan'], ['date', 'June 3']],
+    },
+    slotRows: [
+      ['destination', 'Rome', 'Milan', 'UPDATED'],
+      ['date', 'June 1', 'June 3', 'UPDATED'],
+      ['passengers', '1', '1', 'PRESERVED'],
+      ['cabin', 'Economy', 'Economy', 'PRESERVED'],
+      ['return_date', '--', '--', '--'],
+    ],
+    op1: { id: 'op-01', call: 'search_flights(destination="Rome", date="June 1")', cancelledText: 'CANCELLED_BEFORE_DISPATCH' },
+    op2: { id: 'op-02', call: 'search_flights(destination="Milan", date="June 3")', successText: 'SUCCEEDED (790ms)' },
+    trace: [
+      ['00:00.000', 'session.created', 'req_fdb_094'],
+      ['00:01.200', 'intent.proposed', 'op-01 search_flights(Rome, June 1)'],
+      ['00:06.100', 'intent.revised', 'revision=2 destination=Milan'],
+      ['00:06.102', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:11.600', 'intent.revised', 'revision=3 date=June 3'],
+      ['00:14.200', 'op.proposed', 'op-02 search_flights(Milan, June 3)'],
+      ['00:14.350', 'op.launched', 'write_gate=open'],
+      ['00:15.140', 'op.succeeded', 'latency=790ms'],
+    ],
+  },
+  {
+    id: 'ecommerce_09',
+    name: 'FDB-010: E-COMMERCE CORRECTION (Running Shoes -> Hiking Boots)',
+    shortLabel: '03. FDB E-Commerce (Shoes -> Boots)',
+    badge: 'NTU FDB-v3 Authentic 48kHz Audio',
+    audioSrc: '/audio/ecommerce_09_695bd157114f0d2317f88617_input.mp3',
+    phaseTimes: [0.5, 2.5, 4.5, 6.0, 7.0, 8.5],
+    duration: 12.0,
+    dialogue: [
+      { time: '00:00.5', text: '“Like... well... could you search for running shoes — actually no...”', speaker: 'user', phaseThreshold: 1 },
+      { time: '00:04.5', text: '“um, I already have running shoes. Search for hiking boots instead.”', speaker: 'user', phaseThreshold: 3 },
+      { time: '00:08.5', text: '“I will search for hiking boots for you.”', speaker: 'agent', phaseThreshold: 6 },
+    ],
+    revOld: {
+      id: 'R-009 / REV 01',
+      intent: 'search_products',
+      params: [['query', 'running shoes']],
+    },
+    revNew: {
+      id: 'R-009 / REV 02',
+      intent: 'search_products',
+      params: [['query', 'hiking boots']],
+    },
+    slotRows: [
+      ['query', 'running shoes', 'hiking boots', 'UPDATED'],
+      ['category', 'Footwear', 'Footwear', 'PRESERVED'],
+      ['max_price', '$150', '$150', 'PRESERVED'],
+      ['in_stock', 'true', 'true', 'PRESERVED'],
+      ['sort', 'relevance', 'relevance', 'PRESERVED'],
+    ],
+    op1: { id: 'op-01', call: 'search_products(query="running shoes")', cancelledText: 'CANCELLED_BEFORE_DISPATCH' },
+    op2: { id: 'op-02', call: 'search_products(query="hiking boots")', successText: 'SUCCEEDED (610ms)' },
+    trace: [
+      ['00:00.000', 'session.created', 'req_fdb_010'],
+      ['00:01.100', 'intent.proposed', 'op-01 search_products(running shoes)'],
+      ['00:04.600', 'intent.revised', 'revision=2 query=hiking boots'],
+      ['00:04.602', 'op.cancelled', 'cancelled_before_dispatch'],
+      ['00:07.100', 'op.proposed', 'op-02 search_products(hiking boots)'],
+      ['00:07.250', 'op.launched', 'write_gate=open'],
+      ['00:07.860', 'op.succeeded', 'latency=610ms'],
+    ],
+  },
+]
+
 function Engine() {
+  const [selectedDemoIdx, setSelectedDemoIdx] = useState(0)
   const [phase, setPhase] = useState<DemoPhase>(0)
-  const running = phase > 0 && phase < 7
+  const [isPlaying, setIsPlaying] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(0)
+  const [liveFrequencies, setLiveFrequencies] = useState<number[]>([])
+  const [isMuted, setIsMuted] = useState(false)
+
+  const activeDemo = demoScenarios[selectedDemoIdx]
+
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const audioCtxRef = useRef<AudioContext | null>(null)
+  const analyserRef = useRef<AnalyserNode | null>(null)
+  const animFrameRef = useRef<number | null>(null)
+
+  // Switch demo scenario -> reset audio
   useEffect(() => {
-    if (!running) return
-    const id = window.setTimeout(
-      () => setPhase((p) => Math.min(7, p + 1) as DemoPhase),
-      900
-    )
-    return () => window.clearTimeout(id)
-  }, [phase, running])
-  const run = () => setPhase(1)
-  const reset = () => setPhase(0)
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    setIsPlaying(false)
+    setPhase(0)
+    setCurrentTime(0)
+    setLiveFrequencies([])
+  }, [selectedDemoIdx])
+
+  // Setup Web Audio Analyser for live frequency FFT sampling
+  const setupAudio = () => {
+    if (!audioRef.current || audioCtxRef.current) return
+    try {
+      const AudioCtx =
+        window.AudioContext ||
+        (window as unknown as { webkitAudioContext: typeof AudioContext }).webkitAudioContext
+      const ctx = new AudioCtx()
+      const analyser = ctx.createAnalyser()
+      analyser.fftSize = 64
+      const source = ctx.createMediaElementSource(audioRef.current)
+      source.connect(analyser)
+      analyser.connect(ctx.destination)
+      audioCtxRef.current = ctx
+      analyserRef.current = analyser
+    } catch (e) {
+      console.warn('Web Audio API restricted or active', e)
+    }
+  }
+
+  // Animation frame loop to read live audio frequencies
+  useEffect(() => {
+    if (!isPlaying) {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+      setLiveFrequencies([])
+      return
+    }
+
+    const sample = () => {
+      if (analyserRef.current) {
+        const buffer = new Uint8Array(analyserRef.current.frequencyBinCount)
+        analyserRef.current.getByteFrequencyData(buffer)
+        setLiveFrequencies(Array.from(buffer.slice(0, 42)))
+      }
+      animFrameRef.current = requestAnimationFrame(sample)
+    }
+    sample()
+
+    return () => {
+      if (animFrameRef.current) cancelAnimationFrame(animFrameRef.current)
+    }
+  }, [isPlaying])
+
+  const run = () => {
+    if (!audioRef.current) return
+    setupAudio()
+    if (audioCtxRef.current && audioCtxRef.current.state === 'suspended') {
+      audioCtxRef.current.resume()
+    }
+
+    if (isPlaying) {
+      audioRef.current.pause()
+      setIsPlaying(false)
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn('Audio play error:', err))
+    }
+  }
+
+  const reset = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    setIsPlaying(false)
+    setPhase(0)
+    setCurrentTime(0)
+    setLiveFrequencies([])
+  }
+
+  const toggleMute = () => {
+    if (!audioRef.current) return
+    audioRef.current.muted = !isMuted
+    setIsMuted(!isMuted)
+  }
+
+  const handleTimeUpdate = () => {
+    if (!audioRef.current) return
+    const t = audioRef.current.currentTime
+    setCurrentTime(t)
+    const [p1, p2, p3, p4, p5, p6] = activeDemo.phaseTimes
+    if (t < p1) {
+      setPhase(0)
+    } else if (t < p2) {
+      setPhase(1)
+    } else if (t < p3) {
+      setPhase(2)
+    } else if (t < p4) {
+      setPhase(3)
+    } else if (t < p5) {
+      setPhase(4)
+    } else if (t < p6) {
+      setPhase(5)
+    } else {
+      setPhase(6)
+    }
+  }
+
+  const formatSec = (sec: number) => {
+    const m = Math.floor(sec / 60)
+    const s = Math.floor(sec % 60)
+    const ms = Math.floor((sec % 1) * 10)
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${ms}`
+  }
+
   return (
     <main className="content">
+      {/* Hidden real audio element playing authentic scenario */}
+      <audio
+        ref={audioRef}
+        src={activeDemo.audioSrc}
+        preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={() => setDuration(audioRef.current?.duration || activeDemo.duration)}
+        onEnded={() => {
+          setIsPlaying(false)
+          setPhase(7)
+        }}
+      />
+
       <div className="page-intro">
         <div className="page-intro-left">
           <span className="eyebrow">01 / ENGINE</span>
@@ -297,16 +595,44 @@ function Engine() {
           </h1>
           <p className="lede">
             Track real-time interruptions, intent revisions, cancellation cascades, concurrent
-            reads, serialized writes, and action identity.
+            reads, serialized writes, and action identity with real scenario audio playback.
           </p>
+
+          {/* Scenario Selector Pills */}
+          <div className="demo-scenario-strip">
+            {demoScenarios.map((sc, i) => (
+              <button
+                key={sc.id}
+                className={`demo-scenario-btn ${selectedDemoIdx === i ? 'active' : ''}`}
+                onClick={() => setSelectedDemoIdx(i)}
+              >
+                <span>{sc.shortLabel}</span>
+              </button>
+            ))}
+          </div>
+
           <div className="actions">
             <button className="btn primary" onClick={run}>
-              <Play data-icon="inline-start" />{' '}
-              {phase === 7 ? 'RUN AGAIN' : 'RUN DEMONSTRATION'}
+              {isPlaying ? <Pause data-icon="inline-start" /> : <Play data-icon="inline-start" />}
+              {isPlaying ? 'PAUSE AUDIO' : phase === 7 ? 'PLAY AGAIN' : 'PLAY REAL AUDIO DEMO'}
             </button>
             <button className="btn" onClick={reset}>
               <RotateCcw data-icon="inline-start" /> RESET
             </button>
+            <div className="audio-time-badge">
+              {formatSec(currentTime)} / {formatSec(duration || activeDemo.duration)}
+            </div>
+            <button
+              className="btn py-1 px-2 text-xs"
+              onClick={toggleMute}
+              title={isMuted ? 'Unmute' : 'Mute'}
+            >
+              {isMuted ? <VolumeX className="w-3.5 h-3.5 text-[#f87171]" /> : <Volume2 className="w-3.5 h-3.5" />}
+            </button>
+            <span className={`demo-audio-live-badge ${isPlaying ? '' : 'idle'}`}>
+              <i className={`status-dot ${isPlaying ? 'pulse' : ''}`} />
+              {isPlaying ? 'REAL AUDIO PLAYING' : 'READY TO PLAY'}
+            </span>
           </div>
         </div>
         <Stepper phase={phase} />
@@ -315,94 +641,86 @@ function Engine() {
       <div className="grid engine-grid">
         <Panel
           title="LIVE CONVERSATION / TRANSCRIPT"
-          eyebrow="VOICE STREAM / 16KHZ"
+          eyebrow={`VOICE STREAM / ${activeDemo.badge.toUpperCase()}`}
           className="conversation"
         >
-          <Waveform active={running} />
+          <Waveform active={isPlaying} frequencies={liveFrequencies} />
           <div className="transcript">
-            <div>
-              <time>00:00</time>
-              <p>“Book a flight to Mumbai on Friday...”</p>
-            </div>
-            <div className={phase >= 3 ? 'revealed' : 'dim'}>
-              <time>00:03</time>
-              <p>“wait, actually make that Delhi!”</p>
-            </div>
-            <div className={phase >= 4 ? 'revealed' : 'dim'}>
-              <time>00:04</time>
-              <p>“Got it. Searching for flights to Delhi...”</p>
-            </div>
+            {activeDemo.dialogue.map((turn, tIdx) => {
+              const isRevealed = phase >= turn.phaseThreshold
+              return (
+                <div key={tIdx} className={isRevealed ? 'revealed' : 'dim'}>
+                  <time>{turn.time}</time>
+                  <p className={turn.speaker === 'agent' ? 'highlight' : ''}>{turn.text}</p>
+                </div>
+              )
+            })}
           </div>
           <div className="panel-foot">
             <span>
-              <i className="status-dot" /> {running ? 'LISTENING' : 'IDLE'}
+              <i className={`status-dot ${isPlaying ? 'pulse' : ''}`} /> {isPlaying ? 'STREAMING REAL AUDIO' : 'IDLE'}
             </span>
-            <span>LATENCY 42ms</span>
+            <span>LATENCY 42ms · <strong className="text-[#38bdf8]">{activeDemo.badge}</strong></span>
           </div>
         </Panel>
 
         <Panel title="INTENT REVISIONS" eyebrow="STATE / REVISION LOG">
-          <Revision phase={phase} />
+          <Revision phase={phase} scenario={activeDemo} />
         </Panel>
 
         <Panel title="SLOT PRESERVATION" eyebrow="INSPECTOR / R-001">
-          <SlotTable phase={phase} />
+          <SlotTable phase={phase} scenario={activeDemo} />
         </Panel>
 
         <Panel title="CANCELLATION CASCADE" eyebrow="OPERATION GRAPH">
-          <Cascade phase={phase} />
+          <Cascade phase={phase} scenario={activeDemo} />
         </Panel>
 
         <Panel title="LIVE TRACE" eyebrow="JSONL / STREAMING" className="wide">
-          <Trace phase={phase} />
+          <Trace phase={phase} scenario={activeDemo} />
         </Panel>
       </div>
     </main>
   )
 }
 
-function Revision({ phase }: { phase: DemoPhase }) {
+function Revision({ phase, scenario }: { phase: DemoPhase; scenario: DemoScenarioConfig }) {
   return (
     <div className="revision">
       <div className={phase >= 5 ? 'revision old struck' : 'revision old'}>
-        <span className="mono">R-001 / REVISION 01</span>
+        <span className="mono">{scenario.revOld.id}</span>
         <dl>
           <dt>intent</dt>
-          <dd>search_flights</dd>
-          <dt>destination</dt>
-          <dd>Mumbai</dd>
-          <dt>date</dt>
-          <dd>Friday</dd>
-          <dt>passenger_name</dt>
-          <dd>Alice</dd>
+          <dd>{scenario.revOld.intent}</dd>
+          {scenario.revOld.params.map(([k, v]) => (
+            <div key={k} style={{ display: 'contents' }}>
+              <dt>{k}</dt>
+              <dd>{v}</dd>
+            </div>
+          ))}
         </dl>
       </div>
       <ArrowDown className="down" />
       <div className={`revision new ${phase >= 4 ? 'revealed' : 'dim'}`}>
-        <span className="mono">R-001 / REVISION 02</span>
+        <span className="mono">{scenario.revNew.id}</span>
         <dl>
           <dt>intent</dt>
-          <dd>search_flights</dd>
-          <dt>destination</dt>
-          <dd>Delhi</dd>
-          <dt>date</dt>
-          <dd>Friday</dd>
-          <dt>passenger_name</dt>
-          <dd>Alice</dd>
+          <dd>{scenario.revNew.intent}</dd>
+          {scenario.revNew.params.map(([k, v]) => (
+            <div key={k} style={{ display: 'contents' }}>
+              <dt>{k}</dt>
+              <dd className={scenario.revOld.params.some(([ok, ov]) => ok === k && ov !== v) ? 'text-[#38bdf8] font-bold' : ''}>
+                {v}
+              </dd>
+            </div>
+          ))}
         </dl>
       </div>
     </div>
   )
 }
 
-function SlotTable({ phase }: { phase: DemoPhase }) {
-  const rows = [
-    ['passenger_name', 'Alice', 'Alice', 'PRESERVED'],
-    ['departure_date', 'Friday', 'Friday', 'PRESERVED'],
-    ['destination', 'Mumbai', phase >= 4 ? 'Delhi' : 'Mumbai', phase >= 4 ? 'UPDATED' : 'PENDING'],
-    ['travel_class', 'Economy', 'Economy', 'PRESERVED'],
-    ['return_date', '--', '--', '--'],
-  ]
+function SlotTable({ phase, scenario }: { phase: DemoPhase; scenario: DemoScenarioConfig }) {
   return (
     <div className="table">
       <div className="tr th">
@@ -411,55 +729,57 @@ function SlotTable({ phase }: { phase: DemoPhase }) {
         <span>REV 02</span>
         <span>STATE</span>
       </div>
-      {rows.map((row) => (
-        <div
-          className={`tr ${row[0] === 'destination' && phase >= 4 ? 'highlight' : ''}`}
-          key={row[0]}
-        >
-          {row.map((cell, i) => (
-            <span key={i} className={i === 3 ? 'state' : ''}>
-              {cell}
+      {scenario.slotRows.map((row) => {
+        const isUpdated = row[3] === 'UPDATED'
+        const isHighlight = isUpdated && phase >= 4
+        return (
+          <div className={`tr ${isHighlight ? 'highlight' : ''}`} key={row[0]}>
+            <span>{row[0]}</span>
+            <span>{row[1]}</span>
+            <span>{phase >= 4 ? row[2] : row[1]}</span>
+            <span className={isHighlight ? 'text-[#38bdf8] font-bold' : 'state'}>
+              {phase >= 4 ? row[3] : 'PRESERVED'}
             </span>
-          ))}
-        </div>
-      ))}
+          </div>
+        )
+      })}
     </div>
   )
 }
 
-function Cascade({ phase }: { phase: DemoPhase }) {
+function Cascade({ phase, scenario }: { phase: DemoPhase; scenario: DemoScenarioConfig }) {
   return (
     <div className="cascade">
-      <div className={`op muted ${phase >= 6 ? 'cancelled' : ''}`}>
-        <b>op-01</b>
-        <strong>search_flights(Mumbai)</strong>
+      <div className={`op muted ${phase >= 5 ? 'cancelled' : ''}`}>
+        <b>{scenario.op1.id}</b>
+        <strong>{scenario.op1.call}</strong>
         <span>PROPOSED</span>
         <ArrowDown />
-        <span>SUPERSEDED</span>
+        <span>{phase >= 4 ? 'SUPERSEDED' : 'QUEUED'}</span>
         <ArrowDown />
-        <span>CANCELLED_BEFORE_DISPATCH</span>
+        <span>{phase >= 5 ? scenario.op1.cancelledText : 'PENDING'}</span>
         <small>BACKEND CALLS 0 &nbsp; / &nbsp; WASTED LATENCY 0ms &nbsp; / &nbsp; EXTERNAL COST $0.00</small>
       </div>
       <div className={`op ${phase >= 6 ? 'success' : ''}`}>
-        <b>op-02</b>
-        <strong>search_flights(Delhi)</strong>
+        <b>{scenario.op2.id}</b>
+        <strong>{scenario.op2.call}</strong>
         <span>PROPOSED</span>
         <ArrowDown />
         <span>{phase >= 6 ? 'LAUNCHED' : 'QUEUED'}</span>
         <ArrowDown />
-        <span>{phase >= 7 ? 'SUCCEEDED' : 'PENDING'}</span>
+        <span>{phase >= 7 ? scenario.op2.successText : 'WAITING'}</span>
       </div>
     </div>
   )
 }
 
-function Trace({ phase }: { phase: DemoPhase }) {
+function Trace({ phase, scenario }: { phase: DemoPhase; scenario: DemoScenarioConfig }) {
   return (
     <div className="trace">
-      {traceLines.map((line, i) => (
+      {scenario.trace.map((line, i) => (
         <div
           className={phase >= i + 1 ? 'trace-line visible' : 'trace-line'}
-          key={line[0]}
+          key={line[0] + i}
         >
           <time>{line[0]}</time>
           <span>{line[1]}</span>
@@ -470,7 +790,28 @@ function Trace({ phase }: { phase: DemoPhase }) {
   )
 }
 
-const kitchenPresets = [
+interface KitchenPreset {
+  num: string
+  name: string
+  desc: string
+  command: string
+  slotName: string
+  slotDuration: number
+  audioSrc: string
+  duration: number
+  timeline: {
+    time: number
+    command: string
+    intentRev: number
+    slotDuration: number
+    speaker: 'USER' | 'BARGE-IN' | 'GEMINI'
+    text: string
+    timers: Timer[]
+  }[]
+  finalTimers: Timer[]
+}
+
+const kitchenPresets: KitchenPreset[] = [
   {
     num: '01',
     name: 'CLASSIC CORRECTION',
@@ -478,10 +819,53 @@ const kitchenPresets = [
     command: 'set a 7 minute timer for pasta',
     slotName: 'pasta',
     slotDuration: 420,
-    timers: [
-      { name: 'PASTA', seconds: 420, total: 420, state: 'RUNNING' as const, op: 'op-02', rev: 2 },
-      { name: 'TEA', seconds: 238, total: 300, state: 'PAUSED' as const, op: 'op-04', rev: 1 },
-      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING' as const, op: 'op-06', rev: 1 },
+    audioSrc: '/audio/demo_kitchen_01.mp3',
+    duration: 7.0,
+    timeline: [
+      {
+        time: 0.1,
+        command: 'set a 10 minute timer for pasta',
+        intentRev: 1,
+        slotDuration: 600,
+        speaker: 'USER',
+        text: '“Set a 10 minute timer for pasta...”',
+        timers: [
+          { name: 'PASTA', seconds: 600, total: 600, state: 'RUNNING', op: 'op-01', rev: 1 },
+          { name: 'TEA', seconds: 238, total: 300, state: 'PAUSED', op: 'op-04', rev: 1 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+      {
+        time: 2.5,
+        command: 'set a 7 minute timer for pasta',
+        intentRev: 2,
+        slotDuration: 420,
+        speaker: 'BARGE-IN',
+        text: '“Wait, actually make that 7 minutes!”',
+        timers: [
+          { name: 'PASTA', seconds: 0, total: 600, state: 'CANCELLED', op: 'op-01', rev: 1 },
+          { name: 'TEA', seconds: 238, total: 300, state: 'PAUSED', op: 'op-04', rev: 1 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+      {
+        time: 4.8,
+        command: 'set a 7 minute timer for pasta',
+        intentRev: 2,
+        slotDuration: 420,
+        speaker: 'GEMINI',
+        text: '“Pasta timer set for 7 minutes.”',
+        timers: [
+          { name: 'PASTA', seconds: 420, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+          { name: 'TEA', seconds: 238, total: 300, state: 'PAUSED', op: 'op-04', rev: 1 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+    ],
+    finalTimers: [
+      { name: 'PASTA', seconds: 420, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+      { name: 'TEA', seconds: 238, total: 300, state: 'PAUSED', op: 'op-04', rev: 1 },
+      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
     ],
   },
   {
@@ -491,10 +875,53 @@ const kitchenPresets = [
     command: 'set a 5 minute timer for tea',
     slotName: 'tea',
     slotDuration: 300,
-    timers: [
-      { name: 'TEA', seconds: 300, total: 300, state: 'RUNNING' as const, op: 'op-05', rev: 1 },
-      { name: 'PASTA', seconds: 396, total: 420, state: 'RUNNING' as const, op: 'op-02', rev: 2 },
-      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING' as const, op: 'op-06', rev: 1 },
+    audioSrc: '/audio/demo_kitchen_02.mp3',
+    duration: 10.3,
+    timeline: [
+      {
+        time: 0.1,
+        command: 'set a 5 minute timer for tea',
+        intentRev: 1,
+        slotDuration: 300,
+        speaker: 'USER',
+        text: '“Set a 5 minute timer for tea.”',
+        timers: [
+          { name: 'TEA', seconds: 300, total: 300, state: 'RUNNING', op: 'op-05', rev: 1 },
+          { name: 'PASTA', seconds: 396, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+      {
+        time: 3.0,
+        command: 'set a 5 minute timer for tea',
+        intentRev: 1,
+        slotDuration: 300,
+        speaker: 'USER',
+        text: '“Set a 5 minute timer for tea.” (Duplicate Proposal)',
+        timers: [
+          { name: 'TEA', seconds: 300, total: 300, state: 'RUNNING', op: 'op-05', rev: 1 },
+          { name: 'PASTA', seconds: 396, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+      {
+        time: 6.0,
+        command: 'set a 5 minute timer for tea',
+        intentRev: 1,
+        slotDuration: 300,
+        speaker: 'GEMINI',
+        text: '“Tea timer already active for 5 minutes. Coalescing duplicate proposal.”',
+        timers: [
+          { name: 'TEA', seconds: 300, total: 300, state: 'RUNNING', op: 'op-05', rev: 1 },
+          { name: 'PASTA', seconds: 396, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+    ],
+    finalTimers: [
+      { name: 'TEA', seconds: 300, total: 300, state: 'RUNNING', op: 'op-05', rev: 1 },
+      { name: 'PASTA', seconds: 396, total: 420, state: 'RUNNING', op: 'op-02', rev: 2 },
+      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
     ],
   },
   {
@@ -504,10 +931,40 @@ const kitchenPresets = [
     command: 'cancel the pasta timer',
     slotName: 'pasta',
     slotDuration: 0,
-    timers: [
-      { name: 'PASTA', seconds: 0, total: 420, state: 'CANCELLED' as const, op: 'op-02', rev: 3 },
-      { name: 'TEA', seconds: 238, total: 300, state: 'RUNNING' as const, op: 'op-04', rev: 1 },
-      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING' as const, op: 'op-06', rev: 1 },
+    audioSrc: '/audio/demo_kitchen_03.mp3',
+    duration: 4.8,
+    timeline: [
+      {
+        time: 0.1,
+        command: 'cancel the pasta timer',
+        intentRev: 3,
+        slotDuration: 0,
+        speaker: 'USER',
+        text: '“Cancel the pasta timer.”',
+        timers: [
+          { name: 'PASTA', seconds: 0, total: 420, state: 'CANCELLED', op: 'op-02', rev: 3 },
+          { name: 'TEA', seconds: 238, total: 300, state: 'RUNNING', op: 'op-04', rev: 1 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+      {
+        time: 2.8,
+        command: 'cancel the pasta timer',
+        intentRev: 3,
+        slotDuration: 0,
+        speaker: 'GEMINI',
+        text: '“Pasta timer cancelled before dispatch.”',
+        timers: [
+          { name: 'PASTA', seconds: 0, total: 420, state: 'CANCELLED', op: 'op-02', rev: 3 },
+          { name: 'TEA', seconds: 238, total: 300, state: 'RUNNING', op: 'op-04', rev: 1 },
+          { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
+        ],
+      },
+    ],
+    finalTimers: [
+      { name: 'PASTA', seconds: 0, total: 420, state: 'CANCELLED', op: 'op-02', rev: 3 },
+      { name: 'TEA', seconds: 238, total: 300, state: 'RUNNING', op: 'op-04', rev: 1 },
+      { name: 'OVEN', seconds: 844, total: 900, state: 'RUNNING', op: 'op-06', rev: 1 },
     ],
   },
   {
@@ -517,19 +974,64 @@ const kitchenPresets = [
     command: 'set a 8 minute timer for pasta',
     slotName: 'pasta',
     slotDuration: 480,
-    timers: [
-      { name: 'PASTA', seconds: 480, total: 480, state: 'RUNNING' as const, op: 'op-07', rev: 4 },
-      { name: 'TEA', seconds: 240, total: 240, state: 'RUNNING' as const, op: 'op-08', rev: 2 },
-      { name: 'OVEN', seconds: 1200, total: 1200, state: 'RUNNING' as const, op: 'op-09', rev: 2 },
+    audioSrc: '/audio/demo_kitchen_04.mp3',
+    duration: 11.5,
+    timeline: [
+      {
+        time: 0.1,
+        command: 'set pasta 8m, tea 4m, oven 20m',
+        intentRev: 4,
+        slotDuration: 480,
+        speaker: 'USER',
+        text: '“Set pasta to 8 minutes, tea to 4 minutes, and oven to 20 minutes.”',
+        timers: [
+          { name: 'PASTA', seconds: 480, total: 480, state: 'RUNNING', op: 'op-07', rev: 4 },
+          { name: 'TEA', seconds: 240, total: 240, state: 'RUNNING', op: 'op-08', rev: 2 },
+          { name: 'OVEN', seconds: 1200, total: 1200, state: 'RUNNING', op: 'op-09', rev: 2 },
+        ],
+      },
+      {
+        time: 6.0,
+        command: 'set pasta 8m, tea 4m, oven 20m',
+        intentRev: 4,
+        slotDuration: 480,
+        speaker: 'GEMINI',
+        text: '“All three timers updated: pasta to 8 minutes, tea to 4 minutes, and oven to 20 minutes.”',
+        timers: [
+          { name: 'PASTA', seconds: 480, total: 480, state: 'RUNNING', op: 'op-07', rev: 4 },
+          { name: 'TEA', seconds: 240, total: 240, state: 'RUNNING', op: 'op-08', rev: 2 },
+          { name: 'OVEN', seconds: 1200, total: 1200, state: 'RUNNING', op: 'op-09', rev: 2 },
+        ],
+      },
+    ],
+    finalTimers: [
+      { name: 'PASTA', seconds: 480, total: 480, state: 'RUNNING', op: 'op-07', rev: 4 },
+      { name: 'TEA', seconds: 240, total: 240, state: 'RUNNING', op: 'op-08', rev: 2 },
+      { name: 'OVEN', seconds: 1200, total: 1200, state: 'RUNNING', op: 'op-09', rev: 2 },
     ],
   },
 ]
 
 function Kitchen() {
   const [selectedPreset, setSelectedPreset] = useState(0)
-  const [timers, setTimers] = useState<Timer[]>(kitchenPresets[0].timers)
-  const [command, setCommand] = useState(kitchenPresets[0].command)
+  const activePreset = kitchenPresets[selectedPreset]
 
+  const [timers, setTimers] = useState<Timer[]>(kitchenPresets[0].finalTimers)
+  const [command, setCommand] = useState(kitchenPresets[0].command)
+  const [intentRev, setIntentRev] = useState(2)
+  const [slotDuration, setSlotDuration] = useState(kitchenPresets[0].slotDuration)
+
+  // Real audio state
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+  const [isPlayingAudio, setIsPlayingAudio] = useState(false)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [duration, setDuration] = useState(kitchenPresets[0].duration)
+  const [currentSpeech, setCurrentSpeech] = useState<{
+    speaker: 'USER' | 'BARGE-IN' | 'GEMINI'
+    text: string
+  } | null>(null)
+
+  // Natural countdown timer ticker
   useEffect(() => {
     const id = window.setInterval(() => {
       setTimers((ts) =>
@@ -541,10 +1043,79 @@ function Kitchen() {
     return () => window.clearInterval(id)
   }, [])
 
+  // Switch scenario preset -> reset audio and states
   const selectPreset = (idx: number) => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    setIsPlayingAudio(false)
+    setCurrentTime(0)
     setSelectedPreset(idx)
-    setTimers(kitchenPresets[idx].timers)
-    setCommand(kitchenPresets[idx].command)
+    const p = kitchenPresets[idx]
+    setTimers(p.finalTimers)
+    setCommand(p.command)
+    setIntentRev(idx + 1)
+    setSlotDuration(p.slotDuration)
+    setCurrentSpeech(null)
+  }
+
+  const runAudio = () => {
+    if (!audioRef.current) return
+    if (isPlayingAudio) {
+      audioRef.current.pause()
+      setIsPlayingAudio(false)
+    } else {
+      audioRef.current
+        .play()
+        .then(() => setIsPlayingAudio(true))
+        .catch((err) => console.warn('Audio play error:', err))
+    }
+  }
+
+  const resetAudio = () => {
+    if (audioRef.current) {
+      audioRef.current.pause()
+      audioRef.current.currentTime = 0
+    }
+    setIsPlayingAudio(false)
+    setCurrentTime(0)
+    const p = kitchenPresets[selectedPreset]
+    setTimers(p.finalTimers)
+    setCommand(p.command)
+    setIntentRev(selectedPreset + 1)
+    setSlotDuration(p.slotDuration)
+    setCurrentSpeech(null)
+  }
+
+  const handleTimeUpdate = () => {
+    if (!audioRef.current) return
+    const t = audioRef.current.currentTime
+    setCurrentTime(t)
+
+    // Find active timeline entry for current timestamp
+    const entries = activePreset.timeline
+    let activeEntry = entries[0]
+    for (const e of entries) {
+      if (t >= e.time) {
+        activeEntry = e
+      }
+    }
+
+    if (activeEntry) {
+      setCommand(activeEntry.command)
+      setIntentRev(activeEntry.intentRev)
+      setSlotDuration(activeEntry.slotDuration)
+      setCurrentSpeech({ speaker: activeEntry.speaker, text: activeEntry.text })
+      setTimers(activeEntry.timers)
+    }
+  }
+
+  const formatSec = (sec: number) => {
+    const m = Math.floor(sec / 60)
+    const s = Math.floor(sec % 60)
+    const ms = Math.floor((sec % 1) * 10)
+    return `${String(m).padStart(2, '0')}:${String(s).padStart(2, '0')}.${ms}`
   }
 
   const toggle = (name: string) =>
@@ -553,8 +1124,10 @@ function Kitchen() {
         t.name === name ? { ...t, state: t.state === 'RUNNING' ? 'PAUSED' : 'RUNNING' } : t
       )
     )
+
   const cancel = (name: string) =>
     setTimers((ts) => ts.map((t) => (t.name === name ? { ...t, state: 'CANCELLED' } : t)))
+
   const execute = () => {
     const match = command.match(/(\d+)\s*minute\s*timer\s*for\s*(tea|pasta|oven)/i)
     if (match) {
@@ -565,10 +1138,12 @@ function Kitchen() {
           total: Number(match[1]) * 60,
           state: 'RUNNING',
           op: 'op-0' + (ts.length + 2),
-          rev: 2,
+          rev: intentRev + 1,
         },
         ...ts.filter((t) => t.name !== match[2].toUpperCase()),
       ])
+      setIntentRev((r) => r + 1)
+      setSlotDuration(Number(match[1]) * 60)
     }
   }
 
@@ -576,9 +1151,22 @@ function Kitchen() {
 
   return (
     <main className="content">
+      {/* Hidden real audio element playing authentic scenario */}
+      <audio
+        ref={audioRef}
+        src={activePreset.audioSrc}
+        preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        onLoadedMetadata={() => setDuration(audioRef.current?.duration || activePreset.duration)}
+        onEnded={() => {
+          setIsPlayingAudio(false)
+          setTimers(activePreset.finalTimers)
+        }}
+      />
+
       <PageHeading
         eyebrow="02 / KITCHEN PLAYGROUND"
-        subtitle="Offline sandbox for testing correction-aware execution."
+        subtitle="Offline sandbox for testing correction-aware execution with real scenario audio."
       />
       <div className="kitchen-layout">
         <Panel title="DEMO SCENARIOS" eyebrow="SCENARIO REGISTRY" className="kitchen-scenario-panel">
@@ -598,9 +1186,55 @@ function Kitchen() {
         </Panel>
 
         <div className="timer-area">
+          <div className="kitchen-controls-bar">
+            <div className="flex items-center gap-2">
+              <button
+                className={`btn ${isPlayingAudio ? 'primary' : ''} text-xs py-1 px-3`}
+                onClick={runAudio}
+              >
+                {isPlayingAudio ? <Pause data-icon="inline-start" /> : <Play data-icon="inline-start" />}
+                {isPlayingAudio ? 'PAUSE VOICE' : 'PLAY VOICE DEMO'}
+              </button>
+              <button className="btn text-xs py-1 px-2.5" onClick={resetAudio}>
+                <RotateCcw data-icon="inline-start" /> RESET
+              </button>
+              <div className="audio-time-badge text-xs">
+                {formatSec(currentTime)} / {formatSec(duration || activePreset.duration)}
+              </div>
+            </div>
+            {isPlayingAudio && (
+              <div className="live-audio-pill">
+                <Volume2 className="w-3.5 h-3.5 text-[#38bdf8] animate-pulse" />
+                <span className="pill-text text-[#38bdf8]">VOICE AUDIO PLAYING</span>
+              </div>
+            )}
+          </div>
+
+          <div className={`kitchen-speech-ticker ${currentSpeech?.speaker === 'BARGE-IN' ? 'bargein' : ''}`}>
+            <span
+              className={`kitchen-speaker-tag ${
+                currentSpeech?.speaker === 'BARGE-IN'
+                  ? 'tag-bargein'
+                  : currentSpeech?.speaker === 'GEMINI'
+                  ? 'tag-gemini'
+                  : 'tag-user'
+              }`}
+            >
+              {currentSpeech?.speaker === 'BARGE-IN'
+                ? '⚡ BARGE-IN'
+                : currentSpeech?.speaker === 'GEMINI'
+                ? '🤖 GEMINI LIVE'
+                : '🗣️ USER VOICE'}
+            </span>
+            <span className="kitchen-speech-text">
+              {currentSpeech ? currentSpeech.text : `Ready. Click "PLAY VOICE DEMO" to hear audio replay.`}
+            </span>
+          </div>
+
           <div className="section-label">
             ACTIVE TIMERS <span>{activeCount} / 8 SLOTS</span>
           </div>
+
           <div className="timer-grid">
             {timers.map((t) => (
               <TimerCard
@@ -611,6 +1245,7 @@ function Kitchen() {
               />
             ))}
           </div>
+
           <Panel title="COMMAND" eyebrow="LOCAL CONTROLLER">
             <div className="command">
               <Terminal />
@@ -632,10 +1267,10 @@ function Kitchen() {
             {JSON.stringify(
               {
                 request_id: `req-00${selectedPreset + 1}`,
-                intent_revision: selectedPreset + 1,
+                intent_revision: intentRev,
                 slots: {
-                  timer_name: kitchenPresets[selectedPreset].slotName,
-                  duration: kitchenPresets[selectedPreset].slotDuration,
+                  timer_name: activePreset.slotName,
+                  duration: slotDuration,
                 },
                 operations: timers.map((t) => ({
                   id: t.op,
@@ -1212,6 +1847,7 @@ const lifelines = [
 interface SeqStep {
   num: number
   time: string
+  timeSec: number
   from: number
   to: number
   label: string
@@ -1225,6 +1861,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 1,
     time: '+000ms',
+    timeSec: 0.1,
     from: 0,
     to: 1,
     label: '16kHz Audio Stream: "Book a flight to Mumbai on Friday..."',
@@ -1236,6 +1873,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 2,
     time: '+120ms',
+    timeSec: 0.4,
     from: 1,
     to: 2,
     label: 'Audio Frames Dispatch (WebRTC -> Gemini)',
@@ -1247,6 +1885,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 3,
     time: '+450ms',
+    timeSec: 1.2,
     from: 2,
     to: 3,
     label: 'Tool Proposal: op-01 search_flights(Mumbai, Friday)',
@@ -1258,6 +1897,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 4,
     time: '+452ms',
+    timeSec: 1.5,
     from: 3,
     to: 4,
     label: 'Ledger Update: RequestID=1, Rev=1 (destination=Mumbai, date=Friday)',
@@ -1269,6 +1909,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 5,
     time: '+1120ms',
+    timeSec: 2.7,
     from: 0,
     to: 1,
     label: 'Barge-In Speech: "wait, actually make that Delhi!"',
@@ -1280,6 +1921,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 6,
     time: '+1125ms',
+    timeSec: 2.9,
     from: 1,
     to: 3,
     label: 'Barge-In Event -> Turn Bridge (Rev Bump 1 -> 2)',
@@ -1291,6 +1933,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 7,
     time: '+1128ms',
+    timeSec: 3.1,
     from: 3,
     to: 5,
     label: 'PRE-DISPATCH ABORT: cancel op-01 (rev 1 < rev 2)',
@@ -1302,6 +1945,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 8,
     time: '+1260ms',
+    timeSec: 3.8,
     from: 2,
     to: 3,
     label: 'Revised Tool Proposal: op-02 search_flights(Delhi, Friday)',
@@ -1313,6 +1957,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 9,
     time: '+1280ms',
+    timeSec: 4.8,
     from: 3,
     to: 5,
     label: 'Admit op-02 -> Acquire Write-Gate Mutex',
@@ -1324,6 +1969,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 10,
     time: '+1290ms',
+    timeSec: 5.1,
     from: 5,
     to: 6,
     label: 'Dispatch Execution: search_flights(Delhi, Friday)',
@@ -1335,6 +1981,7 @@ const sequenceSteps: SeqStep[] = [
   {
     num: 11,
     time: '+2110ms',
+    timeSec: 5.3,
     from: 6,
     to: 2,
     label: 'Backend Result (820ms) -> Grounded Speech Synthesis',
@@ -1349,36 +1996,101 @@ function AnimatedSequenceGraph() {
   const [currentIdx, setCurrentIdx] = useState(6) // Default at the critical cancellation moment
   const [isPlaying, setIsPlaying] = useState(false)
   const [speed, setSpeed] = useState<number>(1)
+  const [currentTime, setCurrentTime] = useState(0)
+  const [isMuted, setIsMuted] = useState(false)
 
-  useEffect(() => {
-    if (!isPlaying) return
-    const interval = Math.max(400, 1800 / speed)
-    const timer = window.setInterval(() => {
-      setCurrentIdx((prev) => (prev + 1) % sequenceSteps.length)
-    }, interval)
-    return () => window.clearInterval(timer)
-  }, [isPlaying, speed])
+  const audioRef = useRef<HTMLAudioElement | null>(null)
+
+  const togglePlay = () => {
+    if (!audioRef.current) return
+    if (isPlaying) {
+      audioRef.current.pause()
+      setIsPlaying(false)
+    } else {
+      audioRef.current.playbackRate = speed
+      audioRef.current
+        .play()
+        .then(() => setIsPlaying(true))
+        .catch((err) => console.warn('Sequence audio play error:', err))
+    }
+  }
+
+  const handleStepSelect = (idx: number) => {
+    setCurrentIdx(idx)
+    if (audioRef.current) {
+      audioRef.current.currentTime = sequenceSteps[idx].timeSec
+      if (!isPlaying) {
+        audioRef.current.playbackRate = speed
+        audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {})
+      }
+    }
+  }
+
+  const handleRestart = () => {
+    if (audioRef.current) {
+      audioRef.current.currentTime = 0
+      audioRef.current.playbackRate = speed
+    }
+    setCurrentIdx(0)
+    if (!isPlaying && audioRef.current) {
+      audioRef.current.play().then(() => setIsPlaying(true)).catch(() => {})
+    }
+  }
+
+  const handleTimeUpdate = () => {
+    if (!audioRef.current) return
+    const t = audioRef.current.currentTime
+    setCurrentTime(t)
+    for (let i = sequenceSteps.length - 1; i >= 0; i--) {
+      if (t >= sequenceSteps[i].timeSec) {
+        setCurrentIdx(i)
+        break
+      }
+    }
+  }
+
+  const changeSpeed = (s: number) => {
+    setSpeed(s)
+    if (audioRef.current) {
+      audioRef.current.playbackRate = s
+    }
+  }
+
+  const toggleMute = () => {
+    if (!audioRef.current) return
+    audioRef.current.muted = !isMuted
+    setIsMuted(!isMuted)
+  }
 
   const step = sequenceSteps[currentIdx]
 
   return (
     <div className="seq-wrapper">
+      {/* Hidden real audio element playing dialogue in sync with sequence lifelines */}
+      <audio
+        ref={audioRef}
+        src="/audio/demo_engine.mp3"
+        preload="auto"
+        onTimeUpdate={handleTimeUpdate}
+        onEnded={() => setIsPlaying(false)}
+      />
+
       {/* Sequence Controls Toolbar */}
       <div className="seq-toolbar">
         <div className="seq-controls">
           <button
             className={`seq-btn ${isPlaying ? 'primary' : ''}`}
-            onClick={() => setIsPlaying(!isPlaying)}
-            title={isPlaying ? 'Pause sequence animation' : 'Play sequence animation'}
+            onClick={togglePlay}
+            title={isPlaying ? 'Pause sequence animation & audio' : 'Play sequence animation with real audio'}
           >
             {isPlaying ? <Pause className="w-3 h-3" /> : <Play className="w-3 h-3" />}
-            {isPlaying ? 'PAUSE' : 'PLAY SEQUENCE'}
+            {isPlaying ? 'PAUSE' : 'PLAY SEQUENCE WITH REAL AUDIO'}
           </button>
           <button
             className="seq-btn"
             onClick={() => {
-              setIsPlaying(false)
-              setCurrentIdx((prev) => (prev > 0 ? prev - 1 : sequenceSteps.length - 1))
+              const prev = currentIdx > 0 ? currentIdx - 1 : sequenceSteps.length - 1
+              handleStepSelect(prev)
             }}
             title="Previous step"
           >
@@ -1387,8 +2099,8 @@ function AnimatedSequenceGraph() {
           <button
             className="seq-btn"
             onClick={() => {
-              setIsPlaying(false)
-              setCurrentIdx((prev) => (prev + 1) % sequenceSteps.length)
+              const next = (currentIdx + 1) % sequenceSteps.length
+              handleStepSelect(next)
             }}
             title="Next step"
           >
@@ -1396,10 +2108,7 @@ function AnimatedSequenceGraph() {
           </button>
           <button
             className="seq-btn"
-            onClick={() => {
-              setCurrentIdx(0)
-              setIsPlaying(false)
-            }}
+            onClick={handleRestart}
             title="Restart from step 1"
           >
             <RotateCcw className="w-3 h-3" /> RESTART
@@ -1411,16 +2120,27 @@ function AnimatedSequenceGraph() {
               <button
                 key={s}
                 className={`speed-btn ${speed === s ? 'active' : ''}`}
-                onClick={() => setSpeed(s)}
+                onClick={() => changeSpeed(s)}
               >
                 {s}x
               </button>
             ))}
           </div>
+
+          <button
+            className="btn py-1 px-1.5 text-xs ml-1"
+            onClick={toggleMute}
+            title={isMuted ? 'Unmute audio' : 'Mute audio'}
+          >
+            {isMuted ? <VolumeX className="w-3 h-3 text-[#f87171]" /> : <Volume2 className="w-3 h-3" />}
+          </button>
         </div>
 
         <div className="flex items-center gap-2">
-          <span className="text-muted">CURRENT EVENT:</span>
+          <span className={`demo-audio-live-badge ${isPlaying ? '' : 'idle'}`}>
+            <i className={`status-dot ${isPlaying ? 'pulse' : ''}`} />
+            {isPlaying ? 'REAL AUDIO SYNCED' : 'AUDIO READY'}
+          </span>
           <span className="text-[#38bdf8] font-bold">
             STEP {String(currentIdx + 1).padStart(2, '0')} / {String(sequenceSteps.length).padStart(2, '0')}
           </span>
@@ -1485,10 +2205,7 @@ function AnimatedSequenceGraph() {
               <div
                 key={s.num}
                 className={rowClass}
-                onClick={() => {
-                  setCurrentIdx(idx)
-                  setIsPlaying(false)
-                }}
+                onClick={() => handleStepSelect(idx)}
               >
                 <span className="seq-step-time">{s.time}</span>
                 <div className="seq-step-canvas">
