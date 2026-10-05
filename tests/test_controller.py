@@ -243,10 +243,40 @@ async def test_correction_prevents_queued_write_from_dispatching():
         release.set()
         a, b = await asyncio.wait_for(asyncio.gather(first, second), 2)
         assert calls == ["first"]
+        assert a.status == "cancelled_in_flight" and a.superseded
+        assert a.result is None
+        assert b.status == "cancelled_before_dispatch"
+        assert len(telemetry.getvalue().splitlines()) == 1
+    finally:
+        release.set()
+        await controller.close()
+
+
+async def test_correction_without_cancel_in_flight_allows_write_to_finish():
+    entered, release = asyncio.Event(), asyncio.Event()
+    calls = []
+
+    async def write(name):
+        calls.append(name)
+        if name == "first":
+            entered.set()
+            await release.wait()
+        return {"status": "success", "name": name}
+
+    controller = Controller("s1", [ToolDefinition("write", True, NAMED, write)], cancel_in_flight=False)
+    try:
+        request = await resolve(controller)
+        first = asyncio.create_task(controller.execute(Proposal(request, "a", "write", {"name": "first"})))
+        await asyncio.wait_for(entered.wait(), 2)
+        second = asyncio.create_task(controller.execute(Proposal(request, "b", "write", {"name": "second"})))
+        await wait_for_operations(controller, 2)
+        await resolve(controller, "correction", {"name": "third"})
+        release.set()
+        a, b = await asyncio.wait_for(asyncio.gather(first, second), 2)
+        assert calls == ["first"]
         assert a.status == "succeeded" and a.superseded
         assert a.result == {"status": "success", "name": "first"}
         assert b.status == "cancelled_before_dispatch"
-        assert len(telemetry.getvalue().splitlines()) == 1
     finally:
         release.set()
         await controller.close()
@@ -524,7 +554,12 @@ async def test_superseded_pending_work_returns_before_predecessor_finishes(depen
         await resolve(controller, "correction")
         outcome = await asyncio.wait_for(asyncio.shield(second), 0.2)
         assert outcome.status == "cancelled_before_dispatch"
-        assert not release.is_set() and not first.done()
+        if dependency:
+            # Reads continue running across correction and wait for release
+            assert not release.is_set() and not first.done()
+        else:
+            # In-flight writes are cancelled when superseded
+            assert first.done() and (await first).status == "cancelled_in_flight"
         assert writes == []
     finally:
         release.set()

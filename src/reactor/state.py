@@ -54,7 +54,7 @@ class Proposal:
 @dataclass(frozen=True)
 class Outcome:
     operation_id: str
-    status: Literal["succeeded", "failed", "cancelled_before_dispatch", "outcome_unknown"]
+    status: Literal["succeeded", "failed", "cancelled_before_dispatch", "cancelled_in_flight", "outcome_unknown"]
     superseded: bool
     result: Any = None
     error: str | None = None

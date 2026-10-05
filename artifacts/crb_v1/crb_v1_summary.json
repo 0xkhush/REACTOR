@@ -1,0 +1,448 @@
+{
+  "timestamp": "2026-10-06T01:59:44Z",
+  "total_scenarios": 40,
+  "systems": [
+    "Naive",
+    "AsyncCancel",
+    "HoldConfirm",
+    "REACTOR"
+  ],
+  "aggregate": {
+    "summary_by_system": {
+      "AsyncCancel": {
+        "n_scenarios": 40,
+        "filr_pct": 0.0,
+        "filr_num": 0,
+        "filr_ci95": [
+          0.0,
+          8.76
+        ],
+        "crr_pct": 85.0,
+        "crr_num": 34,
+        "crr_ci95": [
+          70.93,
+          92.94
+        ],
+        "pmr_pct": 0.0,
+        "pmr_num": 0,
+        "fcr_pct": 37.5,
+        "fcr_num": 15,
+        "monotonicity_violations": 0,
+        "cancel_latency_ms": {
+          "count": 40,
+          "mean": 0.121,
+          "p50": 0.086,
+          "p95": 0.185,
+          "p99": 1.35,
+          "max": 1.35
+        },
+        "gate_latency_us": {
+          "count": 0,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        }
+      },
+      "HoldConfirm": {
+        "n_scenarios": 40,
+        "filr_pct": 0.0,
+        "filr_num": 0,
+        "filr_ci95": [
+          0.0,
+          8.76
+        ],
+        "crr_pct": 100.0,
+        "crr_num": 40,
+        "crr_ci95": [
+          91.24,
+          100.0
+        ],
+        "pmr_pct": 0.0,
+        "pmr_num": 0,
+        "fcr_pct": 37.5,
+        "fcr_num": 15,
+        "monotonicity_violations": 0,
+        "cancel_latency_ms": {
+          "count": 0,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "gate_latency_us": {
+          "count": 0,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        }
+      },
+      "Naive": {
+        "n_scenarios": 40,
+        "filr_pct": 62.5,
+        "filr_num": 25,
+        "filr_ci95": [
+          47.03,
+          75.78
+        ],
+        "crr_pct": 32.5,
+        "crr_num": 13,
+        "crr_ci95": [
+          20.08,
+          47.98
+        ],
+        "pmr_pct": 0.0,
+        "pmr_num": 0,
+        "fcr_pct": 0.0,
+        "fcr_num": 0,
+        "monotonicity_violations": 40,
+        "cancel_latency_ms": {
+          "count": 0,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        },
+        "gate_latency_us": {
+          "count": 0,
+          "mean": 0.0,
+          "p50": 0.0,
+          "p95": 0.0,
+          "p99": 0.0,
+          "max": 0.0
+        }
+      },
+      "REACTOR": {
+        "n_scenarios": 40,
+        "filr_pct": 0.0,
+        "filr_num": 0,
+        "filr_ci95": [
+          0.0,
+          8.76
+        ],
+        "crr_pct": 85.0,
+        "crr_num": 34,
+        "crr_ci95": [
+          70.93,
+          92.94
+        ],
+        "pmr_pct": 0.0,
+        "pmr_num": 0,
+        "fcr_pct": 37.5,
+        "fcr_num": 15,
+        "monotonicity_violations": 0,
+        "cancel_latency_ms": {
+          "count": 30,
+          "mean": 0.21,
+          "p50": 0.202,
+          "p95": 0.322,
+          "p99": 0.455,
+          "max": 0.455
+        },
+        "gate_latency_us": {
+          "count": 80,
+          "mean": 61.721,
+          "p50": 57.334,
+          "p95": 146.375,
+          "p99": 179.25,
+          "max": 179.25
+        }
+      }
+    },
+    "breakdown_by_timing_class": {
+      "concurrency_isolation": {
+        "AsyncCancel": {
+          "n": 2,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "HoldConfirm": {
+          "n": 2,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "Naive": {
+          "n": 2,
+          "filr_pct": 100.0,
+          "crr_pct": 0.0
+        },
+        "REACTOR": {
+          "n": 2,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        }
+      },
+      "in_flight": {
+        "AsyncCancel": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "HoldConfirm": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "Naive": {
+          "n": 10,
+          "filr_pct": 80.0,
+          "crr_pct": 60.0
+        },
+        "REACTOR": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        }
+      },
+      "partial_mutation": {
+        "AsyncCancel": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 40.0
+        },
+        "HoldConfirm": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "Naive": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 0.0
+        },
+        "REACTOR": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 40.0
+        }
+      },
+      "pre_dispatch": {
+        "AsyncCancel": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "HoldConfirm": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "Naive": {
+          "n": 10,
+          "filr_pct": 80.0,
+          "crr_pct": 50.0
+        },
+        "REACTOR": {
+          "n": 10,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        }
+      },
+      "rapid_correction": {
+        "AsyncCancel": {
+          "n": 8,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "HoldConfirm": {
+          "n": 8,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        },
+        "Naive": {
+          "n": 8,
+          "filr_pct": 87.5,
+          "crr_pct": 25.0
+        },
+        "REACTOR": {
+          "n": 8,
+          "filr_pct": 0.0,
+          "crr_pct": 100.0
+        }
+      }
+    }
+  },
+  "gate_latency_microbenchmark": {
+    "count": 10000,
+    "mean_us": 10.995,
+    "p50_us": 3.75,
+    "p95_us": 8.541,
+    "p99_us": 16.0,
+    "max_us": 65759.0
+  },
+  "boundary_tests": [
+    {
+      "scenario_id": "CRB_BOUNDARY_1ms_before_commit",
+      "system": "Naive",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": false,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": true,
+      "false_cancellation": false,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_1ms_before_commit",
+      "system": "AsyncCancel",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_1ms_before_commit",
+      "system": "HoldConfirm",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_1ms_before_commit",
+      "system": "REACTOR",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_at_commit",
+      "system": "Naive",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": true,
+      "false_cancellation": false,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_at_commit",
+      "system": "AsyncCancel",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": false,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_at_commit",
+      "system": "HoldConfirm",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": false,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_at_commit",
+      "system": "REACTOR",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": false,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_5ms_after_commit",
+      "system": "Naive",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": false,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_5ms_after_commit",
+      "system": "AsyncCancel",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": false,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_5ms_after_commit",
+      "system": "HoldConfirm",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": false,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": true,
+      "stale_mutations": []
+    },
+    {
+      "scenario_id": "CRB_BOUNDARY_5ms_after_commit",
+      "system": "REACTOR",
+      "timing_class": "boundary_race",
+      "domain": "airline",
+      "template": "boundary_test",
+      "state_match": true,
+      "stale_mutations_count": 0,
+      "has_stale_side_effect": false,
+      "is_partial_mutation": false,
+      "monotonicity_violation": false,
+      "false_cancellation": false,
+      "stale_mutations": []
+    }
+  ]
+}

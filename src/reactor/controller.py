@@ -11,12 +11,13 @@ from reactor.trace import TraceError, TraceRecorder
 
 
 class Controller:
-    def __init__(self, session_id: str, tools: list[ToolDefinition], trace: TraceRecorder | None = None):
+    def __init__(self, session_id: str, tools: list[ToolDefinition], trace: TraceRecorder | None = None, *, cancel_in_flight: bool = True):
         self._state = SessionState(session_id)
         self._tools = {tool.name: tool for tool in tools}
         if len(self._tools) != len(tools):
             raise ValueError("duplicate tool names")
         self._trace = trace
+        self._cancel_in_flight = cancel_in_flight
         self._lock = asyncio.Lock()
         self._write_lane = asyncio.Lock()
         self._input_ready = asyncio.Event()
@@ -125,8 +126,10 @@ class Controller:
     def _cancel_pending(self):
         trace_failure = None
         for operation in self._operations.values():
-            if operation.status == "proposed" and (
+            if (operation.status == "proposed" and (
                 self._closed or not self._state.is_current(operation.proposal.request)
+            )) or (
+                self._cancel_in_flight and operation.status == "running" and operation.state_modifying and not self._closed and not self._state.is_current(operation.proposal.request)
             ):
                 try:
                     self._cancel(operation, "session closed or request superseded")
@@ -159,10 +162,15 @@ class Controller:
         except asyncio.CancelledError:
             if operation.status == "proposed":
                 self._cancel(operation, "execution owner cancelled before dispatch")
+            elif not self._state.is_current(operation.proposal.request):
+                if operation.status != "cancelled_in_flight":
+                    self._cancel(operation, "execution owner cancelled in flight")
             raise
 
     def _cancel(self, operation: Operation, reason: str):
-        operation.status = "cancelled_before_dispatch"
+        if operation.status in ("cancelled_before_dispatch", "cancelled_in_flight"):
+            return
+        operation.status = "cancelled_before_dispatch" if operation.status == "proposed" else "cancelled_in_flight"
         operation.error = reason
         self._event(operation.status, operation_id=operation.operation_id, reason=reason)
 
@@ -196,8 +204,14 @@ class Controller:
                 operation.error = "tool reported an error"
         except (Exception, asyncio.CancelledError) as exc:
             # Do not expose arbitrary backend exception strings (which can contain credentials).
-            operation.status = "outcome_unknown" if tool.state_modifying else "failed"
-            operation.error = f"{type(exc).__name__}: tool did not provide a valid outcome"
+            if isinstance(exc, asyncio.CancelledError) and (
+                operation.status == "cancelled_in_flight" or not self._state.is_current(operation.proposal.request)
+            ):
+                if operation.status != "cancelled_in_flight":
+                    self._cancel(operation, "operation cancelled in flight")
+            else:
+                operation.status = "outcome_unknown" if tool.state_modifying else "failed"
+                operation.error = f"{type(exc).__name__}: tool did not provide a valid outcome"
         operation.ended_at = time.time()
         if self._trace:
             try:
@@ -206,9 +220,10 @@ class Controller:
                 self._trace_error = exc
                 self._input_ready.set()
                 raise
-        self._event(operation.status, operation_id=operation.operation_id,
-                    superseded=not self._state.is_current(operation.proposal.request),
-                    duration_seconds=time.monotonic() - started)
+        if operation.status != "cancelled_in_flight":
+            self._event(operation.status, operation_id=operation.operation_id,
+                        superseded=not self._state.is_current(operation.proposal.request),
+                        duration_seconds=time.monotonic() - started)
 
     def _outcome(self, operation: Operation) -> Outcome:
         superseded = (not self._state.is_current(operation.proposal.request)

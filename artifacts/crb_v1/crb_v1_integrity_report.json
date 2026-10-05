@@ -1,0 +1,16 @@
+{
+  "integrity_scan_passed": true,
+  "scanned_files": [
+    "src/reactor/controller.py",
+    "src/reactor/state.py",
+    "src/reactor/tools/base.py"
+  ],
+  "violation_count": 0,
+  "violations": [],
+  "checks": {
+    "task_id_leakage": "CLEAN",
+    "oracle_leakage": "CLEAN",
+    "system_specific_branches": "CLEAN",
+    "evaluator_core_tampering": "CLEAN"
+  }
+}
