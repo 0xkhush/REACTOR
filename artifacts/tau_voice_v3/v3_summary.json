@@ -1,0 +1,90 @@
+{
+  "benchmark": "tau-voice",
+  "benchmark_source": "sierra-research/tau2-bench",
+  "total_tasks": 278,
+  "v1_baseline": {
+    "passed": 69,
+    "failed": 209,
+    "pass_at_1_pct": 24.82,
+    "wilson_95_ci": [
+      20.11,
+      30.22
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0
+  },
+  "v3_guarded_sota": {
+    "passed": 77,
+    "failed": 201,
+    "pass_at_1_pct": 27.7,
+    "wilson_95_ci": [
+      22.77,
+      33.24
+    ],
+    "net_pass_lift_pct_pts": 2.88,
+    "net_tasks_recovered": 8,
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "arguments_normalized_count": 23,
+    "policies_blocked_count": 20
+  },
+  "domain_breakdown": {
+    "airline": {
+      "total_tasks": 50,
+      "orig_passes": 15,
+      "orig_pass_rate_pct": 30.0,
+      "orig_ci_95": [
+        19.1,
+        43.75
+      ],
+      "v3_passes": 18,
+      "v3_pass_rate_pct": 36.0,
+      "v3_ci_95": [
+        24.14,
+        49.86
+      ],
+      "net_lift_pct_pts": 6.0,
+      "recovered_tasks_count": 3
+    },
+    "retail": {
+      "total_tasks": 114,
+      "orig_passes": 34,
+      "orig_pass_rate_pct": 29.82,
+      "orig_ci_95": [
+        22.2,
+        38.77
+      ],
+      "v3_passes": 39,
+      "v3_pass_rate_pct": 34.21,
+      "v3_ci_95": [
+        26.14,
+        43.31
+      ],
+      "net_lift_pct_pts": 4.39,
+      "recovered_tasks_count": 5
+    },
+    "telecom": {
+      "total_tasks": 114,
+      "orig_passes": 20,
+      "orig_pass_rate_pct": 17.54,
+      "orig_ci_95": [
+        11.65,
+        25.55
+      ],
+      "v3_passes": 20,
+      "v3_pass_rate_pct": 17.54,
+      "v3_ci_95": [
+        11.65,
+        25.55
+      ],
+      "net_lift_pct_pts": 0.0,
+      "recovered_tasks_count": 0
+    }
+  },
+  "execution_safety": {
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "stale_execution_rate_pct": 0.0,
+    "duplicate_execution_rate_pct": 0.0
+  }
+}

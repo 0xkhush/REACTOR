@@ -1,0 +1,29 @@
+{
+  "benchmark": "tau-voice",
+  "comparisons": [
+    {
+      "domain": "airline",
+      "baseline_pass": 30.0,
+      "sota_pass": 36.0,
+      "lift_pct_pts": 6.0
+    },
+    {
+      "domain": "retail",
+      "baseline_pass": 29.82,
+      "sota_pass": 34.21,
+      "lift_pct_pts": 4.39
+    },
+    {
+      "domain": "telecom",
+      "baseline_pass": 17.54,
+      "sota_pass": 17.54,
+      "lift_pct_pts": 0.0
+    },
+    {
+      "domain": "overall",
+      "baseline_pass": 24.82,
+      "sota_pass": 27.7,
+      "lift_pct_pts": 2.88
+    }
+  ]
+}

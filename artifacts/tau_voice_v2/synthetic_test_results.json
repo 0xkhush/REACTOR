@@ -1,0 +1,129 @@
+{
+  "timestamp": "2026-10-04T20:37:27Z",
+  "total_tests": 17,
+  "passed_tests": 17,
+  "failed_tests": 0,
+  "all_passed": true,
+  "duration_seconds": 1.366,
+  "tests": [
+    {
+      "suite": "TestEntityResolver",
+      "test_name": "test_exact_id_match",
+      "description": "Exact ID lookup returns RESOLVED with confidence 1.0",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestEntityResolver",
+      "test_name": "test_exact_email_and_phone",
+      "description": "Exact secondary attributes (email/phone) resolve customer without hallucination",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestEntityResolver",
+      "test_name": "test_exact_name_disambiguated_by_zip",
+      "description": "Ambiguous names are correctly disambiguated by ZIP code",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestEntityResolver",
+      "test_name": "test_phonetic_similarity_with_margin",
+      "description": "Close match with >= 0.88 score and >= 0.10 margin resolves safely",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestEntityResolver",
+      "test_name": "test_low_confidence_rejected",
+      "description": "Low confidence (< 0.88) or ambiguous tie (< 0.10 margin) rejected (NOT_FOUND / AMBIGUOUS)",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_authorized_agent_tool",
+      "description": "Agent tools (modify_billing) are admitted",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_unauthorized_user_tool_blocked",
+      "description": "User-device tools (toggle_airplane_mode) are strictly blocked from agent dispatch",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_nonexistent_tool_blocked",
+      "description": "Hallucinated / non-existent tool names blocked",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_premature_human_transfer_blocked",
+      "description": "Human transfer blocked when recovery budget remains and user didn't ask for human",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_human_transfer_permitted_on_user_escalation",
+      "description": "Human transfer allowed when user explicitly asks for representative",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestActorBoundaryGate",
+      "test_name": "test_human_transfer_permitted_when_budget_exhausted",
+      "description": "Human transfer allowed when recovery budget is exhausted",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestProposalNormalizer",
+      "test_name": "test_escaped_quote_and_whitespace_sanitization",
+      "description": "Nested escaped quotes and whitespace stripped cleanly",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestProposalNormalizer",
+      "test_name": "test_missing_required_slots_rejected_without_fabrication",
+      "description": "Missing required schema slots rejected without inventing data",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestProposalNormalizer",
+      "test_name": "test_type_coercion_and_enum_validation",
+      "description": "String integers coerced, invalid enum choices rejected",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestPolicyEngine",
+      "test_name": "test_airline_basic_economy_cancellation_denied",
+      "description": "Airline basic economy cancellation without insurance is denied deterministically",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "TestPolicyEngine",
+      "test_name": "test_retail_return_window_exceeded_denied",
+      "description": "Retail return exceeding 30/60 day return window is denied deterministically",
+      "status": "PASSED",
+      "passed": true
+    },
+    {
+      "suite": "Integration",
+      "test_name": "test_bounded_recovery_and_reactor_safety",
+      "description": "Recovery advances intent revision, cancels in-flight proposals, guarantees 0 stale writes",
+      "status": "PASSED",
+      "passed": true
+    }
+  ]
+}

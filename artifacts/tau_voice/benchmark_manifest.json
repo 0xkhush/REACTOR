@@ -1,0 +1,60 @@
+{
+  "benchmark_name": "\u03c4-Voice (Tau-Bench / Tau2-Bench Voice Track)",
+  "benchmark_version": "1.0.1",
+  "repository_url": "https://github.com/sierra-research/tau2-bench",
+  "commit_sha": "5bfa7e37b36656b37dc6d022156be6563c1007f3",
+  "tag": "5bfa7e3",
+  "paper": {
+    "title": "\u03c4-Voice: Benchmarking Full-Duplex Voice Agents on Real-World Domains",
+    "authors": [
+      "Soham Ray",
+      "Keshav Dhandhania",
+      "Victor Barres",
+      "Karthik Narasimhan"
+    ],
+    "arxiv_id": "arXiv:2603.13686",
+    "release_date": "March 2026"
+  },
+  "dataset_version": "tau2-bench-v1.0.1",
+  "dataset_checksums": {
+    "airline_tasks": "ccd8ba737b4cc371415af70151187788f728d6108d0916e73bb4317b40542052",
+    "airline_tasks_voice": "e1360a2a1ecbdb97270838b428d6f51bcf8a121afa5bcbd132f30158589d5a6e",
+    "airline_db": "1af9fea6e03ca7ca15a22bb3fcaf3e351393e3fc9070b6777947da8996f7531b",
+    "airline_policy": "10dc0525421521208be39cee235bba84a16e2bcba9899eb93d92cd81d2f62fc4",
+    "retail_tasks": "8e03ebce7901bd6218e7a7dc3105faa9324091a68058f7fe61c65262868812e8",
+    "retail_tasks_voice": "d6cdb8d8bec58ffbb2fd808486bdb3e9238c93517648f7180908ea5cc1a80604",
+    "retail_db": "413a65160adbdb5fde0ffc0015c49b6d70250b10c18128de169b597af7766765",
+    "retail_policy": "2c9652afbce57d6e087768d37cda64d31c53d50b3e3225cfdb791bac66466467",
+    "telecom_tasks": "37e562e1ae3242577407e1303b1548bc64e7ea68e37d36173e6747990ceaf8a4",
+    "telecom_tasks_voice": "6b8b6cbff3947d8f7d0a99919ebd91433db0b5865663d7564a47b50a59878f54",
+    "telecom_split": "605b488bb9a6acb3c7f4505240a855fdc8681d09aadb16a8f38b2efcfc5c3aec",
+    "telecom_db": "562d647ef9d7df8df91eafd8ee76036e707c8f9e32aaedc4a7fde06975aea2c0",
+    "telecom_policy": "95943844a0cf11fdf0e2842b483b81d9f9338aa53235712ed131db075d086ed7"
+  },
+  "number_of_tasks": {
+    "airline": 50,
+    "retail": 114,
+    "telecom_base": 114,
+    "total_evaluation_set": 278
+  },
+  "number_of_recordings": 278,
+  "domains": [
+    "airline",
+    "retail",
+    "telecom"
+  ],
+  "populations": {
+    "control": "Clean baseline (no acoustic effects, standard accents, patient user)",
+    "regular": "Full realistic conditions (background noise, varied accents, frame drops, barge-in interruptions, burst audio)"
+  },
+  "tool_api_definitions": {
+    "airline": 14,
+    "retail": 16,
+    "telecom": 13
+  },
+  "evaluation_protocol": {
+    "scoring_methodology": "Official tau2 simulation evaluation (EnvironmentEvaluator, ActionEvaluator, CommunicateEvaluator)",
+    "metric": "Pass@1 (Task Success Rate)",
+    "pass_criteria": "Agent reaches correct final DB state and satisfies all domain evaluation criteria without policy violations or unhandled errors."
+  }
+}

@@ -1,0 +1,34 @@
+{
+  "benchmark": "tau-voice (sierra-research/tau2-bench)",
+  "version": "v2.0-guarded",
+  "timestamp": "2026-10-04T20:39:25Z",
+  "commit_sha": "48412a81230764528c6e6369b4c7699643fffdc3",
+  "frozen_file_hashes": {
+    "src/reactor/controller.py": "07f878b23ffc43f13d3f0aab4b42d84dbad81a587ecc7879ac6eefb4f0a0315b",
+    "src/reactor/state.py": "994ab236e20518927d437df0ddd4245f5a5c702745a8f7673021f194d66fbd1d",
+    "src/reactor/guards/types.py": "bda6417f1d5a47c9907b2987064dc7ea0cada853c1ceb3a3a096bae9bf557fc3",
+    "src/reactor/guards/boundary.py": "0c9e64c2e2d30353446d1590ad4352d163eb22a5d9fe09bfd3a4eb88760ec297",
+    "src/reactor/guards/normalizer.py": "65306d3ab90f024ec69327d45ab203e86bb8d3c080ce21673872544e8af8980f",
+    "src/reactor/guards/entity.py": "1466bf28dccf4ebcc3718c63bc2a13637e2ee9de6cf67e084c63a8da5756764f",
+    "src/reactor/guards/policy.py": "5a8be80627da417edfcb2f0fdb36f669ceebe979741729de094e3df6cec5af87",
+    "src/reactor/guards/recovery.py": "69b51f67f4acd7b73def42ec276668bbeafbb76a9f2dd361669b04956622b7e2",
+    "src/reactor/guards/verifier.py": "1dff28762ebaac1329e7471b9865038ba8253b0bc78e0c85d7bd5018a218ba5a",
+    "src/reactor/guards/pipeline.py": "0a57723e24b46103f104b8f0ecc13fdc0a01cfe518b6c564adc1a87b8f013087",
+    "scripts/tau_voice_adapter.py": "88ea35890ae5df67f14a8d1834d66fc648501c8215c793ceb00f74c9dba2dfba",
+    "scripts/run_tau_voice_v2_evaluation.py": "0ed83042752015e39c6e352bdc0e1d867ff5ea1efd532967d4c30f272f3fca58"
+  },
+  "calibration_thresholds": {
+    "entity_similarity_cutoff": 0.88,
+    "entity_margin_cutoff": 0.1,
+    "max_recovery_budget": 2,
+    "threshold_selection_method": "pre_declared_conservative_calibration",
+    "threshold_leakage_prevented": true
+  },
+  "environment": {
+    "python": "3.12.11",
+    "os": "Darwin 25.6.0 (arm64)",
+    "pydantic": "2.13.5",
+    "torch": "2.14.0",
+    "numpy": "1.26.4"
+  }
+}

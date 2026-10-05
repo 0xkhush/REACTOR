@@ -1,0 +1,241 @@
+{
+  "run_index": 1,
+  "timestamp_iso": "2026-10-05T00:55:00+05:30",
+  "evaluation_duration_seconds": 39.34,
+  "total_tasks": 278,
+  "successful_tasks": 69,
+  "failed_tasks": 209,
+  "pass_rate_percent": 24.82,
+  "ci_95": [
+    20.11,
+    30.22
+  ],
+  "domain_breakdown": {
+    "airline": {
+      "total": 50,
+      "passes": 15,
+      "pass_rate": 30.0,
+      "ci_95": [
+        19.1,
+        43.75
+      ],
+      "tool_selection_accuracy": 43.66,
+      "argument_accuracy": 28.17
+    },
+    "retail": {
+      "total": 114,
+      "passes": 34,
+      "pass_rate": 29.82,
+      "ci_95": [
+        22.2,
+        38.77
+      ],
+      "tool_selection_accuracy": 55.09,
+      "argument_accuracy": 38.0
+    },
+    "telecom": {
+      "total": 114,
+      "passes": 20,
+      "pass_rate": 17.54,
+      "ci_95": [
+        11.65,
+        25.55
+      ],
+      "tool_selection_accuracy": 25.19,
+      "argument_accuracy": 19.38
+    }
+  },
+  "tool_selection": {
+    "total_gold_tools": 1208,
+    "correct": 495,
+    "correct_rate": 40.98,
+    "missing": 713,
+    "extra": 1349,
+    "incorrect": 1349
+  },
+  "argument_accuracy": {
+    "exact_matches": 349,
+    "exact_accuracy": 28.89,
+    "semantic_matches": 474,
+    "semantic_accuracy": 39.24,
+    "failures": 21
+  },
+  "multi_tool_execution": {
+    "single": {
+      "total": 67,
+      "passes": 37,
+      "pass_rate": 55.22,
+      "ci_95": [
+        43.36,
+        66.52
+      ]
+    },
+    "dependent": {
+      "total": 124,
+      "passes": 19,
+      "pass_rate": 15.32,
+      "ci_95": [
+        10.03,
+        22.69
+      ]
+    },
+    "sequential": {
+      "total": 87,
+      "passes": 13,
+      "pass_rate": 14.94,
+      "ci_95": [
+        8.95,
+        23.9
+      ]
+    }
+  },
+  "reactor_safety": {
+    "correction_scenarios": 182,
+    "successful_cancellations": 0,
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "superseded_before_dispatch": 0,
+    "superseded_after_dispatch": 0,
+    "correction_success_rate": 100.0
+  },
+  "latency_metrics": {
+    "intent_revision_ns": {
+      "count": 164184,
+      "mean_ms": 0.0056,
+      "median_ms": 0.0043,
+      "p50_ms": 0.0043,
+      "p90_ms": 0.0058,
+      "p95_ms": 0.0062,
+      "p99_ms": 0.0077,
+      "min_ms": 0.0006,
+      "max_ms": 330.8799,
+      "std_ms": 0.8172
+    },
+    "controller_scheduling_ns": {
+      "count": 1844,
+      "mean_ms": 0.1858,
+      "median_ms": 0.1591,
+      "p50_ms": 0.1591,
+      "p90_ms": 0.2499,
+      "p95_ms": 0.2977,
+      "p99_ms": 0.4083,
+      "min_ms": 0.023,
+      "max_ms": 3.4888,
+      "std_ms": 0.135
+    },
+    "cancellation_ns": {
+      "count": 0,
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "p50_ms": 0.0,
+      "p90_ms": 0.0,
+      "p95_ms": 0.0,
+      "p99_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "std_ms": 0.0
+    },
+    "cascade_cancellation_ns": {
+      "count": 0,
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "p50_ms": 0.0,
+      "p90_ms": 0.0,
+      "p95_ms": 0.0,
+      "p99_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "std_ms": 0.0
+    },
+    "write_gate_ns": {
+      "count": 383,
+      "mean_ms": 0.0001,
+      "median_ms": 0.0001,
+      "p50_ms": 0.0001,
+      "p90_ms": 0.0002,
+      "p95_ms": 0.0002,
+      "p99_ms": 0.0003,
+      "min_ms": 0.0,
+      "max_ms": 0.0005,
+      "std_ms": 0.0001
+    },
+    "replacement_dispatch_ns": {
+      "count": 0,
+      "mean_ms": 0.0,
+      "median_ms": 0.0,
+      "p50_ms": 0.0,
+      "p90_ms": 0.0,
+      "p95_ms": 0.0,
+      "p99_ms": 0.0,
+      "min_ms": 0.0,
+      "max_ms": 0.0,
+      "std_ms": 0.0
+    }
+  },
+  "error_analysis": {
+    "total_failures": 209,
+    "total_evaluated": 278,
+    "breakdown": {
+      "tool_selection": {
+        "count": 75,
+        "percentage": 35.89,
+        "population_share": 26.98
+      },
+      "intent_interpretation": {
+        "count": 38,
+        "percentage": 18.18,
+        "population_share": 13.67
+      },
+      "tool_execution": {
+        "count": 95,
+        "percentage": 45.45,
+        "population_share": 34.17
+      },
+      "other": {
+        "count": 1,
+        "percentage": 0.48,
+        "population_share": 0.36
+      }
+    }
+  },
+  "resource_usage": {
+    "cpu": {
+      "mean_percent": 80.02,
+      "p95_percent": 95.1,
+      "peak_percent": 98.9
+    },
+    "memory": {
+      "initial_rss_mb": 257.95,
+      "final_rss_mb": 1462.08,
+      "peak_rss_mb": 1462.16,
+      "memory_growth_mb": 1204.12
+    },
+    "gpu": {
+      "local_gpu": "Apple M4 integrated unified memory (Metal acceleration available; PyTorch CPU evaluation active)",
+      "remote_provider_gpu": "Google Vertex AI cloud accelerator cluster (unobservable client-side)",
+      "benchmark_asr_gpu": "Cloud ASR infrastructure (unobservable client-side)"
+    },
+    "network": {
+      "connection_establishment": "HTTPS/TLS to sierra-tau-bench-public.s3.us-west-2.amazonaws.com",
+      "bytes_transferred": "~700 MB uncompressed official trajectory dataset",
+      "network_errors": 0,
+      "reconnects": 0
+    }
+  },
+  "token_usage": {
+    "provider_reporting_status": "NOT AVAILABLE FROM PROVIDER",
+    "rationale": "Gemini Live API native audio streaming session does not expose discrete per-token counters in the client SDK tick trajectory metadata.",
+    "derived_estimate_notice": "DERIVED ESTIMATE \u2014 NOT PROVIDER-REPORTED USAGE",
+    "derived_estimates": {
+      "methodology": "Based on official tau-bench publication cost tables ($0.00139 per completed 300-tick turn)",
+      "estimated_mean_input_tokens_per_task": 1840,
+      "estimated_mean_output_tokens_per_task": 142,
+      "estimated_total_tokens_278_tasks": 551040
+    }
+  },
+  "run_2_comparison": {
+    "run_2_pass_rate": 24.82,
+    "pass_rate_mean": 24.82,
+    "pass_rate_std": 0.0
+  }
+}

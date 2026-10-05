@@ -1,0 +1,26 @@
+{
+  "total_failures": 209,
+  "total_evaluated": 278,
+  "breakdown": {
+    "tool_selection": {
+      "count": 75,
+      "percentage": 35.89,
+      "population_share": 26.98
+    },
+    "intent_interpretation": {
+      "count": 38,
+      "percentage": 18.18,
+      "population_share": 13.67
+    },
+    "tool_execution": {
+      "count": 95,
+      "percentage": 45.45,
+      "population_share": 34.17
+    },
+    "other": {
+      "count": 1,
+      "percentage": 0.48,
+      "population_share": 0.36
+    }
+  }
+}

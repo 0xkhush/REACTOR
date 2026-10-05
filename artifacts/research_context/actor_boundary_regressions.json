@@ -1,0 +1,839 @@
+[
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:None]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "get_customer_by_phone",
+      "get_customer_by_phone",
+      "check_network_status",
+      "toggle_airplane_mode",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|contract_end_suspension|unseat_sim_card[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 2,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin[PERSONA:None]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "toggle_data",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_data",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_data' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "check_status_bar",
+      "check_sim_status",
+      "reboot_device",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_status_bar",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_status_bar' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reboot_device",
+        "reason": "boundary_gate",
+        "details": "Tool 'reboot_device' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 5,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|overdue_bill_suspension|unseat_sim_card[PERSONA:None]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "check_status_bar",
+      "toggle_airplane_mode",
+      "reseat_sim_card",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_status_bar",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_status_bar' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reseat_sim_card",
+        "reason": "boundary_gate",
+        "details": "Tool 'reseat_sim_card' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 5,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|break_apn_settings|lock_sim_card_pin|unseat_sim_card[PERSONA:None]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "reset_apn_settings",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reset_apn_settings",
+        "reason": "boundary_gate",
+        "details": "Tool 'reset_apn_settings' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_name",
+      "get_customer_by_phone",
+      "get_customer_by_phone",
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "check_network_status",
+      "toggle_airplane_mode",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 4,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "reseat_sim_card",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reseat_sim_card",
+        "reason": "boundary_gate",
+        "details": "Tool 'reseat_sim_card' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 4,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "toggle_airplane_mode",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]airplane_mode_on|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_status_bar",
+      "toggle_airplane_mode",
+      "check_sim_status",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_status_bar",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_status_bar' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 5,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 2,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]break_apn_settings|contract_end_suspension|lock_sim_card_pin|unseat_sim_card[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_sim_status",
+      "reseat_sim_card",
+      "check_network_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reseat_sim_card",
+        "reason": "boundary_gate",
+        "details": "Tool 'reseat_sim_card' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 4,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]break_apn_settings|lock_sim_card_pin[PERSONA:None]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "check_sim_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]break_apn_settings|lock_sim_card_pin|overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_status_bar",
+      "check_network_status",
+      "toggle_airplane_mode",
+      "check_sim_status",
+      "reset_apn_settings",
+      "reboot_device",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_status_bar",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_status_bar' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "toggle_airplane_mode",
+        "reason": "boundary_gate",
+        "details": "Tool 'toggle_airplane_mode' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reset_apn_settings",
+        "reason": "boundary_gate",
+        "details": "Tool 'reset_apn_settings' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reboot_device",
+        "reason": "boundary_gate",
+        "details": "Tool 'reboot_device' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 7,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]contract_end_suspension|lock_sim_card_pin[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_sim_status",
+      "check_network_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]contract_end_suspension|unseat_sim_card[PERSONA:Hard]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_network_status",
+      "reseat_sim_card",
+      "reset_apn_settings",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reseat_sim_card",
+        "reason": "boundary_gate",
+        "details": "Tool 'reseat_sim_card' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "reset_apn_settings",
+        "reason": "boundary_gate",
+        "details": "Tool 'reset_apn_settings' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 4,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  },
+  {
+    "task_id": "[service_issue]lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
+    "domain": "telecom",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_customer_by_phone",
+      "check_sim_status",
+      "check_network_status",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "check_sim_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_sim_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "check_network_status",
+        "reason": "boundary_gate",
+        "details": "Tool 'check_network_status' is owned by 'user', not the active actor 'agent'. Agents must instruct the user verbally rather than programmatically dispatching user device tools."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "boundary_blocked_count": 3,
+    "baseline_pass": true,
+    "full_v4_pass": false,
+    "evaluator_outcome_baseline": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "ENV_ASSERTION": 1.0,
+      "ACTION": 0.0
+    },
+    "diagnosis": "Dual-control benchmark design artifact: Model programmatically executes user-device tools (toggle_airplane_mode, reset_apn_settings, reseat_sim_card). ActorBoundaryGate correctly blocks agent from executing user-side tools, but offline replay has no dynamic user simulator to execute them on the user side."
+  }
+]

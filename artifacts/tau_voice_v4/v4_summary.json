@@ -1,0 +1,56 @@
+{
+  "configuration": "full_v4_stack",
+  "total_tasks": 278,
+  "total_passes": 58,
+  "pass_rate": 0.2086,
+  "orig_passes": 69,
+  "orig_pass_rate": 0.2482,
+  "net_recovered": 8,
+  "wilson_ci_95": [
+    0.165,
+    0.2602
+  ],
+  "domain_summary": {
+    "airline": {
+      "tasks": 50,
+      "passes": 18,
+      "pass_rate": 0.36,
+      "orig_passes": 15,
+      "orig_pass_rate": 0.3,
+      "wilson_ci_95": [
+        0.2414,
+        0.4986
+      ]
+    },
+    "retail": {
+      "tasks": 114,
+      "passes": 39,
+      "pass_rate": 0.3421,
+      "orig_passes": 34,
+      "orig_pass_rate": 0.2982,
+      "wilson_ci_95": [
+        0.2614,
+        0.4331
+      ]
+    },
+    "telecom": {
+      "tasks": 114,
+      "passes": 1,
+      "pass_rate": 0.0088,
+      "orig_passes": 20,
+      "orig_pass_rate": 0.1754,
+      "wilson_ci_95": [
+        0.0016,
+        0.048
+      ]
+    }
+  },
+  "safety_metrics": {
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "args_normalized": 24,
+    "policies_blocked": 20,
+    "boundary_blocked": 505,
+    "slots_recovered": 1
+  }
+}

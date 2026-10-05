@@ -1,0 +1,26 @@
+{
+  "manifest_version": "3.0.0",
+  "benchmark": "tau-voice",
+  "benchmark_source": "sierra-research/tau2-bench",
+  "evaluation_mode": "full_duplex_audio_native_guarded_sota",
+  "timestamp_iso": "2026-10-05T02:49:05+0530",
+  "commit": "48412a81230764528c6e6369b4c7699643fffdc3",
+  "environment": {
+    "python": "3.12.11",
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "cpu": "arm",
+    "arch": "arm64"
+  },
+  "file_hashes": {
+    "src/reactor/controller.py": "07f878b23ffc43f13d3f0aab4b42d84dbad81a587ecc7879ac6eefb4f0a0315b",
+    "src/reactor/state.py": "994ab236e20518927d437df0ddd4245f5a5c702745a8f7673021f194d66fbd1d",
+    "src/reactor/guards/types.py": "bda6417f1d5a47c9907b2987064dc7ea0cada853c1ceb3a3a096bae9bf557fc3",
+    "src/reactor/guards/boundary.py": "0c9e64c2e2d30353446d1590ad4352d163eb22a5d9fe09bfd3a4eb88760ec297",
+    "src/reactor/guards/normalizer.py": "65306d3ab90f024ec69327d45ab203e86bb8d3c080ce21673872544e8af8980f",
+    "src/reactor/guards/entity.py": "1466bf28dccf4ebcc3718c63bc2a13637e2ee9de6cf67e084c63a8da5756764f",
+    "src/reactor/guards/policy.py": "7d7eb83a24e4cd855113afbd0efef49e95f3fa3b3db4294ea54597ab70bf039f",
+    "src/reactor/guards/recovery.py": "69b51f67f4acd7b73def42ec276668bbeafbb76a9f2dd361669b04956622b7e2",
+    "src/reactor/guards/verifier.py": "1dff28762ebaac1329e7471b9865038ba8253b0bc78e0c85d7bd5018a218ba5a",
+    "src/reactor/guards/pipeline.py": "a7d7920acf4c284b987e9f85b8fc7237ee166a245cc4d0015558fb9470911e83"
+  }
+}

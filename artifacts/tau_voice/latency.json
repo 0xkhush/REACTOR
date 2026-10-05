@@ -1,0 +1,74 @@
+{
+  "intent_revision_ns": {
+    "count": 164184,
+    "mean_ms": 0.0056,
+    "median_ms": 0.0043,
+    "p50_ms": 0.0043,
+    "p90_ms": 0.0058,
+    "p95_ms": 0.0062,
+    "p99_ms": 0.0077,
+    "min_ms": 0.0006,
+    "max_ms": 330.8799,
+    "std_ms": 0.8172
+  },
+  "controller_scheduling_ns": {
+    "count": 1844,
+    "mean_ms": 0.1858,
+    "median_ms": 0.1591,
+    "p50_ms": 0.1591,
+    "p90_ms": 0.2499,
+    "p95_ms": 0.2977,
+    "p99_ms": 0.4083,
+    "min_ms": 0.023,
+    "max_ms": 3.4888,
+    "std_ms": 0.135
+  },
+  "cancellation_ns": {
+    "count": 0,
+    "mean_ms": 0.0,
+    "median_ms": 0.0,
+    "p50_ms": 0.0,
+    "p90_ms": 0.0,
+    "p95_ms": 0.0,
+    "p99_ms": 0.0,
+    "min_ms": 0.0,
+    "max_ms": 0.0,
+    "std_ms": 0.0
+  },
+  "cascade_cancellation_ns": {
+    "count": 0,
+    "mean_ms": 0.0,
+    "median_ms": 0.0,
+    "p50_ms": 0.0,
+    "p90_ms": 0.0,
+    "p95_ms": 0.0,
+    "p99_ms": 0.0,
+    "min_ms": 0.0,
+    "max_ms": 0.0,
+    "std_ms": 0.0
+  },
+  "write_gate_ns": {
+    "count": 383,
+    "mean_ms": 0.0001,
+    "median_ms": 0.0001,
+    "p50_ms": 0.0001,
+    "p90_ms": 0.0002,
+    "p95_ms": 0.0002,
+    "p99_ms": 0.0003,
+    "min_ms": 0.0,
+    "max_ms": 0.0005,
+    "std_ms": 0.0001
+  },
+  "replacement_dispatch_ns": {
+    "count": 0,
+    "mean_ms": 0.0,
+    "median_ms": 0.0,
+    "p50_ms": 0.0,
+    "p90_ms": 0.0,
+    "p95_ms": 0.0,
+    "p99_ms": 0.0,
+    "min_ms": 0.0,
+    "max_ms": 0.0,
+    "std_ms": 0.0
+  }
+}

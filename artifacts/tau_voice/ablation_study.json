@@ -1,0 +1,128 @@
+[
+  {
+    "configuration": "1. Frozen Baseline (REACTOR v1)",
+    "passes": 69,
+    "total": 278,
+    "pass_rate": 24.82,
+    "ci_95": [
+      20.11,
+      30.22
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 0,
+      "args_normalized": 0,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "2. + Actor Boundary Gate",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 0,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "3. + Argument Normalizer",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 23,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "4. + Entity Resolver",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 23,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "5. + Policy Engine",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 23,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "6. All Components + REACTOR Core",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 23,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  },
+  {
+    "configuration": "7. All Components - No REACTOR Core",
+    "passes": 71,
+    "total": 278,
+    "pass_rate": 25.54,
+    "ci_95": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 2,
+    "duplicate_executions": 336,
+    "interventions": {
+      "tools_rejected": 349,
+      "args_normalized": 23,
+      "entities_resolved": 0,
+      "policies_blocked": 0
+    }
+  }
+]

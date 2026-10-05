@@ -1,0 +1,100 @@
+{
+  "total_failed_tasks": 201,
+  "primary_category_breakdown": {
+    "ACTOR / TOOL BOUNDARY": {
+      "count": 71,
+      "percentage": 35.32
+    },
+    "ENTITY RESOLUTION": {
+      "count": 53,
+      "percentage": 26.37
+    },
+    "POLICY / BUSINESS RULE": {
+      "count": 37,
+      "percentage": 18.41
+    },
+    "ASR / TRANSCRIPTION": {
+      "count": 25,
+      "percentage": 12.44
+    },
+    "INTENT / TASK UNDERSTANDING": {
+      "count": 6,
+      "percentage": 2.99
+    },
+    "RECOVERY": {
+      "count": 3,
+      "percentage": 1.49
+    },
+    "ARGUMENT CONSTRUCTION": {
+      "count": 2,
+      "percentage": 1.0
+    },
+    "EVALUATOR / COMMUNICATION REQUIREMENT": {
+      "count": 2,
+      "percentage": 1.0
+    },
+    "ESCALATION": {
+      "count": 1,
+      "percentage": 0.5
+    },
+    "CONVERSATIONAL STATE": {
+      "count": 1,
+      "percentage": 0.5
+    }
+  },
+  "domain_breakdown": {
+    "airline": {
+      "POLICY / BUSINESS RULE": 17,
+      "ENTITY RESOLUTION": 9,
+      "ARGUMENT CONSTRUCTION": 2,
+      "ASR / TRANSCRIPTION": 2,
+      "INTENT / TASK UNDERSTANDING": 1,
+      "EVALUATOR / COMMUNICATION REQUIREMENT": 1
+    },
+    "retail": {
+      "ENTITY RESOLUTION": 29,
+      "ASR / TRANSCRIPTION": 23,
+      "POLICY / BUSINESS RULE": 16,
+      "INTENT / TASK UNDERSTANDING": 4,
+      "ESCALATION": 1,
+      "RECOVERY": 1,
+      "CONVERSATIONAL STATE": 1
+    },
+    "telecom": {
+      "ACTOR / TOOL BOUNDARY": 71,
+      "ENTITY RESOLUTION": 15,
+      "POLICY / BUSINESS RULE": 4,
+      "RECOVERY": 2,
+      "INTENT / TASK UNDERSTANDING": 1,
+      "EVALUATOR / COMMUNICATION REQUIREMENT": 1
+    }
+  },
+  "responsibility_breakdown": {
+    "VALIDATION-LAYER": {
+      "count": 168,
+      "percentage": 83.58
+    },
+    "UPSTREAM": {
+      "count": 31,
+      "percentage": 15.42
+    },
+    "DOWNSTREAM": {
+      "count": 2,
+      "percentage": 1.0
+    }
+  },
+  "recoverability_breakdown": {
+    "RECOVERABLE_WITH_GENERIC_MECHANISM": {
+      "count": 128,
+      "percentage": 63.68
+    },
+    "UNOBSERVABLE_DUE_TO_FROZEN_TRAJECTORY": {
+      "count": 71,
+      "percentage": 35.32
+    },
+    "RECOVERABLE_NOW": {
+      "count": 2,
+      "percentage": 1.0
+    }
+  }
+}

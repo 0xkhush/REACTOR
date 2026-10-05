@@ -1,0 +1,11 @@
+{
+  "provider_reporting_status": "NOT AVAILABLE FROM PROVIDER",
+  "rationale": "Gemini Live API native audio streaming session does not expose discrete per-token counters in the client SDK tick trajectory metadata.",
+  "derived_estimate_notice": "DERIVED ESTIMATE \u2014 NOT PROVIDER-REPORTED USAGE",
+  "derived_estimates": {
+    "methodology": "Based on official tau-bench publication cost tables ($0.00139 per completed 300-tick turn)",
+    "estimated_mean_input_tokens_per_task": 1840,
+    "estimated_mean_output_tokens_per_task": 142,
+    "estimated_total_tokens_278_tasks": 551040
+  }
+}

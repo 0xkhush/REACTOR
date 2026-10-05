@@ -1,0 +1,4780 @@
+{
+  "total_failures": 209,
+  "failure_distribution": {
+    "Wrong transcription / Entity resolution": {
+      "count": 76,
+      "percentage": 36.36
+    },
+    "Invalid tool name / Actor boundary": {
+      "count": 74,
+      "percentage": 35.41
+    },
+    "Policy / Business rule error": {
+      "count": 44,
+      "percentage": 21.05
+    },
+    "Wrong tool / Surrendered to human": {
+      "count": 8,
+      "percentage": 3.83
+    },
+    "Wrong arguments / Schema syntax": {
+      "count": 7,
+      "percentage": 3.35
+    }
+  },
+  "fix_distribution": {
+    "Phonetic entity resolution + candidate matching": {
+      "count": 76,
+      "percentage": 36.36
+    },
+    "Tool routing / Actor boundary constraint": {
+      "count": 74,
+      "percentage": 35.41
+    },
+    "Deterministic policy engine": {
+      "count": 44,
+      "percentage": 21.05
+    },
+    "Transfer gate & structured recovery loop": {
+      "count": 8,
+      "percentage": 3.83
+    },
+    "Schema normalization & syntax repair": {
+      "count": 7,
+      "percentage": 3.35
+    }
+  },
+  "task_attribution": [
+    {
+      "task_id": "48",
+      "domain": "airline",
+      "sim_id": "01db805b-1031-4ac6-863e-947f842aba67",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "23",
+      "domain": "airline",
+      "sim_id": "04064355-1487-4313-bc43-544ed527eef4",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "get_reservation_details",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights"
+      ],
+      "gold_tools": [
+        "cancel_reservation",
+        "book_reservation",
+        "book_reservation",
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "45",
+      "domain": "airline",
+      "sim_id": "093b22ec-d417-4280-8f6c-ba3df54f76bb",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_user_details",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "13",
+      "domain": "airline",
+      "sim_id": "0da90041-1771-489f-9ea6-65c6446bc7bf",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_user_details",
+        "get_reservation_details",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights"
+      ],
+      "gold_tools": [
+        "transfer_to_human_agents"
+      ]
+    },
+    {
+      "task_id": "11",
+      "domain": "airline",
+      "sim_id": "0f12bd54-b6f1-4963-80dc-879d62b6c930",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "33",
+      "domain": "airline",
+      "sim_id": "17d05613-6d3a-4391-b8f6-578a7209fbd4",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_baggages"
+      ]
+    },
+    {
+      "task_id": "41",
+      "domain": "airline",
+      "sim_id": "1c37ba13-215c-441c-b405-0803cb6545fa",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "44",
+      "domain": "airline",
+      "sim_id": "3e4201af-6e12-4605-95f7-d94f2f83412d",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "47",
+      "domain": "airline",
+      "sim_id": "459f72b8-24c1-4463-a5d7-159615693855",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_reservation_details",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "17",
+      "domain": "airline",
+      "sim_id": "47aa74f2-f2b2-4617-aa8f-23c2eb10f7f8",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details"
+      ],
+      "gold_tools": [
+        "update_reservation_flights",
+        "update_reservation_passengers",
+        "update_reservation_baggages"
+      ]
+    },
+    {
+      "task_id": "16",
+      "domain": "airline",
+      "sim_id": "4b6eb40a-6435-46bb-b5f2-fbc9782f9910",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "update_reservation_flights"
+      ],
+      "gold_tools": [
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "37",
+      "domain": "airline",
+      "sim_id": "58771ecc-45ee-480e-8110-984a8c684ff9",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "cancel_reservation",
+        "cancel_reservation",
+        "get_reservation_details",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation",
+        "get_user_details",
+        "cancel_reservation",
+        "cancel_reservation",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "24",
+      "domain": "airline",
+      "sim_id": "594b0731-4223-4b55-832b-8e8f921351d5",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "cancel_reservation",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight"
+      ],
+      "gold_tools": [
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "20",
+      "domain": "airline",
+      "sim_id": "5b22ba4a-7b0b-45d3-ab39-3e059a1db415",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "search_onestop_flight"
+      ],
+      "gold_tools": [
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "19",
+      "domain": "airline",
+      "sim_id": "6336f4ce-ddd6-46d1-a63d-0b0eaeb78e70",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "cancel_reservation"
+      ]
+    },
+    {
+      "task_id": "32",
+      "domain": "airline",
+      "sim_id": "6b215e59-7aae-4cd6-b5c2-1fd1418a12cb",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "30",
+      "domain": "airline",
+      "sim_id": "6d271b0d-ec5e-4751-8fe4-6284335c985b",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "search_direct_flight",
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "3",
+      "domain": "airline",
+      "sim_id": "7030fdcc-dd31-4eb6-babd-4dbc8b5b1bed",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "get_user_details"
+      ]
+    },
+    {
+      "task_id": "40",
+      "domain": "airline",
+      "sim_id": "8d9cb0af-5db1-4306-aa60-ab93dabf6740",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "update_reservation_passengers",
+        "get_reservation_details"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "update_reservation_passengers"
+      ]
+    },
+    {
+      "task_id": "14",
+      "domain": "airline",
+      "sim_id": "9f25d981-64aa-460c-9741-51af11f350fd",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "calculate",
+        "calculate",
+        "get_user_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "cancel_reservation",
+        "book_reservation",
+        "book_reservation",
+        "book_reservation"
+      ],
+      "gold_tools": [
+        "cancel_reservation",
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "39",
+      "domain": "airline",
+      "sim_id": "a44fa34c-12dd-4568-b184-cdf237d6efbc",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "cancel_reservation",
+        "cancel_reservation",
+        "cancel_reservation"
+      ]
+    },
+    {
+      "task_id": "15",
+      "domain": "airline",
+      "sim_id": "bcc2b71d-bd63-4178-be1f-17190add421f",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "35",
+      "domain": "airline",
+      "sim_id": "bf947eb0-f125-4445-9e2c-47cac1f823c8",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "7",
+      "domain": "airline",
+      "sim_id": "c30c5ef4-54a2-4038-9686-9366882e329b",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "cancel_reservation",
+        "cancel_reservation",
+        "get_user_details",
+        "get_user_details",
+        "cancel_reservation",
+        "cancel_reservation",
+        "get_user_details",
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "get_reservation_details",
+        "update_reservation_flights",
+        "cancel_reservation",
+        "cancel_reservation"
+      ]
+    },
+    {
+      "task_id": "38",
+      "domain": "airline",
+      "sim_id": "c3cbbae7-9e0b-438c-8973-85fa814103a3",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_flight_status",
+        "get_reservation_details",
+        "send_certificate"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "1",
+      "domain": "airline",
+      "sim_id": "ceacf6e7-b8c3-4bc5-8bcd-1bf4908c66b7",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "cancel_reservation"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "2",
+      "domain": "airline",
+      "sim_id": "cf91f135-04c2-4701-8a65-a129f028d99a",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_flight_status",
+        "get_flight_status",
+        "get_flight_status",
+        "get_flight_status",
+        "get_reservation_details",
+        "get_flight_status",
+        "get_flight_status",
+        "get_flight_status",
+        "get_flight_status",
+        "send_certificate"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details"
+      ]
+    },
+    {
+      "task_id": "21",
+      "domain": "airline",
+      "sim_id": "d1f67aac-aaf2-4178-9a56-2609a32afa5d",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "update_reservation_flights",
+        "update_reservation_baggages"
+      ]
+    },
+    {
+      "task_id": "26",
+      "domain": "airline",
+      "sim_id": "d76945a0-7211-4b3b-9c85-23667d12de48",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "cancel_reservation",
+        "cancel_reservation"
+      ],
+      "gold_tools": []
+    },
+    {
+      "task_id": "18",
+      "domain": "airline",
+      "sim_id": "d9aff308-6d40-454a-ba5d-17c46d194b64",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights"
+      ]
+    },
+    {
+      "task_id": "12",
+      "domain": "airline",
+      "sim_id": "de71ed78-ca5b-45f6-8854-251e09a5280d",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_user_details",
+        "update_reservation_baggages",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "calculate",
+        "update_reservation_baggages"
+      ]
+    },
+    {
+      "task_id": "29",
+      "domain": "airline",
+      "sim_id": "e78815f8-3cba-4bb0-8099-d31a37d8ae61",
+      "primary_failure": "Wrong arguments / Schema syntax",
+      "likely_fix": "Schema normalization & syntax repair",
+      "predicted_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_flights",
+        "update_reservation_baggages"
+      ],
+      "gold_tools": [
+        "get_reservation_details",
+        "cancel_reservation",
+        "book_reservation"
+      ]
+    },
+    {
+      "task_id": "9",
+      "domain": "airline",
+      "sim_id": "f2956bb5-fd29-424f-b773-911f55061962",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "cancel_reservation",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "search_direct_flight"
+      ]
+    },
+    {
+      "task_id": "42",
+      "domain": "airline",
+      "sim_id": "f33f7a81-eaba-4473-b030-db1f9044c2c0",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "get_user_details",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_direct_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight",
+        "search_onestop_flight"
+      ],
+      "gold_tools": [
+        "get_user_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "get_reservation_details",
+        "cancel_reservation",
+        "cancel_reservation"
+      ]
+    },
+    {
+      "task_id": "22",
+      "domain": "airline",
+      "sim_id": "fa2b4be9-c9ba-4411-bc15-3172201c701e",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "update_reservation_passengers"
+      ],
+      "gold_tools": [
+        "update_reservation_flights",
+        "update_reservation_passengers",
+        "update_reservation_baggages"
+      ]
+    },
+    {
+      "task_id": "51",
+      "domain": "retail",
+      "sim_id": "09b865bf-a311-4bb7-8a82-983c7e35e15a",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_user_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "84",
+      "domain": "retail",
+      "sim_id": "0b295790-c990-4ed2-a07b-f7934e7ca005",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "49",
+      "domain": "retail",
+      "sim_id": "0d0a6bc3-4b38-46a1-8c30-4db0564fb9bc",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "calculate",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "0",
+      "domain": "retail",
+      "sim_id": "0f39b5a2-4235-4d51-8d97-295a13b5c44c",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "112",
+      "domain": "retail",
+      "sim_id": "0fb1c4c3-65a2-4e0d-866b-e046c5f0fad4",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "104",
+      "domain": "retail",
+      "sim_id": "139f4bb6-392a-47d6-adaa-6b1d78720113",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "modify_pending_order_address",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_items",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "35",
+      "domain": "retail",
+      "sim_id": "1ab911e0-9737-4228-92af-faec552a8d1b",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "return_delivered_order_items",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "70",
+      "domain": "retail",
+      "sim_id": "1c658574-ce5d-4956-9a81-529d8918915e",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "64",
+      "domain": "retail",
+      "sim_id": "1d9758bc-50c2-4b96-9efb-0167a8a8ed55",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "95",
+      "domain": "retail",
+      "sim_id": "1f43ae5b-3aad-4682-8047-103e5c769ee9",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "list_all_product_types"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "106",
+      "domain": "retail",
+      "sim_id": "209ff6aa-8718-4909-b268-96e513af2679",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "111",
+      "domain": "retail",
+      "sim_id": "2717bef6-4c6b-4349-8e34-f87ad79ba365",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_product_details",
+        "get_item_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_address"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "18",
+      "domain": "retail",
+      "sim_id": "282a32fd-2ed8-4aa3-a36d-70a9d518a6e5",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "exchange_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "62",
+      "domain": "retail",
+      "sim_id": "29878d5c-1027-4eec-9dae-5a1ab524b00a",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "list_all_product_types",
+        "get_product_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details"
+      ]
+    },
+    {
+      "task_id": "48",
+      "domain": "retail",
+      "sim_id": "2a2c43e5-39e8-40df-9399-dcf50cf906a6",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "76",
+      "domain": "retail",
+      "sim_id": "2a46df0c-08ca-49b8-8d0d-ab290b60d725",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "cancel_pending_order",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details"
+      ],
+      "gold_tools": [
+        "cancel_pending_order",
+        "cancel_pending_order"
+      ]
+    },
+    {
+      "task_id": "42",
+      "domain": "retail",
+      "sim_id": "2c0d40f9-a6e0-442c-8ed6-6c0834de9fe4",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_user_details",
+        "modify_user_address",
+        "get_order_details",
+        "get_order_details",
+        "list_all_product_types",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address",
+        "modify_pending_order_address",
+        "modify_user_address",
+        "get_product_details",
+        "get_order_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "66",
+      "domain": "retail",
+      "sim_id": "2da0a686-ac96-40d4-a9c7-bc0582cffa9a",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order"
+      ]
+    },
+    {
+      "task_id": "59",
+      "domain": "retail",
+      "sim_id": "3165e208-3eb2-4453-a879-75c753c6fdfa",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "cancel_pending_order",
+        "modify_pending_order_address"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "modify_pending_order_address"
+      ]
+    },
+    {
+      "task_id": "28",
+      "domain": "retail",
+      "sim_id": "31784962-cfe8-4ba2-851a-5915a556ac8f",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "get_order_details",
+        "calculate"
+      ]
+    },
+    {
+      "task_id": "109",
+      "domain": "retail",
+      "sim_id": "426c2bb6-c175-455f-a7d8-d759ff5e8813",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_user_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "8",
+      "domain": "retail",
+      "sim_id": "48c2d25d-c589-4e99-a0ba-dac9bc3e2388",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "71",
+      "domain": "retail",
+      "sim_id": "4ee69d22-53a1-429e-bec3-596ecc153573",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_address",
+        "get_user_details",
+        "modify_pending_order_payment",
+        "modify_pending_order_payment",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "55",
+      "domain": "retail",
+      "sim_id": "4f4e8872-7f4f-4eeb-aae3-29afa04b26d4",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "1",
+      "domain": "retail",
+      "sim_id": "51c33542-72ef-4847-9064-3a17a856ed0b",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "exchange_delivered_order_items",
+        "list_all_product_types",
+        "get_product_details",
+        "get_product_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "99",
+      "domain": "retail",
+      "sim_id": "53a36d79-0e01-4200-b332-fbcead049307",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "83",
+      "domain": "retail",
+      "sim_id": "5978c97a-85cb-49b3-b61e-1047eaf59644",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "36",
+      "domain": "retail",
+      "sim_id": "5dd0b213-e0f2-4fd4-b99e-73b575b049eb",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "85",
+      "domain": "retail",
+      "sim_id": "6061df33-526e-4023-b7e5-894def604414",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "39",
+      "domain": "retail",
+      "sim_id": "61a3c6e0-8f5c-4f88-9b7b-06edbbf1f41a",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "modify_user_address"
+      ]
+    },
+    {
+      "task_id": "46",
+      "domain": "retail",
+      "sim_id": "6257d411-a034-4820-ad28-4e73ea873420",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "calculate",
+        "return_delivered_order_items",
+        "calculate"
+      ]
+    },
+    {
+      "task_id": "27",
+      "domain": "retail",
+      "sim_id": "66bf9684-5a38-423b-a662-9c98153bf84a",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "105",
+      "domain": "retail",
+      "sim_id": "66c34512-5801-43ec-9c98-3980d16b14e2",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "get_order_details",
+        "list_all_product_types",
+        "get_product_details",
+        "get_item_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "11",
+      "domain": "retail",
+      "sim_id": "6a1ccb9d-9846-4685-8757-7ecd0a8b37c2",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "3",
+      "domain": "retail",
+      "sim_id": "6a39b21f-057b-4936-a20b-ba3f92360952",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "list_all_product_types",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_product_details",
+        "get_product_details",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_user_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "24",
+      "domain": "retail",
+      "sim_id": "6c51d53c-b3e1-452c-aacc-49a5ee9efb66",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details"
+      ],
+      "gold_tools": []
+    },
+    {
+      "task_id": "32",
+      "domain": "retail",
+      "sim_id": "6dc6a359-8222-40d2-ae11-f315cb629bb1",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "get_order_details",
+        "cancel_pending_order",
+        "get_order_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "56",
+      "domain": "retail",
+      "sim_id": "6fcf9972-e10d-49d7-92c4-b62d69887039",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "63",
+      "domain": "retail",
+      "sim_id": "7015bfc7-04c1-44cb-820f-f30fc11856f3",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "list_all_product_types",
+        "get_product_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "calculate",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "100",
+      "domain": "retail",
+      "sim_id": "73192537-e9ab-4c1c-be8a-1173d6465510",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_items",
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "73",
+      "domain": "retail",
+      "sim_id": "75ea9347-7e99-443d-a702-a8ea83a22362",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "97",
+      "domain": "retail",
+      "sim_id": "784e3aac-a962-4d58-b505-ee2b7a48ae2d",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "88",
+      "domain": "retail",
+      "sim_id": "7969482c-0550-44f6-a2c7-21286d30a056",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "cancel_pending_order"
+      ]
+    },
+    {
+      "task_id": "98",
+      "domain": "retail",
+      "sim_id": "80602dff-34db-4749-b58b-3f614a9b018d",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "cancel_pending_order"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items",
+        "cancel_pending_order"
+      ]
+    },
+    {
+      "task_id": "75",
+      "domain": "retail",
+      "sim_id": "829cc5c1-a247-418e-8a2a-083498311d61",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "58",
+      "domain": "retail",
+      "sim_id": "82e4c55d-e325-4bd4-bda8-3770fa2136f8",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "16",
+      "domain": "retail",
+      "sim_id": "86836e2e-a367-4c42-9e15-5eb4a52a78dc",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "calculate",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "81",
+      "domain": "retail",
+      "sim_id": "89a92114-bf41-4dbc-92d0-aea62d129fa3",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order"
+      ],
+      "gold_tools": [
+        "cancel_pending_order",
+        "cancel_pending_order"
+      ]
+    },
+    {
+      "task_id": "103",
+      "domain": "retail",
+      "sim_id": "8fc729b6-ea7e-4a3a-b398-4165cb53dadf",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "return_delivered_order_items",
+        "return_delivered_order_items",
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "21",
+      "domain": "retail",
+      "sim_id": "909da25c-a72d-49e4-9fcd-020f4836ad3f",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_items",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_item_details",
+        "get_item_details",
+        "get_product_details",
+        "get_item_details",
+        "get_product_details",
+        "calculate",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "31",
+      "domain": "retail",
+      "sim_id": "911d09f9-91ca-4244-83f4-f42a9fed6f14",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "22",
+      "domain": "retail",
+      "sim_id": "92095995-bdc8-4aad-ad33-3bf3a0a23e20",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "modify_user_address",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address",
+        "modify_user_address"
+      ]
+    },
+    {
+      "task_id": "57",
+      "domain": "retail",
+      "sim_id": "9ffe4d5f-1c3c-4a93-91ec-2bb5fb7b52cc",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "get_order_details",
+        "cancel_pending_order"
+      ],
+      "gold_tools": []
+    },
+    {
+      "task_id": "37",
+      "domain": "retail",
+      "sim_id": "a18dbc04-07fd-44b4-a647-940fc78c90fb",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "cancel_pending_order"
+      ],
+      "gold_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "77",
+      "domain": "retail",
+      "sim_id": "a4901cfb-afb6-4d93-a72d-29e48d754841",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "94",
+      "domain": "retail",
+      "sim_id": "a494dc45-d8e5-41b8-b1d8-ef453e935947",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "34",
+      "domain": "retail",
+      "sim_id": "a4e49c6d-ac45-4152-8077-0936fec2b4c6",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address"
+      ]
+    },
+    {
+      "task_id": "110",
+      "domain": "retail",
+      "sim_id": "a6a8f057-bf64-401a-93b1-3f38c9ecae99",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_user_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "47",
+      "domain": "retail",
+      "sim_id": "a91f057c-df7d-4da0-9da5-a2109fe8a890",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "calculate",
+        "return_delivered_order_items",
+        "calculate"
+      ]
+    },
+    {
+      "task_id": "15",
+      "domain": "retail",
+      "sim_id": "a9840330-4863-4e38-9baa-fc3149b361e7",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "exchange_delivered_order_items",
+        "return_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "74",
+      "domain": "retail",
+      "sim_id": "aab2faaf-ef53-45d6-acd3-65a7856b914c",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "modify_pending_order_items",
+        "cancel_pending_order"
+      ],
+      "gold_tools": [
+        "cancel_pending_order",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "41",
+      "domain": "retail",
+      "sim_id": "aaf263b2-5dc4-467f-839a-135391323f2b",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_user_details",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address",
+        "modify_user_address",
+        "modify_user_address",
+        "list_all_product_types",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address",
+        "modify_pending_order_address",
+        "modify_user_address",
+        "get_product_details",
+        "get_order_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "54",
+      "domain": "retail",
+      "sim_id": "c1c6fe97-fc13-4c86-acf3-2c32dde6c136",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "list_all_product_types",
+        "get_product_details",
+        "calculate"
+      ],
+      "gold_tools": [
+        "find_user_id_by_email",
+        "find_user_id_by_email",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "cancel_pending_order",
+        "cancel_pending_order",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "19",
+      "domain": "retail",
+      "sim_id": "c3a9bcb1-0444-44b3-aa2e-d1f7b884a08d",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "9",
+      "domain": "retail",
+      "sim_id": "c5030e85-ed5f-46a7-92ad-3e507bd4c24a",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "get_product_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "53",
+      "domain": "retail",
+      "sim_id": "c5b70403-f36b-4aa7-865f-64054adf1bfe",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "89",
+      "domain": "retail",
+      "sim_id": "c8927e92-a6f4-46b7-a45e-3142b9cea798",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "list_all_product_types",
+        "get_product_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "72",
+      "domain": "retail",
+      "sim_id": "cc13f01e-53c7-4b9c-97e2-5ddc4a9cd72b",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "79",
+      "domain": "retail",
+      "sim_id": "d128b840-367c-41a0-a10d-ecce1af0b684",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "45",
+      "domain": "retail",
+      "sim_id": "d1a2ec6d-f3a6-4682-aa3c-e401b3a0d618",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "calculate",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "4",
+      "domain": "retail",
+      "sim_id": "d4842acb-6e3b-4de2-9390-6cec24464af5",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "list_all_product_types",
+        "find_user_id_by_name_zip",
+        "get_order_details"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_product_details",
+        "get_product_details",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "get_user_details",
+        "modify_pending_order_items",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "29",
+      "domain": "retail",
+      "sim_id": "d4e35141-7a6d-4397-91dc-c84d7a908804",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items",
+        "get_order_details",
+        "get_order_details",
+        "exchange_delivered_order_items"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "2",
+      "domain": "retail",
+      "sim_id": "d9dd3887-3c8a-49d3-a475-1c702ac63b02",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "list_all_product_types",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_product_details",
+        "get_product_details",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "60",
+      "domain": "retail",
+      "sim_id": "da5e1236-027d-4540-9f9b-90df0c6646cf",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_order_details",
+        "get_product_details",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "101",
+      "domain": "retail",
+      "sim_id": "dc1aaa90-41f6-48e1-aa3f-488cde6e2730",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_address",
+        "get_product_details",
+        "modify_pending_order_items",
+        "get_product_details",
+        "modify_pending_order_items",
+        "modify_pending_order_items"
+      ],
+      "gold_tools": [
+        "modify_pending_order_address",
+        "modify_pending_order_items",
+        "modify_pending_order_items"
+      ]
+    },
+    {
+      "task_id": "52",
+      "domain": "retail",
+      "sim_id": "dc4eebf8-c872-470c-89b9-dfb0cdde8c35",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "33",
+      "domain": "retail",
+      "sim_id": "e018b7f9-f15f-400e-aced-607e270d51ac",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_pending_order_items",
+        "cancel_pending_order"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_order_details",
+        "get_order_details",
+        "modify_user_address"
+      ]
+    },
+    {
+      "task_id": "107",
+      "domain": "retail",
+      "sim_id": "e31056bb-540e-4b62-bca2-2cb259c493a2",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "exchange_delivered_order_items",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "5",
+      "domain": "retail",
+      "sim_id": "ec551323-e8cc-492f-8b0b-3c1257de29ff",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "return_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "7",
+      "domain": "retail",
+      "sim_id": "f0b49145-339c-4c0e-8238-18ff34fbb46f",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "find_user_id_by_name_zip",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "find_user_id_by_name_zip",
+        "get_user_details",
+        "get_order_details",
+        "get_product_details",
+        "get_product_details",
+        "exchange_delivered_order_items"
+      ]
+    },
+    {
+      "task_id": "[service_issue]break_apn_settings|overdue_bill_suspension|unseat_sim_card[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "0141d682-3e36-4a49-9183-662937ef83a5",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "toggle_airplane_mode",
+        "check_sim_status",
+        "reseat_sim_card",
+        "reset_apn_settings",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "reset_apn_settings",
+        "reboot_device",
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "02f73ac7-24eb-4a3c-b168-f3e630280622",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "02f9cfc6-91d1-467d-8ee6-1a69371215be",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|break_apn_settings[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "0a5172dd-5ce8-4399-8be3-53f6f06b025d",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "reset_apn_settings",
+        "reboot_device"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "0b117571-378b-4f56-a936-5b2c2345a3b5",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "toggle_data",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "0be7e1b6-c35e-48db-b238-8277c06bccd8",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_status_bar",
+        "run_speed_test",
+        "toggle_roaming",
+        "enable_roaming",
+        "toggle_data"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_both_permissions|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "105c5b73-4f61-4e06-8103-fdbff06eb1dc",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "toggle_airplane_mode",
+        "reseat_sim_card",
+        "check_sim_status",
+        "toggle_data",
+        "reset_apn_settings",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "grant_app_permission",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "15d3821f-b910-4387-bcc7-104dce69bf63",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "18e79c58-d46a-4761-b6ec-08c47df94619",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "19d49907-d1b1-4570-aded-67c93e3c6503",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "toggle_data",
+        "reset_apn_settings",
+        "check_network_mode_preference",
+        "grant_app_permission",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "1b6af881-3ed7-4c11-9f06-8e874035190d",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "reseat_sim_card",
+        "toggle_data",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "1bd02c7e-d337-4019-8a98-765a105916d3",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "toggle_data",
+        "set_network_mode_preference",
+        "check_installed_apps",
+        "check_app_permissions",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "1e88182b-1d11-4f44-9aba-c1d80226e523",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_storage_permission|data_mode_off|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "28d64f51-80e4-45fb-afc6-b4ef6695ad0a",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_name",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "grant_app_permission",
+        "toggle_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]data_mode_off|data_usage_exceeded[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "29bbf7c1-866f-4ff9-9618-d835d2aaea99",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_status_bar",
+        "toggle_data",
+        "check_data_restriction_status",
+        "run_speed_test",
+        "get_data_usage",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_data",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "29d806d0-5b08-4c60-968b-a6a0f9dd235f",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "2b3cd7e8-c3cc-4d4c-a2b4-73aca7237ac2",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "check_status_bar",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "2c518925-3f8f-40b2-a4ea-ba06953c5767",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "check_sim_status",
+        "run_speed_test",
+        "check_apn_settings",
+        "check_network_mode_preference",
+        "reset_apn_settings",
+        "check_wifi_calling_status",
+        "toggle_wifi_calling",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "2f54ec07-c3b5-44f4-bf19-169bd78e3f26",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_sim_status",
+        "toggle_data",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "33d574ad-f4f0-4a50-9c6e-08a43d622a02",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "run_speed_test",
+        "check_network_status",
+        "toggle_data",
+        "set_network_mode_preference",
+        "reseat_sim_card",
+        "toggle_data_saver_mode",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "34cd7c55-9b7c-4e92-88cf-97ab77bcc997",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "3995b226-e810-4137-8503-ea3d87837fe3",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "toggle_data",
+        "check_sim_status"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_both_permissions|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "3a291870-3b85-469d-b2c5-cccf86e694b1",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "reseat_sim_card",
+        "reset_apn_settings",
+        "reset_apn_settings",
+        "reset_apn_settings",
+        "reboot_device",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "grant_app_permission",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_sms_permission|data_usage_exceeded|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "3e971c03-ff31-4c2c-8cb3-02e42c910c73",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_apn_settings",
+        "check_wifi_calling_status",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "refuel_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "412c2737-8dd6-4060-b9f6-0bda1a322f22",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|bad_wifi_calling|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "46f84807-7556-4147-a400-5bb00a9f80b7",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_network_status",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "grant_app_permission",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "479c2126-1363-4320-bb26-90e7f035dd8b",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "reseat_sim_card",
+        "toggle_data",
+        "check_apn_settings",
+        "set_network_mode_preference",
+        "check_network_status",
+        "check_apn_settings",
+        "check_apn_settings",
+        "check_apn_settings"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "grant_app_permission",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "484d6a9e-928e-4fd0-8db6-7d5e7ac42787",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_app_storage_permission|unseat_sim_card[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "49b26946-c7c3-4c95-a645-85716ef83a84",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_name",
+        "get_customer_by_name",
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "toggle_airplane_mode",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_both_permissions|data_usage_exceeded[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "4e08c4ae-274b-4815-907e-ec93fd3d0229",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "grant_app_permission",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "535baebf-1cd3-4881-94fd-bc58501b7d37",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "548115b2-cd03-40ae-abec-286ce443688c",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "run_speed_test",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|data_mode_off|data_usage_exceeded|unseat_sim_card[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "549dbb9d-10f0-411a-994c-354a9dd87b37",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "5766b8d2-0485-48da-ac19-13afc5c383f3",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "5aff9a8b-ae26-4de1-b505-fe2c709bcbaa",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data",
+        "set_network_mode_preference",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reset_apn_settings",
+        "toggle_wifi_calling",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]data_saver_mode_on|data_usage_exceeded[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "5b9f7db9-fab5-430f-82d5-3f10d97a752c",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "check_network_status",
+        "run_speed_test",
+        "toggle_data_saver_mode",
+        "toggle_data_saver_mode",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_data_saver_mode",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_vpn|data_saver_mode_on|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "5ba40f5e-3a98-4c63-b394-9a868aa149b1",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "disconnect_vpn",
+        "toggle_data_saver_mode",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "5fd9bf52-88ea-4898-985d-16af75cde90e",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_mode_preference",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "62c559df-057c-4f56-8fff-06bcccce72d3",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "check_network_status",
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_details_by_id",
+        "enable_roaming",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reset_apn_settings",
+        "reboot_device",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "63dccd41-7850-4964-a1e8-efc1f8b23136",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "run_speed_test",
+        "get_data_usage",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]data_saver_mode_on|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "64174f56-b528-42c3-bc00-9f0d50903504",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data_saver_mode",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_data_saver_mode",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|data_usage_exceeded[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "66f070d0-d97a-4d04-9f03-ebd000097b4a",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "6b6b2d4f-5c19-41dc-96ea-ec940efea7c6",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "set_network_mode_preference",
+        "run_speed_test",
+        "get_details_by_id",
+        "get_details_by_id",
+        "get_details_by_id",
+        "get_details_by_id",
+        "refuel_data",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_data",
+        "refuel_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "70c82d50-9928-4878-b83b-5c0a98534754",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_apn_settings",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "grant_app_permission",
+        "grant_app_permission"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "72333c1e-0f44-4ffa-a70a-c1b6e46a8df8",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_name",
+        "get_customer_by_name",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "74ddd377-a8ad-4317-a305-2bf132b7f1a2",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_sms_permission|data_mode_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "7589f7c1-08c0-48e6-8624-84029c56e92b",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "toggle_data"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_apn_mms_setting|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "7a7ea41d-86a0-494f-99ce-baed86af3505",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_network_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "reset_apn_settings",
+        "reboot_device",
+        "toggle_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|break_app_sms_permission|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "7f468349-04c6-44cc-a215-e6d6087cdf6f",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "grant_app_permission",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_apn_mms_setting|data_mode_off|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "820b65f8-e4f7-4436-9d00-c0e0121909a1",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reboot_device",
+        "toggle_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]break_apn_settings|lock_sim_card_pin|overdue_bill_suspension[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "83685453-d12f-4862-b9c5-a7dbc5e8e06d",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone"
+      ],
+      "gold_tools": [
+        "transfer_to_human_agents"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "88d2f0dc-7c66-4231-8cf9-7e2ff3206973",
+      "primary_failure": "Wrong tool / Surrendered to human",
+      "likely_fix": "Transfer gate & structured recovery loop",
+      "predicted_tools": [
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "reset_apn_settings",
+        "reboot_device",
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "94bfb86b-c059-426b-b013-2938648f944e",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "run_speed_test",
+        "toggle_data",
+        "run_speed_test",
+        "run_speed_test",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|break_app_both_permissions|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "995cd25f-b573-4904-81ab-64bd5ffb5dec",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "grant_app_permission",
+        "grant_app_permission",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|break_apn_settings|unseat_sim_card[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "9a77b676-7240-411e-83f1-dc66f7812f95",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "reset_apn_settings",
+        "reboot_device",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "9da347c7-26b9-414d-ae21-ad31d2a8e73b",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "check_network_status",
+        "run_speed_test",
+        "reset_apn_settings",
+        "get_data_usage",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|break_app_sms_permission|data_usage_exceeded[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "a681d53d-34f8-471d-b348-30841cc3b289",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "check_network_status",
+        "get_customer_by_phone",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|break_apn_settings|overdue_bill_suspension|unseat_sim_card[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "a77521a7-66ac-4fb6-8e83-72b2dca0de75",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "check_sim_status",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "reset_apn_settings",
+        "reboot_device",
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|data_mode_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "a95061ff-4c8c-45e6-9ed8-44926787d47c",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "ab42a9ce-3ae6-421d-8e9e-5daca4ba25fa",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "toggle_data",
+        "set_network_mode_preference",
+        "toggle_data_saver_mode",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_both_permissions|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "b0ae08f3-bf72-4396-8766-ac8c8ea91315",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_wifi_calling|data_mode_off|data_usage_exceeded[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "b26b5dfd-3940-47ab-abd8-f5eaa8278d48",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_status_bar",
+        "check_network_status",
+        "toggle_data",
+        "reset_apn_settings",
+        "toggle_wifi_calling",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_wifi_calling",
+        "toggle_data",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_apn_mms_setting|break_app_storage_permission[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "b27e784d-7407-486c-be7b-b779f1a3a912",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_apn_settings",
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "set_network_mode_preference",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|break_app_sms_permission|data_mode_off|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "b2856a4f-f9a3-4e33-9c0e-732d4c741f3a",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_apn_settings",
+        "check_network_status",
+        "check_sim_status",
+        "reset_apn_settings",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "b6db98a2-9add-4810-b6da-c83eef47e3f8",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "can_send_mms",
+        "toggle_data",
+        "toggle_data",
+        "reseat_sim_card",
+        "check_apn_settings",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_apn_mms_setting|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "b832ae25-46a8-4af0-af8a-d7752d76b1c0",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "check_network_status",
+        "check_status_bar",
+        "toggle_data",
+        "get_customer_by_phone",
+        "get_details_by_id",
+        "get_details_by_id",
+        "reset_apn_settings",
+        "reboot_device",
+        "can_send_mms",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "reset_apn_settings",
+        "reboot_device",
+        "toggle_data",
+        "refuel_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|data_saver_mode_on|data_usage_exceeded[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "c280f755-3d37-4a5d-829f-b84dfdfdc442",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "toggle_data_saver_mode",
+        "run_speed_test",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_data_saver_mode",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "c4d132de-e795-4ecf-8af1-6d89cd84913c",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_status_bar",
+        "toggle_data",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_storage_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "c4da1933-46e6-4747-8bed-2db1d70bacdf",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "can_send_mms",
+        "check_apn_settings",
+        "check_network_status",
+        "toggle_roaming",
+        "get_customer_by_phone",
+        "enable_roaming",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_storage_permission|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "c5f0e242-2b9f-4bdf-a4ba-3624543891ae",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data",
+        "reseat_sim_card",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|break_app_both_permissions[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "cd24fc21-22c9-406a-8e18-6e8b1851cfe8",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "set_network_mode_preference",
+        "reboot_device",
+        "check_app_permissions",
+        "grant_app_permission",
+        "grant_app_permission",
+        "can_send_mms",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "grant_app_permission",
+        "grant_app_permission"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "ce03902f-57af-4c6e-a148-77db5bac728b",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_status_bar",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "set_network_mode_preference",
+        "run_speed_test",
+        "run_speed_test",
+        "run_speed_test",
+        "run_speed_test",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]overdue_bill_suspension|unseat_sim_card[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "ce2d5ab6-3264-4f41-9b0b-6398778dd64d",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device",
+        "reseat_sim_card"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|data_saver_mode_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "cfe215fc-f222-4bcd-a382-3b593050d7d9",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_data",
+        "toggle_data_saver_mode"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "d3101df3-6b93-4717-99b8-4e9869bb36bc",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "run_speed_test",
+        "enable_roaming",
+        "check_data_restriction_status",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[service_issue]airplane_mode_on|overdue_bill_suspension[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "d4e34b53-3f4c-4538-a7ea-eafecc368876",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "send_payment_request",
+        "make_payment",
+        "resume_line",
+        "reboot_device"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|bad_wifi_calling|break_apn_mms_setting|break_app_sms_permission|data_mode_off|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "d5b61042-d5c4-482e-bcd3-f015c0c02cf6",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_status_bar",
+        "toggle_airplane_mode",
+        "toggle_data",
+        "set_network_mode_preference",
+        "check_app_permissions",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "grant_app_permission",
+        "toggle_data",
+        "refuel_data",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_app_storage_permission|data_usage_exceeded[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "d6524bac-25ea-42de-a6c0-2c6d8b3ed52f",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "get_data_usage",
+        "reset_apn_settings",
+        "grant_app_permission",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "grant_app_permission",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_wifi_calling|break_apn_mms_setting|unseat_sim_card|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "d9a57e55-94ec-4c32-a4f2-0162f0ed904e",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "reseat_sim_card",
+        "can_send_mms",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_wifi_calling",
+        "reset_apn_settings",
+        "reboot_device",
+        "reseat_sim_card",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "daf34b3e-c212-4c20-8bcb-812544cacc45",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "run_speed_test",
+        "check_network_status",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_apn_mms_setting|data_usage_exceeded[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "dfbdee8c-7d08-434a-898d-bd4a71f521b6",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "can_send_mms",
+        "check_network_status",
+        "check_apn_settings",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "reset_apn_settings",
+        "reboot_device",
+        "refuel_data"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|bad_vpn|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "dfd16951-4729-4098-ad5f-028f6303f318",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_data_restriction_status",
+        "get_data_usage",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]break_apn_mms_setting|user_abroad_roaming_enabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "dfd2f0ca-b4b7-482e-8513-57da178cdd35",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "check_sim_status",
+        "check_network_status",
+        "check_apn_settings",
+        "check_wifi_status",
+        "check_app_permissions",
+        "get_customer_by_phone",
+        "can_send_mms",
+        "get_details_by_id",
+        "check_network_status",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "reset_apn_settings",
+        "reboot_device",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "e55a574e-898b-455f-828f-1f38a29013f3",
+      "primary_failure": "Policy / Business rule error",
+      "likely_fix": "Deterministic policy engine",
+      "predicted_tools": [],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_network_preference|data_mode_off|data_saver_mode_on|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "ee70a181-5b41-452b-bf16-5ae1cfc8e9f8",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_data_restriction_status",
+        "toggle_data_saver_mode",
+        "set_network_mode_preference",
+        "set_network_mode_preference",
+        "toggle_data_saver_mode",
+        "toggle_data",
+        "toggle_data",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_network_preference|break_app_both_permissions|data_usage_exceeded|unseat_sim_card|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "ef4c0fb4-1a32-4dbb-8cd0-fec1a8a138b7",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "grant_app_permission",
+        "grant_app_permission",
+        "refuel_data",
+        "reseat_sim_card",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]bad_vpn|data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "f22b43de-1a2b-41cf-92fc-ef045c9feb4c",
+      "primary_failure": "Wrong transcription / Entity resolution",
+      "likely_fix": "Phonetic entity resolution + candidate matching",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "get_customer_by_name",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "disconnect_vpn",
+        "toggle_data",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|data_saver_mode_on|user_abroad_roaming_disabled_on[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "f2c3eff0-de17-45ed-aa4d-a3ef63461ba0",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_airplane_mode",
+        "run_speed_test",
+        "toggle_data",
+        "get_data_usage",
+        "check_apn_settings",
+        "reboot_device",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_data_saver_mode",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]bad_network_preference|user_abroad_roaming_disabled_off[PERSONA:None]",
+      "domain": "telecom",
+      "sim_id": "f2f788f5-c14c-4d2b-8ed0-b026ea6c04d1",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "get_customer_by_phone",
+        "enable_roaming",
+        "check_apn_settings",
+        "reset_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "set_network_mode_preference",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_mode_off|data_usage_exceeded|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "f33a6a99-336d-48b3-aada-0b1665b72eaf",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "run_speed_test",
+        "check_network_status",
+        "toggle_airplane_mode",
+        "disconnect_vpn",
+        "toggle_data",
+        "disconnect_vpn",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data",
+        "refuel_data",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|data_mode_off|user_abroad_roaming_disabled_on[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "f3ade1fc-debd-4812-82b9-64b57800e4f5",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data",
+        "set_network_mode_preference",
+        "run_speed_test",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "toggle_data",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mms_issue]airplane_mode_on|bad_wifi_calling|user_abroad_roaming_enabled_off[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "f46787c8-3597-447d-8ff2-7e40606bebca",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "check_network_status",
+        "check_status_bar",
+        "check_apn_settings",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "toggle_wifi_calling",
+        "toggle_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]airplane_mode_on|bad_network_preference|bad_vpn|data_saver_mode_on|user_abroad_roaming_disabled_on[PERSONA:Easy]",
+      "domain": "telecom",
+      "sim_id": "f61971e7-1126-4039-9e49-978176b12d3c",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_name",
+        "get_customer_by_phone",
+        "check_vpn_status",
+        "check_network_status",
+        "toggle_data",
+        "toggle_data_saver_mode",
+        "set_network_mode_preference",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_airplane_mode",
+        "set_network_mode_preference",
+        "disconnect_vpn",
+        "toggle_data_saver_mode",
+        "enable_roaming"
+      ]
+    },
+    {
+      "task_id": "[mobile_data_issue]data_mode_off|data_usage_exceeded|user_abroad_roaming_disabled_off[PERSONA:Hard]",
+      "domain": "telecom",
+      "sim_id": "f83ec84a-2c1f-4c8c-9d6f-ff2d7168fdbe",
+      "primary_failure": "Invalid tool name / Actor boundary",
+      "likely_fix": "Tool routing / Actor boundary constraint",
+      "predicted_tools": [
+        "get_customer_by_phone",
+        "toggle_data",
+        "toggle_data",
+        "run_speed_test",
+        "reset_apn_settings",
+        "check_network_status",
+        "check_network_status",
+        "check_sim_status",
+        "transfer_to_human_agents"
+      ],
+      "gold_tools": [
+        "toggle_data",
+        "refuel_data",
+        "enable_roaming",
+        "toggle_roaming"
+      ]
+    }
+  ]
+}

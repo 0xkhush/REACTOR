@@ -1,0 +1,24 @@
+{
+  "cpu": {
+    "mean_percent": 80.02,
+    "p95_percent": 95.1,
+    "peak_percent": 98.9
+  },
+  "memory": {
+    "initial_rss_mb": 257.95,
+    "final_rss_mb": 1462.08,
+    "peak_rss_mb": 1462.16,
+    "memory_growth_mb": 1204.12
+  },
+  "gpu": {
+    "local_gpu": "Apple M4 integrated unified memory (Metal acceleration available; PyTorch CPU evaluation active)",
+    "remote_provider_gpu": "Google Vertex AI cloud accelerator cluster (unobservable client-side)",
+    "benchmark_asr_gpu": "Cloud ASR infrastructure (unobservable client-side)"
+  },
+  "network": {
+    "connection_establishment": "HTTPS/TLS to sierra-tau-bench-public.s3.us-west-2.amazonaws.com",
+    "bytes_transferred": "~700 MB uncompressed official trajectory dataset",
+    "network_errors": 0,
+    "reconnects": 0
+  }
+}

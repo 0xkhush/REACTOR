@@ -1,0 +1,362 @@
+{
+  "timestamp": "2026-10-06T01:14:29Z",
+  "total_scenarios": 20,
+  "metrics": {
+    "baseline_accuracy": 5.0,
+    "baseline_ci95": [
+      0.89,
+      23.61
+    ],
+    "baseline_stale_write_rate": 95.0,
+    "reactor_accuracy": 100.0,
+    "reactor_ci95": [
+      83.89,
+      100.0
+    ],
+    "reactor_stale_write_rate": 0.0,
+    "stale_write_reduction": 95.0,
+    "mean_gate_latency_us": 5.83
+  },
+  "scenarios": [
+    {
+      "scenario_id": "airline_swap_cancel_01",
+      "domain": "airline",
+      "archetype": "Type A: Slot Swap",
+      "description": "User requests cancel 4WQ150, then mid-turn interrupts and switches target to VAAOXJ.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 8.38
+      }
+    },
+    {
+      "scenario_id": "airline_swap_cancel_02",
+      "domain": "airline",
+      "archetype": "Type A: Slot Swap",
+      "description": "User requests cancel PGAGLM, then mid-turn interrupts and switches target to 1OWO6T.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 6.08
+      }
+    },
+    {
+      "scenario_id": "airline_swap_cancel_03",
+      "domain": "airline",
+      "archetype": "Type A: Slot Swap",
+      "description": "User requests cancel UUN48W, then mid-turn interrupts and switches target to V5XFMY.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 6.08
+      }
+    },
+    {
+      "scenario_id": "airline_swap_cancel_04",
+      "domain": "airline",
+      "archetype": "Type A: Slot Swap",
+      "description": "User requests cancel JP6LYC, then mid-turn interrupts and switches target to JW6LEQ.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.0
+      }
+    },
+    {
+      "scenario_id": "airline_abort_cancel_01",
+      "domain": "airline",
+      "archetype": "Type B: Full Abort",
+      "description": "User requests cancel CDXEBS, but interrupts and aborts ('Wait, keep it!').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.0
+      }
+    },
+    {
+      "scenario_id": "airline_abort_cancel_02",
+      "domain": "airline",
+      "archetype": "Type B: Full Abort",
+      "description": "User requests cancel NA6PZ3, but interrupts and aborts ('Wait, keep it!').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.71
+      }
+    },
+    {
+      "scenario_id": "airline_abort_cancel_03",
+      "domain": "airline",
+      "archetype": "Type B: Full Abort",
+      "description": "User requests cancel V25KYO, but interrupts and aborts ('Wait, keep it!').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.67
+      }
+    },
+    {
+      "scenario_id": "airline_adjust_baggage_01",
+      "domain": "airline",
+      "archetype": "Type C: Value Adjust",
+      "description": "User asks to add 1 bags for Z30P1H, but corrects to 2 bags.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 6.0
+      }
+    },
+    {
+      "scenario_id": "airline_adjust_baggage_02",
+      "domain": "airline",
+      "archetype": "Type C: Value Adjust",
+      "description": "User asks to add 1 bags for F8ITT8, but corrects to 2 bags.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 7.75
+      }
+    },
+    {
+      "scenario_id": "airline_adjust_baggage_03",
+      "domain": "airline",
+      "archetype": "Type C: Value Adjust",
+      "description": "User asks to add 2 bags for BBVDO9, but corrects to 3 bags.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.62
+      }
+    },
+    {
+      "scenario_id": "retail_swap_return_01",
+      "domain": "retail",
+      "archetype": "Type A: Slot Swap",
+      "description": "User initiates return for #W4817420, but switches to #W6304490.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.38
+      }
+    },
+    {
+      "scenario_id": "retail_swap_return_02",
+      "domain": "retail",
+      "archetype": "Type A: Slot Swap",
+      "description": "User initiates return for #W9077205, but switches to #W7303089.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 4.83
+      }
+    },
+    {
+      "scenario_id": "retail_swap_return_03",
+      "domain": "retail",
+      "archetype": "Type A: Slot Swap",
+      "description": "User initiates return for #W8032761, but switches to #W3113816.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.62
+      }
+    },
+    {
+      "scenario_id": "retail_abort_return_01",
+      "domain": "retail",
+      "archetype": "Type B: Full Abort",
+      "description": "User starts return for #W1840144, but retracts ('Wait, I want to keep it').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.96
+      }
+    },
+    {
+      "scenario_id": "retail_abort_return_02",
+      "domain": "retail",
+      "archetype": "Type B: Full Abort",
+      "description": "User starts return for #W8341134, but retracts ('Wait, I want to keep it').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.83
+      }
+    },
+    {
+      "scenario_id": "retail_adjust_item_01",
+      "domain": "retail",
+      "archetype": "Type C: Value Adjust",
+      "description": "User returns item 4545791457 in #W3069600, but corrects to return 9494281769 instead.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.58
+      }
+    },
+    {
+      "scenario_id": "retail_adjust_item_02",
+      "domain": "retail",
+      "archetype": "Type C: Value Adjust",
+      "description": "User returns item 6454334990 in #W7647404, but corrects to return 9612497925 instead.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.54
+      }
+    },
+    {
+      "scenario_id": "retail_swap_pending_cancel_01",
+      "domain": "retail",
+      "archetype": "Type A: Slot Swap",
+      "description": "User requests cancel for pending #W5918442, then switches to #W2974929.",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.46
+      }
+    },
+    {
+      "scenario_id": "retail_abort_pending_cancel_01",
+      "domain": "retail",
+      "archetype": "Type B: Full Abort",
+      "description": "User requests cancel for #W2631563, but aborts ('Wait! Do not cancel my order').",
+      "baseline": {
+        "success": false,
+        "stale_write": true
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": null,
+        "gate_latency_us": 5.71
+      }
+    },
+    {
+      "scenario_id": "retail_adjust_address_01",
+      "domain": "retail",
+      "archetype": "Type C: Value Adjust",
+      "description": "User changes shipping address for #W6779827 to NY, then corrects to SF.",
+      "baseline": {
+        "success": true,
+        "stale_write": false
+      },
+      "reactor": {
+        "success": true,
+        "stale_write": false,
+        "initial_status": "cancelled_before_dispatch",
+        "corrected_status": "succeeded",
+        "gate_latency_us": 5.33
+      }
+    }
+  ]
+}

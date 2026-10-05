@@ -1,0 +1,85 @@
+{
+  "benchmark": "tau-voice",
+  "benchmark_source": "sierra-research/tau2-bench",
+  "total_tasks": 278,
+  "domains": {
+    "airline": 50,
+    "retail": 114,
+    "telecom": 114
+  },
+  "v1_baseline": {
+    "passed": 69,
+    "failed": 209,
+    "pass_at_1_pct": 24.82,
+    "wilson_95_ci": [
+      20.11,
+      30.22
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0
+  },
+  "v2_guarded_reactor": {
+    "passed": 71,
+    "failed": 207,
+    "pass_at_1_pct": 25.54,
+    "wilson_95_ci": [
+      20.77,
+      30.97
+    ],
+    "stale_executions": 0,
+    "duplicate_executions": 0,
+    "net_pass_lift_pct_pts": 0.72,
+    "net_tasks_recovered": 2
+  },
+  "secondary_ablation_without_reactor_core": {
+    "passed": 71,
+    "pass_at_1_pct": 25.54,
+    "stale_executions": 0,
+    "duplicate_executions": 333
+  },
+  "failure_category_analysis": {
+    "rule": "Failure Remains Unrecoverable: Upstream error resolution does not guarantee task Pass@1 if downstream trajectory lacks required completion turns",
+    "categories": [
+      {
+        "category": "Invalid tool name / actor boundary",
+        "initial_v1_failures": 74,
+        "upstream_interventions_count": 349,
+        "upstream_resolution_rate_pct": 100.0,
+        "downstream_pass_lift_tasks": 1,
+        "reason_for_gap": "In telecom domain, device tools (airplane mode/data) blocked from agent execution, but Gemini offline audio contained no subsequent dialog turns to guide user verbally."
+      },
+      {
+        "category": "Wrong arguments / schema syntax",
+        "initial_v1_failures": 7,
+        "upstream_interventions_count": 23,
+        "upstream_resolution_rate_pct": 100.0,
+        "downstream_pass_lift_tasks": 1,
+        "reason_for_gap": "Recursive quote stripping repaired arguments for Task 33, allowing complete task recovery. Remaining tasks suffered secondary downstream omissions."
+      },
+      {
+        "category": "Wrong transcription / entity resolution",
+        "initial_v1_failures": 76,
+        "upstream_interventions_count": 76,
+        "upstream_resolution_rate_pct": 100.0,
+        "downstream_pass_lift_tasks": 0,
+        "reason_for_gap": "Multi-signal corroboration accurately identified target customer in database, but Gemini did not execute subsequent order lookup or modification turns in recorded session."
+      },
+      {
+        "category": "Policy / business rule error",
+        "initial_v1_failures": 44,
+        "upstream_interventions_count": 44,
+        "upstream_resolution_rate_pct": 100.0,
+        "downstream_pass_lift_tasks": 0,
+        "reason_for_gap": "Policy engine blocked illegal non-refundable cancellations deterministically, preventing policy violation. However, task required agent to offer alternative flight or credit, which offline audio did not produce."
+      },
+      {
+        "category": "Wrong tool / premature human transfer",
+        "initial_v1_failures": 8,
+        "upstream_interventions_count": 8,
+        "upstream_resolution_rate_pct": 100.0,
+        "downstream_pass_lift_tasks": 0,
+        "reason_for_gap": "Gate blocked premature transfer, but user prompt ended without further user input in frozen audio recording."
+      }
+    ]
+  }
+}

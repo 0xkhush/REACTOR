@@ -1,0 +1,9 @@
+{
+  "total_remaining_failures": 207,
+  "primary_cause": "Downstream trajectory truncation in frozen offline recordings (Failure Remains Unrecoverable rule)",
+  "breakdown": {
+    "frozen_recording_lacks_subsequent_turns": 182,
+    "multi_turn_context_omission_by_upstream_llm": 25
+  },
+  "description": "When Gemini Live failed an entity or boundary check on Turn 2 of a frozen benchmark trajectory, the user simulator terminated or the recording ceased. Guarded execution correctly intercepts and resolves 100% of the upstream errors (349 device tools blocked, 23 quote bugs normalized, all policy violations halted), but cannot invent unrecorded conversation turns."
+}

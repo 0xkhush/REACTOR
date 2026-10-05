@@ -1,0 +1,77 @@
+{
+  "evaluation_target": "\u03c4-Voice Generalization Evaluation",
+  "system_freeze": {
+    "git_commit": "48412a81230764528c6e6369b4c7699643fffdc3",
+    "git_status_clean": true,
+    "git_status_raw": "",
+    "timestamp_iso": "2026-10-05T00:30:00+05:30"
+  },
+  "system_hardware": {
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "cpu": "Apple M4",
+    "cpu_arch": "arm64",
+    "cpu_count_logical": 10,
+    "cpu_count_physical": 10,
+    "ram_total_bytes": 25769803776,
+    "ram_total_gb": 24.0
+  },
+  "runtime_versions": {
+    "python": "3.12.11 (main, Jun  3 2025, 15:41:47) [Clang 17.0.0 (clang-1700.3.19.1)]",
+    "packages": {
+      "livekit.agents": "1.3.12",
+      "livekit.plugins.google": "1.3.12",
+      "google.genai": "2.25.0",
+      "torch": "2.14.0",
+      "numpy": "1.26.4",
+      "pydantic": "2.13.5",
+      "soundfile": "0.14.0",
+      "librosa": "0.11.0",
+      "scipy": "1.17.1",
+      "pydub": "0.25.1",
+      "fastapi": "0.142.2",
+      "uvicorn": "0.54.0",
+      "deepdiff": "9.1.0",
+      "addict": "2.4.0",
+      "litellm": "1.82.6",
+      "jsonschema": "4.26.0"
+    }
+  },
+  "component_hashes": {
+    "reactor_source_files": {
+      "src/reactor/__init__.py": "892227fff7eeafa09e4ab457b289ef18ef1791b38d13c693a3cd5e3cb991435f",
+      "src/reactor/config.py": "49e0be558b4cad8d4dcb12f896ae54d9b7a11f114eb58d41b9a9c865549e0e7e",
+      "src/reactor/controller.py": "07f878b23ffc43f13d3f0aab4b42d84dbad81a587ecc7879ac6eefb4f0a0315b",
+      "src/reactor/demo.py": "6415db9bdd535fc24f596511e39c046b6d43a4f44b7781a63cc7d766579b7dfb",
+      "src/reactor/state.py": "994ab236e20518927d437df0ddd4245f5a5c702745a8f7673021f194d66fbd1d",
+      "src/reactor/tools/__init__.py": "6944c0d5d161e528589c26893c59eb7ee1b5a7f8a7ac4e0ab1ba7df11e4f29b0",
+      "src/reactor/tools/base.py": "12ab7e81f3e46f3569116c3ecb4f540f32d541e9fffd58dba966c7609774ba13",
+      "src/reactor/tools/benchmark.py": "715b29fc6e4fcc3c0d45cae3831050afcf0cc89b0bbdb171dc4162cee515dcbc",
+      "src/reactor/tools/timers.py": "a40edb19ccaac8250085c46333c86c27ae082c3159493acfe4c8efcd68f8d0d8",
+      "src/reactor/trace.py": "c44bb6b49dbe3ec73f8653b581182341dd64249bea8cfc7844ad5603f01da8e4",
+      "src/reactor/voice/__init__.py": "1bec05c2cde15af75327fb560651ab1500c09cc65b5c4d8f3374217deb3bd83d",
+      "src/reactor/voice/agent.py": "2f8a0aa2829e3f8cfe14101346e172ce9069567c68cf3c70ee6323d8c2730880",
+      "src/reactor/voice/arguments.py": "62c9fcf8b84fcd75d970cddeed884b6c8aca4c6ca998b0ae9f21adf0a62df0da",
+      "src/reactor/voice/dates.py": "3352374402e09d1900ac6b52da503e4157e14ed460c7ebff30719355cca217f4",
+      "src/reactor/voice/events.py": "63d8ad567e76db907bdcdcf15b7f3a764a0eb9d3f9f575bb8cf7dd9ceeee7156",
+      "src/reactor/voice/grounding.py": "3f37905cc5d0bd7070f1adaab37633b9ffa0cdfe9c4fb0ae4a4a6f42d159179f",
+      "src/reactor/voice/kitchen.py": "5b5b575303592cb59d22d12ce45448332ca41c20f2b2239d0ff02d43c022fb90",
+      "src/reactor/voice/native_types.py": "95d79abeb9cdab1ad094e5f0febef9272bbaf63c161447bde84840f86880085a",
+      "src/reactor/voice/prompts.py": "0d8e8ca5abfae93381d40185ceb8637a9ca56d67ca8546f1b291c29db8220dee",
+      "src/reactor/voice/speech.py": "ac99ade3626a6a82923680cebebbe9b81c8187d8b3acbf7dbf948f08d6c8b131",
+      "src/reactor/voice/turns.py": "0b0c542d531157940397e7cca9296baae458b169fb01b71e06551a4bdc02cc7f"
+    },
+    "system_prompt": {
+      "src/reactor/voice/prompts.py": "0d8e8ca5abfae93381d40185ceb8637a9ca56d67ca8546f1b291c29db8220dee"
+    },
+    "tool_schemas": {
+      "src/reactor/tools/base.py": "12ab7e81f3e46f3569116c3ecb4f540f32d541e9fffd58dba966c7609774ba13",
+      "src/reactor/tools/benchmark.py": "715b29fc6e4fcc3c0d45cae3831050afcf0cc89b0bbdb171dc4162cee515dcbc",
+      "src/reactor/tools/timers.py": "a40edb19ccaac8250085c46333c86c27ae082c3159493acfe4c8efcd68f8d0d8"
+    },
+    "configuration_files": {
+      "pyproject.toml": "4b789bccec2dfc4150b86141749a4c4173e136a246d82bad2b1aa19bc01f6904",
+      "requirements.txt": "ea46df51bab4e1375815b1d4f81e4b303b472a67d82d99def9395150824529dd",
+      ".env.example": "03f321601c032c52527793cc76294b69e88da09640138bda98041d235acaa8f6"
+    }
+  }
+}

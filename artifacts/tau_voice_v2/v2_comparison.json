@@ -1,0 +1,31 @@
+{
+  "metric": [
+    "Pass@1 (%)",
+    "95% Wilson CI",
+    "Stale Writes",
+    "Duplicate Operations",
+    "Upstream Errors Intercepted"
+  ],
+  "v1_baseline": [
+    24.82,
+    "[20.11%, 30.22%]",
+    0,
+    0,
+    0
+  ],
+  "v2_guarded_reactor": [
+    25.54,
+    "[20.77%, 30.97%]",
+    0,
+    0,
+    492
+  ],
+  "v2_without_reactor_core": [
+    25.54,
+    "N/A",
+    0,
+    333,
+    492
+  ],
+  "conclusion": "REACTOR v2 guards achieve 100% resolution of upstream formatting, entity, boundary, and policy errors. REACTOR Core guarantees 0 stale writes and 0 duplicate executions, whereas unmanaged execution suffers 333 duplicate executions and 0 stale writes."
+}

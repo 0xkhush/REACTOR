@@ -1,0 +1,99 @@
+[
+  {
+    "task_id": "45",
+    "domain": "airline",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_reservation_details",
+      "get_reservation_details",
+      "get_reservation_details",
+      "get_user_details",
+      "cancel_reservation"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "cancel_reservation",
+        "reason": "policy_denied",
+        "details": "Basic economy tickets are non-refundable without travel insurance."
+      }
+    ],
+    "policies_blocked_count": 1,
+    "without_policy_pass": false,
+    "full_v4_pass": true,
+    "evaluator_outcome_without_policy": {
+      "DB": 0.0,
+      "COMMUNICATE": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "DB": 1.0,
+      "COMMUNICATE": 1.0
+    },
+    "diagnosis": "Deterministic policy engine intercepted and blocked illegal cancel_reservation on non-refundable Basic Economy fare without insurance, preventing invalid database mutation and preserving pass condition."
+  },
+  {
+    "task_id": "48",
+    "domain": "airline",
+    "user_instruction": "",
+    "proposed_tools": [
+      "cancel_reservation"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "cancel_reservation",
+        "reason": "policy_denied",
+        "details": "Basic economy tickets are non-refundable without travel insurance."
+      }
+    ],
+    "policies_blocked_count": 1,
+    "without_policy_pass": false,
+    "full_v4_pass": true,
+    "evaluator_outcome_without_policy": {
+      "DB": 0.0,
+      "COMMUNICATE": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "DB": 1.0,
+      "COMMUNICATE": 1.0
+    },
+    "diagnosis": "Deterministic policy engine intercepted and blocked illegal cancel_reservation on non-refundable Basic Economy fare without insurance, preventing invalid database mutation and preserving pass condition."
+  },
+  {
+    "task_id": "9",
+    "domain": "airline",
+    "user_instruction": "",
+    "proposed_tools": [
+      "get_user_details",
+      "get_user_details",
+      "get_user_details",
+      "get_reservation_details",
+      "get_reservation_details",
+      "get_reservation_details",
+      "cancel_reservation",
+      "transfer_to_human_agents"
+    ],
+    "blocked_calls": [
+      {
+        "tool": "cancel_reservation",
+        "reason": "policy_denied",
+        "details": "Basic economy tickets are non-refundable without travel insurance."
+      },
+      {
+        "tool": "transfer_to_human_agents",
+        "reason": "boundary_gate",
+        "details": "Premature human transfer rejected: the automated system has remaining recovery budget (0/2) and the user did not request a representative."
+      }
+    ],
+    "policies_blocked_count": 1,
+    "without_policy_pass": false,
+    "full_v4_pass": true,
+    "evaluator_outcome_without_policy": {
+      "DB": 0.0,
+      "COMMUNICATE": 1.0
+    },
+    "evaluator_outcome_full_v4": {
+      "DB": 1.0,
+      "COMMUNICATE": 1.0
+    },
+    "diagnosis": "Deterministic policy engine intercepted and blocked illegal cancel_reservation on non-refundable Basic Economy fare without insurance, preventing invalid database mutation and preserving pass condition."
+  }
+]

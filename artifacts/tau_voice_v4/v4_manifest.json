@@ -1,0 +1,37 @@
+{
+  "manifest_version": "4.0.0",
+  "benchmark": "tau-voice",
+  "benchmark_source": "sierra-research/tau2-bench",
+  "evaluation_mode": "full_duplex_audio_native_guarded_v4",
+  "timestamp_iso": "2026-10-06T02:42:42+0530",
+  "commit": "091f12ef4e2fd776cbb4f1c6e9b1c87fc2603eff",
+  "environment": {
+    "python": "3.12.11",
+    "os": "macOS-26.6.2-arm64-arm-64bit",
+    "cpu": "arm",
+    "arch": "arm64"
+  },
+  "calibrated_parameters": {
+    "confidence_cutoff": 0.88,
+    "margin_cutoff": 0.1,
+    "calibration_dataset": "synthetic_independent",
+    "calibration_f1": 1.0,
+    "calibration_false_positives": 0
+  },
+  "file_hashes": {
+    "src/reactor/controller.py": "63b5146c74bce55cbc145962c93acba456b7d137e1580df923e48b16121e2dc2",
+    "src/reactor/state.py": "643c4877d102a16487913c125cc4c3245fc680101d0f62a0eea688a0d8c5fd99",
+    "src/reactor/guards/types.py": "bda6417f1d5a47c9907b2987064dc7ea0cada853c1ceb3a3a096bae9bf557fc3",
+    "src/reactor/guards/boundary.py": "0c9e64c2e2d30353446d1590ad4352d163eb22a5d9fe09bfd3a4eb88760ec297",
+    "src/reactor/guards/normalizer.py": "65306d3ab90f024ec69327d45ab203e86bb8d3c080ce21673872544e8af8980f",
+    "src/reactor/guards/entity.py": "1466bf28dccf4ebcc3718c63bc2a13637e2ee9de6cf67e084c63a8da5756764f",
+    "src/reactor/guards/policy.py": "7f379a8ce7e9c224864cbe241baf4f66d259f317c16be547ff6ceec8f60eaa8a",
+    "src/reactor/guards/provenance.py": "84ed2d39db42e567ba3d1eec15ef716bd877f5621b261219eb525e7f78333eeb",
+    "src/reactor/guards/recovery.py": "139e6f8b88f02abf3d53423e4f40397772bac82fdebf34e68bcfa24b49decd93",
+    "src/reactor/guards/verifier.py": "513c366eb91a69146a912706e7852e5395a3ea16ddc01e40073fff2594374ad7",
+    "src/reactor/guards/pipeline.py": "ad64e458f0458bc5e0d9a3912466d344d24f0c7203322424d438117b917e58ac",
+    "scripts/tau_voice_adapter.py": "88ea35890ae5df67f14a8d1834d66fc648501c8215c793ceb00f74c9dba2dfba",
+    "scripts/calibrate_entity_resolver.py": "f2555773306ba6a281d3fa3f33487d1d45b85825c5d0f9d2e092eee1f5ee0fed",
+    "scripts/preflight_integrity_scan.py": "055ea8228b0ca5950cb24f61b95daccf0ca6f798636a9d758ad93433bdca8122"
+  }
+}

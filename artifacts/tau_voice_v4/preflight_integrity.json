@@ -1,0 +1,37 @@
+{
+  "overall_status": "PASS",
+  "frozen_components": {
+    "src/reactor/controller.py": {
+      "sha256": "07f878b23ffc43f13d3f0aab4b42d84dbad81a587ecc7879ac6eefb4f0a0315b",
+      "git_clean": true,
+      "status": "PASS"
+    },
+    "src/reactor/state.py": {
+      "sha256": "994ab236e20518927d437df0ddd4245f5a5c702745a8f7673021f194d66fbd1d",
+      "git_clean": true,
+      "status": "PASS"
+    },
+    "vendor/tau2-bench/src/tau2/evaluator/evaluator.py": {
+      "sha256": "204d95a82812402f2fee989250392d3c66de702a8bcc20258c7e2a8153a1ea8d",
+      "git_clean": true,
+      "status": "PASS"
+    }
+  },
+  "leakage_audit": {
+    "src/reactor/guards/__init__.py": [],
+    "src/reactor/guards/boundary.py": [],
+    "src/reactor/guards/entity.py": [],
+    "src/reactor/guards/normalizer.py": [],
+    "src/reactor/guards/pipeline.py": [],
+    "src/reactor/guards/policy.py": [],
+    "src/reactor/guards/provenance.py": [],
+    "src/reactor/guards/recovery.py": [],
+    "src/reactor/guards/types.py": [],
+    "src/reactor/guards/verifier.py": []
+  },
+  "calibrated_parameters": {
+    "confidence_cutoff": 0.88,
+    "margin_cutoff": 0.1,
+    "status": "PASS"
+  }
+}
